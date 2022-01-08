@@ -7,6 +7,9 @@ enum class Suit { SPADES, HEARTS, DIAMONDS, CLUBS };
 
 struct Card {
     Card(Rank rank, Suit suit) : rank_(rank), suit_(suit) {};
+    std::string printSuit() const;
+    std::string printRank() const;
+
 private:
     Rank rank_;
     Suit suit_;
