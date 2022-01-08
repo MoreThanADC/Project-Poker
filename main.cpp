@@ -1,6 +1,10 @@
 #include <iostream>
 
-int main() {
+#include "Deck.hpp"
 
+
+int main() {
+    Deck deck;
+    deck.setupDeck();
     return 0;
 }
