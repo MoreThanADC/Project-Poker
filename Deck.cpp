@@ -1,6 +1,9 @@
 #include "Deck.hpp"
 
+#include <algorithm>
 #include <string>
+#include <random>
+
 
 void Deck::setupDeck() {
     for (auto suit = static_cast<int>(Suit::SPADES) ; suit <= static_cast<int>(Suit::CLUBS) ; ++suit) {
@@ -17,5 +20,10 @@ void Deck::printCards() {
     }
 };
 
-
+void Deck::shuffleTheDeck() {
+    std::random_device randomDevice;
+    std::mt19937 shuffleFunction(randomDevice());
+    
+    std::shuffle(begin(deck_), end(deck_), shuffleFunction);
+}
 
