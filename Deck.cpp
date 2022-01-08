@@ -13,7 +13,9 @@ void Deck::setupDeck() {
 
 void Deck::printCards() {
     for (const auto& card : deck_) {
-        std::cout << card.printRank() << " of " << card.printSuit() << '\n';
+        std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
 };
+
+
 

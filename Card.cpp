@@ -1,5 +1,19 @@
 #include "Card.hpp"
 
+Card::Card(const Rank& rank, const Suit& suit) : rank_(rank), suit_(suit) {
+    if (rank > Rank::ACE && rank < Rank::JACK) {
+        value_ = static_cast<int>(rank);
+    } else if (rank == Rank::JACK) {
+        value_ = 11;
+    } else if (rank == Rank::QUEEN) {
+        value_ = 12;
+    } else if (rank == Rank::KING) {
+        value_ = 13;
+    } else {
+        value_ = 14;
+    }
+}
+
 std::string Card::printSuit() const {
     switch(suit_) {
     case (Suit::SPADES)     : return "Spades";
@@ -27,4 +41,8 @@ std::string Card::printRank() const {
     case (Rank::KING)       : return "King";
     default                 : return "Incorrect rank";
     }
+}
+
+std::string Card::printValue() const {
+    return std::to_string(value_);
 }
