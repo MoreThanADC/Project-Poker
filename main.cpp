@@ -4,6 +4,7 @@
 
 #include "Player.hpp"
 #include "Table.hpp"
+#include "Verifier.hpp"
 
 
 int main() {
@@ -35,7 +36,7 @@ int main() {
     table.printTable();
 
     std::cout << "\nNUMBER OF CARDS AFTER TURN: " << pointerToDeck->cardsInTheDeck() <<  '\n';
-    table.performTheTurnOrRiver();
+    table.performTheTurnOrTheRiver();
     std::cout << "\nFIRST PLAYER HAND: \n";
     player1.printHand();
     std::cout << "\nSECOND PLAYER HAND: \n";
@@ -43,14 +44,34 @@ int main() {
     std::cout << "\nCARDS ON THE TABLE: \n";
     table.printTable();
 
-     std::cout << "\nNUMBER OF CARDS AFTER RIVER: " << pointerToDeck->cardsInTheDeck() <<  '\n';
-    table.performTheTurnOrRiver();
+    std::cout << "\nNUMBER OF CARDS AFTER RIVER: " << pointerToDeck->cardsInTheDeck() <<  '\n';
+    table.performTheTurnOrTheRiver();
     std::cout << "\nFIRST PLAYER HAND: \n";
     player1.printHand();
     std::cout << "\nSECOND PLAYER HAND: \n";
     player2.printHand();
     std::cout << "\nCARDS ON THE TABLE: \n";
     table.printTable();
+
+    std::vector<Card> tableCards = table.getTable();
+
+    std::vector<Card> firstPlayerHand = player1.getHand();
+    std::vector<Card> firstPlayerAllCards;
+    std::merge(begin(tableCards), end(tableCards), begin(firstPlayerHand), end(firstPlayerHand), std::back_inserter(firstPlayerAllCards));
+
+    std::vector<Card> secondPlayerHand = player2.getHand();
+    std::vector<Card> secondPlayerAllCards;
+    std::merge(begin(tableCards), end(tableCards), begin(secondPlayerHand), end(secondPlayerHand), std::back_inserter(secondPlayerAllCards));
+    
+    
+
+    Verifier verifier;
+    std::cout << "\nPLAYER 1: ";
+    std::cout << "HAVE A PAIR? : " << verifier.isAPair(firstPlayerAllCards) << '\n';
+
+    std::cout << "PLAYER 2: ";
+    std::cout << "HAVE A PAIR? : " << verifier.isAPair(secondPlayerAllCards) << '\n';
+
 
     return 0;
 }

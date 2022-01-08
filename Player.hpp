@@ -11,6 +11,8 @@ public:
     void getCardFromDeck();
     void printHand() const;
 
+    std::vector<Card> getHand() const { return hand_; }
+
 private:
     std::vector<Card> hand_;
     std::shared_ptr<Deck> deck_;

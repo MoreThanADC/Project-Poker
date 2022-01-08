@@ -1,8 +1,13 @@
 #include "Verifier.hpp"
 
-PokerHand Verifier::verify(const std::vector<Card>& setOfCards) {
-    if (isPoker(setOfCards)) {
-        return PokerHand::POKER;
+#include <algorithm>
+
+PokerHand Verifier::verify(std::vector<Card>& setOfCards) {
+    if (isRoyalFlush(setOfCards)) {
+        return PokerHand::ROYALFLUSH;
+    }  
+    if (isStraightFlush(setOfCards)) {
+        return PokerHand::STRAIGHTFLUSH;
     }  
     if (isFourKind(setOfCards)) {
         return PokerHand::FOURKIND;
@@ -28,8 +33,13 @@ PokerHand Verifier::verify(const std::vector<Card>& setOfCards) {
     return PokerHand::HIGHCARDS;
 }
 
-bool Verifier::isAPair(const std::vector<Card>& setOfCards) {
-    return true;
+bool Verifier::isAPair(std::vector<Card>& setOfCards) {
+    std::sort(begin(setOfCards), end(setOfCards));
+    auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
+    if (it != setOfCards.end()) {
+        return true;
+    }
+    return false;
 }
 
 bool Verifier::areTwoPairs(const std::vector<Card>& setOfCards) {
@@ -56,6 +66,10 @@ bool Verifier::isFourKind(const std::vector<Card>& setOfCards) {
     return true;
 }
 
-bool Verifier::isPoker(const std::vector<Card>& setOfCards) {
+bool Verifier::isStraightFlush(const std::vector<Card>& setOfCards) {
+    return true;
+}
+
+bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
     return true;
 }

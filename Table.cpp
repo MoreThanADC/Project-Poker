@@ -1,12 +1,12 @@
 #include "Table.hpp"
 
 void Table::performTheFlop() {
-    table_.push_back(deck_->takeCardFromDeck());
-    table_.push_back(deck_->takeCardFromDeck());
-    table_.push_back(deck_->takeCardFromDeck());
+    for (int i = 0; i < 3; i++) {
+        table_.push_back(deck_->takeCardFromDeck());
+    }
 }
 
-void Table::performTheTurnOrRiver() {
+void Table::performTheTurnOrTheRiver() {
     table_.push_back(deck_->takeCardFromDeck());
 }
 
