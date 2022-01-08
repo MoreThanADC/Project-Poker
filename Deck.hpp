@@ -10,7 +10,7 @@ struct Deck {
     void printCards();
     void shuffleTheDeck();
 
-    size_t cardsInTheDeck() { return deck_.size(); }; 
+    size_t cardsInTheDeck() const { return deck_.size(); }; 
     Card takeCardFromDeck();
 
 private:

@@ -5,8 +5,6 @@
 #include <vector>
 #include <memory>
 
-
-
 class Player {
 public:
     Player(const std::shared_ptr<Deck>& deck) : deck_(std::move(deck)) {};
