@@ -76,6 +76,7 @@ int main() {
     std::cout << "HAVE FLUSH? : " << verifier.isFlush(firstPlayerAllCards) << '\n';
     std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(firstPlayerAllCards) << '\n';
     std::cout << "HAVE ROYALFLUSH? : " << verifier.isRoyalFlush(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE FULLHOUSE? : " << verifier.isFullHouse(firstPlayerAllCards) << '\n';
     
     
     std::cout << "\nPLAYER 2: \n";
@@ -87,9 +88,10 @@ int main() {
     std::cout << "HAVE FLUSH? : " << verifier.isFlush(secondPlayerAllCards) << '\n';
     std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(secondPlayerAllCards) << '\n';
     std::cout << "HAVE ROYALFLUSH? : " << verifier.isRoyalFlush(secondPlayerAllCards) << '\n';
+    std::cout << "HAVE FULLHOUSE? : " << verifier.isFullHouse(secondPlayerAllCards) << '\n';
 
     counter++;
-    if (verifier.isRoyalFlush(secondPlayerAllCards) || verifier.isRoyalFlush(firstPlayerAllCards)) {
+    if (verifier.isFullHouse(secondPlayerAllCards) || verifier.isFullHouse(firstPlayerAllCards)) {
         flag = true;
     }
     } while (!flag);

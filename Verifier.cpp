@@ -121,9 +121,24 @@ bool Verifier::isFlush(const std::vector<Card>& setOfCards) {
     return false;
 }
 
-bool Verifier::isFullHouse(const std::vector<Card>& setOfCards) {
-    return true;
+bool Verifier::isFullHouse(std::vector<Card> setOfCards) {
+    std::sort(begin(setOfCards), end(setOfCards));
+
+    for(const auto& el : setOfCards) {
+        auto found = std::search_n(rbegin(setOfCards), rend(setOfCards), 3, el);
+        if (found != setOfCards.rend()) {
+            setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&](const auto& card){
+                return card.getValue() == (*found).getValue();
+            }), setOfCards.end());
+
+            if (isAPair(setOfCards)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
+
 
 bool Verifier::isFourKind(std::vector<Card>& setOfCards) {
     std::sort(begin(setOfCards), end(setOfCards));
@@ -163,7 +178,7 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
             setOfCards[i].getSuit() == setOfCards[i+3].getSuit() &&
             setOfCards[i].getValue() + 4 == setOfCards[i+4].getValue() &&
             setOfCards[i].getSuit() == setOfCards[i+4].getSuit()) {
-            return true;
+                return true;
         } 
     }
     return false;
@@ -180,7 +195,7 @@ bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
             setOfCards[i].getSuit() == setOfCards[i+3].getSuit() &&
             setOfCards[i].getValue() + 4 == setOfCards[i+4].getValue() &&
             setOfCards[i].getSuit() == setOfCards[i+4].getSuit()) {
-            return true;
+                return true;
             } 
         }   
     }

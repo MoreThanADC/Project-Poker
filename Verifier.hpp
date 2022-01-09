@@ -14,7 +14,7 @@ public:
     bool isThreeKind(std::vector<Card>& setOfCards);
     bool isStraight(std::vector<Card> setOfCards);
     bool isFlush(const std::vector<Card>& setOfCards);
-    bool isFullHouse(const std::vector<Card>& setOfCards);
+    bool isFullHouse(std::vector<Card> setOfCards);
     bool isFourKind(std::vector<Card>& setOfCards);
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
