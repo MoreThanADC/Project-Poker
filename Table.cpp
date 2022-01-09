@@ -11,7 +11,7 @@ void Table::performTheTurnOrTheRiver() {
 }
 
 void Table::printTable() const {
-    for(const auto& card : table_) {
+    for (const auto& card : table_) {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
 }

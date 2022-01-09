@@ -5,8 +5,7 @@ void Player::getCardFromDeck() {
 };
 
 void Player::printHand() const {
-    for(const auto& card : hand_) {
+    for (const auto& card : hand_) {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
-
 }

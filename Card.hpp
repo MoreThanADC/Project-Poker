@@ -2,9 +2,24 @@
 
 #include <iostream>
 
-
-enum class Rank { ACE = 1, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING };
-enum class Suit { SPADES, HEARTS, DIAMONDS, CLUBS };
+enum class Rank { ACE = 1,
+                  TWO,
+                  THREE,
+                  FOUR,
+                  FIVE,
+                  SIX,
+                  SEVEN,
+                  EIGHT,
+                  NINE,
+                  TEN,
+                  JACK,
+                  QUEEN,
+                  KING };
+                  
+enum class Suit { SPADES,
+                  HEARTS,
+                  DIAMONDS,
+                  CLUBS };
 
 struct Card {
     Card(const Rank& rank, const Suit& suit);
@@ -19,11 +34,11 @@ struct Card {
     void setValue(int newValue) { value_ = newValue; }
 
     bool operator==(const Card& rhs) {
-        return value_ == rhs.getValue(); 
+        return value_ == rhs.getValue();
     }
 
     bool operator<(Card& rhs) const {
-        return value_ < rhs.getValue(); 
+        return value_ < rhs.getValue();
     }
 
 private:
@@ -31,4 +46,3 @@ private:
     Suit suit_;
     int value_;
 };
-	

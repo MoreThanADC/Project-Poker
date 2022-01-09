@@ -1,17 +1,27 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "Card.hpp"
 
-
-enum class PokerHand { HIGHCARDS, PAIR, TWOPAIRS, THREEKIND, STRAIGHT, FLUSH, FULLHUOSE, FOURKIND, STRAIGHTFLUSH, ROYALFLUSH };
+enum class PokerHand { HIGHCARDS,
+                       PAIR,
+                       TWOPAIRS,
+                       THREEKIND,
+                       STRAIGHT,
+                       FLUSH,
+                       FULLHUOSE,
+                       FOURKIND,
+                       STRAIGHTFLUSH,
+                       ROYALFLUSH };
 
 class Verifier {
 public:
     PokerHand verify(std::vector<Card>& setOfCards);
+    std::string printPokerHand(PokerHand pokerHand);
 
+private:
     bool isAPair(std::vector<Card>& setOfCards);
     bool areTwoPairs(std::vector<Card>& setOfCards);
     bool isThreeKind(std::vector<Card>& setOfCards);
@@ -22,6 +32,4 @@ public:
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
     std::vector<int> highCards(const std::vector<Card>& setOfCards);
-
-    std::string printPokerHand(PokerHand pokerHand);
 };

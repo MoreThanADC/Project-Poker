@@ -2,12 +2,14 @@
 
 #include "Deck.hpp"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 class Player {
 public:
-    Player(const std::shared_ptr<Deck>& deck) : deck_(std::move(deck)) {};
+    Player(const std::shared_ptr<Deck>& deck)
+        : deck_(std::move(deck)){};
+        
     void getCardFromDeck();
     void printHand() const;
 
@@ -16,5 +18,4 @@ public:
 private:
     std::vector<Card> hand_;
     std::shared_ptr<Deck> deck_;
-
 };
