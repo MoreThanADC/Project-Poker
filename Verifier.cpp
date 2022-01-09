@@ -94,13 +94,31 @@ bool Verifier::isStraight(std::vector<Card> setOfCards) {
             return true;
         } 
     }
-
-
     return false;
 }
 
 bool Verifier::isFlush(const std::vector<Card>& setOfCards) {
-    return true;
+    int spades = 0;
+    int hearts = 0;
+    int diamonds = 0;
+    int clubs = 0;
+
+    for (const auto& el : setOfCards) {
+        if(el.getSuit() == Suit::SPADES) {
+            spades++;
+            if (spades == 5) return true;
+        } else if(el.getSuit() == Suit::HEARTS) {
+            hearts++;
+            if (hearts == 5) return true;
+        } else if(el.getSuit() == Suit::DIAMONDS) {
+            diamonds++;
+            if (diamonds == 5) return true;
+        } else {
+            clubs++;
+            if (clubs == 5) return true;
+        }
+    }
+    return false;
 }
 
 bool Verifier::isFullHouse(const std::vector<Card>& setOfCards) {

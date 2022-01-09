@@ -72,6 +72,8 @@ int main() {
     std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(firstPlayerAllCards) << '\n';
     std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(firstPlayerAllCards) << '\n';
     std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE FLUSH? : " << verifier.isFlush(firstPlayerAllCards) << '\n';
+    
 
     std::cout << "\nPLAYER 2: \n";
     std::cout << "HAVE A PAIR? : " << verifier.isAPair(secondPlayerAllCards) << '\n';
@@ -79,6 +81,7 @@ int main() {
     std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(secondPlayerAllCards) << '\n';   
     std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(secondPlayerAllCards) << '\n'; 
     std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(secondPlayerAllCards) << '\n';
+    std::cout << "HAVE FLUSH? : " << verifier.isFlush(secondPlayerAllCards) << '\n';
 
     return 0;
 }
