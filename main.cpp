@@ -8,6 +8,9 @@
 
 
 int main() {
+    int counter = 0;
+    bool flag = false;
+    do {
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
     
@@ -63,8 +66,6 @@ int main() {
     std::vector<Card> secondPlayerAllCards;
     std::merge(begin(tableCards), end(tableCards), begin(secondPlayerHand), end(secondPlayerHand), std::back_inserter(secondPlayerAllCards));
     
-    
-
     Verifier verifier;
     std::cout << "\nPLAYER 1: \n";
     std::cout << "HAVE A PAIR? : " << verifier.isAPair(firstPlayerAllCards) << '\n';
@@ -73,8 +74,9 @@ int main() {
     std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(firstPlayerAllCards) << '\n';
     std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(firstPlayerAllCards) << '\n';
     std::cout << "HAVE FLUSH? : " << verifier.isFlush(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(firstPlayerAllCards) << '\n';
     
-
+    
     std::cout << "\nPLAYER 2: \n";
     std::cout << "HAVE A PAIR? : " << verifier.isAPair(secondPlayerAllCards) << '\n';
     std::cout << "HAVE TWO PAIRS? : " << verifier.areTwoPairs(secondPlayerAllCards) << '\n';
@@ -82,6 +84,12 @@ int main() {
     std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(secondPlayerAllCards) << '\n'; 
     std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(secondPlayerAllCards) << '\n';
     std::cout << "HAVE FLUSH? : " << verifier.isFlush(secondPlayerAllCards) << '\n';
-
+    std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(secondPlayerAllCards) << '\n';
+    counter ++;
+    if (verifier.isStraightFlush(secondPlayerAllCards) || verifier.isStraightFlush(firstPlayerAllCards)) {
+        flag = true;
+    }
+    } while (!flag);
+    std::cout << counter << '\n';
     return 0;
 }
