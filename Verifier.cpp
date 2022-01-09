@@ -56,6 +56,9 @@ bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& sec
     if (pokerHand == PokerHand::TWOPAIRS) {
         return compareTwoPairs(firstHand, secondHand);
     }
+    if (pokerHand == PokerHand::THREEKIND) {
+        return compareThrees(firstHand, secondHand);
+    }
         
     return false;
 }
@@ -88,7 +91,6 @@ bool Verifier::comparePair(std::vector<Card>& firstHand, std::vector<Card>& seco
         std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is equal " << (*secondCard).getValue() << '\n';
         return compareHighestCard(firstHand, secondHand);
     }
-    return false;
 }
 
 bool Verifier::compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
@@ -105,7 +107,28 @@ bool Verifier::compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& 
         std::cout << "\nCompare first (the biggest) pair: " << (*firstCard).getValue() << " is equal " << (*secondCard).getValue() << '\n';
         return comparePair(firstHand, secondHand);
     }
-    return false;
+}
+
+bool Verifier::compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    Card firstCard;
+    for (const auto& card : firstHand) {
+        firstCard = *std::search_n(begin(firstHand), end(firstHand), 3, card);
+    }
+    Card secondCard; 
+    for (const auto& card : secondHand) {
+        secondCard = *std::search_n(begin(secondHand), end(secondHand), 3, card);
+    }
+
+    if ((firstCard).getValue() > (secondCard).getValue()) {
+        std::cout << "\nCompare card from three: " << (firstCard).getValue() << " is bigger than " << (secondCard).getValue() << '\n';
+        return true;
+    } else if ((firstCard).getValue() < (secondCard).getValue()) {
+        std::cout << "\nCompare card from three: " << (firstCard).getValue() << " is less than " << (secondCard).getValue() << '\n';
+        return false;
+    } else {
+        std::cout << "\nCompare card from three: " << (firstCard).getValue() << " is equal " << (secondCard).getValue() << '\n';
+        return compareHighestCard(firstHand, secondHand);
+    }
 }
 
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
@@ -133,8 +156,8 @@ bool Verifier::areTwoPairs(std::vector<Card>& setOfCards) {
 }
 
 bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
-    for (const auto& el : setOfCards) {
-        auto found = std::search_n(begin(setOfCards), end(setOfCards), 3, el);
+    for (const auto& card : setOfCards) {
+        auto found = std::search_n(begin(setOfCards), end(setOfCards), 3, card);
         if (found != setOfCards.end()) {
             return true;
         }
@@ -217,8 +240,8 @@ bool Verifier::isFullHouse(std::vector<Card> setOfCards) {
 }
 
 bool Verifier::isFourKind(std::vector<Card>& setOfCards) {
-    for (const auto& el : setOfCards) {
-        auto found = std::search_n(begin(setOfCards), end(setOfCards), 4, el);
+    for (const auto& card : setOfCards) {
+        auto found = std::search_n(begin(setOfCards), end(setOfCards), 4, card);
         if (found != setOfCards.end()) {
             return true;
         }

@@ -22,6 +22,7 @@ enum class Suit { SPADES,
                   CLUBS };
 
 struct Card {
+    Card() = default;
     Card(const Rank& rank, const Suit& suit);
 
     std::string printSuit() const;

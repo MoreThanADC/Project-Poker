@@ -37,4 +37,5 @@ private:
     bool compareHighestCard(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     bool comparePair(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     bool compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
+    bool compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
 };
