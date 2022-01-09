@@ -63,7 +63,7 @@ int main() {
     std::vector<Card> secondPlayerAllCards;
     std::merge(begin(tableCards), end(tableCards), begin(secondPlayerHand), end(secondPlayerHand), std::back_inserter(secondPlayerAllCards));
     
-   
+    
 
     Verifier verifier;
     std::cout << "\nPLAYER 1: \n";

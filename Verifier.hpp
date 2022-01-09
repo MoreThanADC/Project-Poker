@@ -12,7 +12,7 @@ public:
     bool isAPair(std::vector<Card>& setOfCards);
     bool areTwoPairs(std::vector<Card>& setOfCards);
     bool isThreeKind(std::vector<Card>& setOfCards);
-    bool isStraight(std::vector<Card>& setOfCards);
+    bool isStraight(std::vector<Card> setOfCards);
     bool isFlush(const std::vector<Card>& setOfCards);
     bool isFullHouse(const std::vector<Card>& setOfCards);
     bool isFourKind(std::vector<Card>& setOfCards);

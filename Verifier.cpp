@@ -70,8 +70,10 @@ bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
     return false;
 }
 
-bool Verifier::isStraight(std::vector<Card>& setOfCards) {
+bool Verifier::isStraight(std::vector<Card> setOfCards) {
     std::sort(begin(setOfCards), end(setOfCards));
+
+    // Ace value equal 14 for hight straight
     for (size_t i = 0 ; i < setOfCards.size() ; ++i) {
         if( setOfCards[i].getValue() + 1 == setOfCards[i+1].getValue() &&
             setOfCards[i].getValue() + 2 == setOfCards[i+2].getValue() && 
@@ -80,6 +82,20 @@ bool Verifier::isStraight(std::vector<Card>& setOfCards) {
             return true;
         } 
     }
+    // Ace value equal 1 for low straight
+     for (size_t i = 0 ; i < setOfCards.size() ; ++i) {
+        if( setOfCards[i].getValue() == 14) {
+            setOfCards[i].setValue(1);
+        }
+        if( setOfCards[i].getValue() + 1 == setOfCards[i+1].getValue() &&
+            setOfCards[i].getValue() + 2 == setOfCards[i+2].getValue() && 
+            setOfCards[i].getValue() + 3 == setOfCards[i+3].getValue() && 
+            setOfCards[i].getValue() + 4 == setOfCards[i+4].getValue() ) {
+            return true;
+        } 
+    }
+
+
     return false;
 }
 

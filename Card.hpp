@@ -16,6 +16,7 @@ struct Card {
     Suit getSuit() const { return suit_; }
     Rank getRank() const { return rank_; }
     int getValue() const { return value_; }
+    void setValue(int newValue) { value_ = newValue; }
 
     bool operator==(const Card& rhs) {
         return value_ == rhs.getValue(); 
