@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-PokerHand Verifier::verify(std::vector<Card>& setOfCards) {
+PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards) {
     if (isRoyalFlush(setOfCards)) {
         return PokerHand::ROYALFLUSH;
     }
@@ -31,6 +31,46 @@ PokerHand Verifier::verify(std::vector<Card>& setOfCards) {
         return PokerHand::PAIR;
     }
     return PokerHand::HIGHCARDS;
+}
+
+bool Verifier::isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    auto firstCombination = detectBestCombination(firstHand);
+    auto secondCombination = detectBestCombination(secondHand);
+
+    if (firstCombination > secondCombination) {
+        return true;
+    } else if (firstCombination < secondCombination) {
+        return false;
+    } else {
+        return settleTheTie(firstHand, secondHand, firstCombination);
+    }
+}
+
+bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, PokerHand& pokerHand) {
+    if (pokerHand == PokerHand::HIGHCARDS) {
+        for (size_t i = firstHand.size(); i > 0; i--) {
+            if (firstHand[i].getValue() > secondHand[i].getValue()) {
+                return true;
+            } else if (firstHand[i].getValue() < secondHand[i].getValue()) {
+                return false;
+            }
+        }
+    }
+
+    if (pokerHand == PokerHand::PAIR) {
+        auto firstCard = std::adjacent_find(begin(firstHand), end(firstHand));
+        auto secondCard = std::adjacent_find(begin(secondHand), end(secondHand));
+        if ((*firstCard).getValue() > (*secondCard).getValue()) {
+            return true;
+        } else if ((*firstCard).getValue() < (*secondCard).getValue()) {
+            return false;
+        } else {
+            return false;
+        }
+    }
+    
+
+    return false;
 }
 
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
@@ -98,18 +138,18 @@ bool Verifier::isFlush(const std::vector<Card>& setOfCards) {
     int diamonds = 0;
     int clubs = 0;
 
-    for (const auto& el : setOfCards) {
-        if (el.getSuit() == Suit::SPADES) {
+    for (const auto& card : setOfCards) {
+        if (card.getSuit() == Suit::SPADES) {
             spades++;
             if (spades == 5) {
                 return true;
             }
-        } else if (el.getSuit() == Suit::HEARTS) {
+        } else if (card.getSuit() == Suit::HEARTS) {
             hearts++;
             if (hearts == 5) {
                 return true;
             }
-        } else if (el.getSuit() == Suit::DIAMONDS) {
+        } else if (card.getSuit() == Suit::DIAMONDS) {
             diamonds++;
             if (diamonds == 5) {
                 return true;

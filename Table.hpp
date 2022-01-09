@@ -1,15 +1,15 @@
 #pragma once
 
+#include "Deck.hpp"
+
 #include <memory>
 #include <vector>
-
-#include "Deck.hpp"
 
 class Table {
 public:
     Table(const std::shared_ptr<Deck>& deck)
         : deck_(std::move(deck)){};
-        
+
     void performTheFlop();
     void performTheTurnOrTheRiver();
     void printTable() const;

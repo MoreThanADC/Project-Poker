@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Card.hpp"
+
 #include <string>
 #include <vector>
-
-#include "Card.hpp"
 
 enum class PokerHand { HIGHCARDS,
                        PAIR,
@@ -18,7 +18,8 @@ enum class PokerHand { HIGHCARDS,
 
 class Verifier {
 public:
-    PokerHand verify(std::vector<Card>& setOfCards);
+    PokerHand detectBestCombination(std::vector<Card>& setOfCards);
+    bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     std::string printPokerHand(PokerHand pokerHand);
 
 private:
@@ -31,5 +32,7 @@ private:
     bool isFourKind(std::vector<Card>& setOfCards);
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
-    std::vector<int> highCards(const std::vector<Card>& setOfCards);
+
+    bool settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, PokerHand& pokerHand);
+
 };

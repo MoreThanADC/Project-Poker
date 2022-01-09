@@ -1,9 +1,9 @@
-#include <iostream>
-#include <memory>
-
 #include "Player.hpp"
 #include "Table.hpp"
 #include "Verifier.hpp"
+
+#include <iostream>
+#include <memory>
 
 int main() {
     Deck deck;
@@ -65,11 +65,11 @@ int main() {
 
     Verifier verifier;
 
-    std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.verify(firstPlayerAllCards));
-    std::cout << "\nPlayer 2 PokerHand : " << verifier.printPokerHand(verifier.verify(secondPlayerAllCards));
+    std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(firstPlayerAllCards));
+    std::cout << "\nPlayer 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
 
     std::cout << "\nWHO WON? ";
-    verifier.verify(firstPlayerAllCards) > verifier.verify(secondPlayerAllCards) ? std::cout << "PLAYER 1\n" : std::cout << "PLAYER 2\n";
+    verifier.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "PLAYER 1\n" : std::cout << "PLAYER 2\n";
 
     return 0;
 }

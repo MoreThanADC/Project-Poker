@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Card.hpp"
+
 #include <iostream>
 #include <vector>
-
-#include "Card.hpp"
 
 struct Deck {
     void setupDeck();
