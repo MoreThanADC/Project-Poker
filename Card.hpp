@@ -30,10 +30,4 @@ private:
     Suit suit_;
     int value_;
 };
-
-// bool operator==(const Card& lhs, const Card& rhs) {
-//     return lhs.getValue() == rhs.getValue();
-// }
-
-
 	

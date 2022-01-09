@@ -51,7 +51,7 @@ bool Verifier::areTwoPairs(std::vector<Card>& setOfCards) {
         numberOfPairs++;
     }
 
-    auto it2 = std::adjacent_find(it, end(setOfCards));
+    auto it2 = std::adjacent_find(++it, end(setOfCards));
     if (it2 != setOfCards.end()) {
         numberOfPairs++;
     }
@@ -70,8 +70,17 @@ bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
     return false;
 }
 
-bool Verifier::isStraight(const std::vector<Card>& setOfCards) {
-    return true;
+bool Verifier::isStraight(std::vector<Card>& setOfCards) {
+    std::sort(begin(setOfCards), end(setOfCards));
+    for (size_t i = 0 ; i < setOfCards.size() ; ++i) {
+        if( setOfCards[i].getValue() + 1 == setOfCards[i+1].getValue() &&
+            setOfCards[i].getValue() + 2 == setOfCards[i+2].getValue() && 
+            setOfCards[i].getValue() + 3 == setOfCards[i+3].getValue() && 
+            setOfCards[i].getValue() + 4 == setOfCards[i+4].getValue() ) {
+            return true;
+        } 
+    }
+    return false;
 }
 
 bool Verifier::isFlush(const std::vector<Card>& setOfCards) {
