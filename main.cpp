@@ -63,14 +63,20 @@ int main() {
     std::vector<Card> secondPlayerAllCards;
     std::merge(begin(tableCards), end(tableCards), begin(secondPlayerHand), end(secondPlayerHand), std::back_inserter(secondPlayerAllCards));
     
-    
+   
 
     Verifier verifier;
-    std::cout << "\nPLAYER 1: ";
+    std::cout << "\nPLAYER 1: \n";
     std::cout << "HAVE A PAIR? : " << verifier.isAPair(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE TWO PAIRS? : " << verifier.areTwoPairs(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(firstPlayerAllCards) << '\n';
+    std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(firstPlayerAllCards) << '\n';
 
-    std::cout << "PLAYER 2: ";
+    std::cout << "\nPLAYER 2: \n";
     std::cout << "HAVE A PAIR? : " << verifier.isAPair(secondPlayerAllCards) << '\n';
+    std::cout << "HAVE TWO PAIRS? : " << verifier.areTwoPairs(secondPlayerAllCards) << '\n';
+    std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(secondPlayerAllCards) << '\n';   
+    std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(secondPlayerAllCards) << '\n'; 
 
 
     return 0;
