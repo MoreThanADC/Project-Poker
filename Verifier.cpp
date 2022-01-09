@@ -170,5 +170,19 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
 }
 
 bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
-    return true;
+     for (size_t i = 0 ; i < setOfCards.size() ; ++i) {
+        if( setOfCards[i].getValue() == 10) {
+            if( setOfCards[i].getValue() + 1 == setOfCards[i+1].getValue() &&
+            setOfCards[i].getSuit() == setOfCards[i+1].getSuit() &&
+            setOfCards[i].getValue() + 2 == setOfCards[i+2].getValue() && 
+            setOfCards[i].getSuit() == setOfCards[i+2].getSuit() &&
+            setOfCards[i].getValue() + 3 == setOfCards[i+3].getValue() && 
+            setOfCards[i].getSuit() == setOfCards[i+3].getSuit() &&
+            setOfCards[i].getValue() + 4 == setOfCards[i+4].getValue() &&
+            setOfCards[i].getSuit() == setOfCards[i+4].getSuit()) {
+            return true;
+            } 
+        }   
+    }
+    return false;
 }
