@@ -48,28 +48,63 @@ bool Verifier::isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& s
 
 bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, PokerHand& pokerHand) {
     if (pokerHand == PokerHand::HIGHCARDS) {
-        for (size_t i = firstHand.size(); i > 0; i--) {
-            if (firstHand[i].getValue() > secondHand[i].getValue()) {
-                return true;
-            } else if (firstHand[i].getValue() < secondHand[i].getValue()) {
-                return false;
-            }
-        }
+        return compareHighestCard(firstHand, secondHand);
     }
-
     if (pokerHand == PokerHand::PAIR) {
-        auto firstCard = std::adjacent_find(begin(firstHand), end(firstHand));
-        auto secondCard = std::adjacent_find(begin(secondHand), end(secondHand));
-        if ((*firstCard).getValue() > (*secondCard).getValue()) {
+        return comparePair(firstHand, secondHand);
+    }
+    if (pokerHand == PokerHand::TWOPAIRS) {
+        return compareTwoPairs(firstHand, secondHand);
+    }
+        
+    return false;
+}
+
+bool Verifier::compareHighestCard(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    for (size_t i = firstHand.size(); i > 0; i--) {
+        if (firstHand[i].getValue() > secondHand[i].getValue()) {
+            std::cout << "\nCompare Highest number: " << firstHand[i].getValue() << " is biggeer than " << secondHand[i].getValue() << '\n';
             return true;
-        } else if ((*firstCard).getValue() < (*secondCard).getValue()) {
-            return false;
-        } else {
+        } else if (firstHand[i].getValue() < secondHand[i].getValue()) {
+            std::cout << "\nCompare Highest number: " << firstHand[i].getValue() << " is less than " << secondHand[i].getValue() << '\n';
             return false;
         }
     }
-    
+    std::cout << "\nPOWINIEN BYC REMIS!!\n";
+    return false;
+}
 
+bool Verifier::comparePair(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    auto firstCard = std::adjacent_find(begin(firstHand), end(firstHand));
+    auto secondCard = std::adjacent_find(begin(secondHand), end(secondHand));
+    
+    if ((*firstCard).getValue() > (*secondCard).getValue()) {
+        std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is bigger than " << (*secondCard).getValue() << '\n';
+        return true; 
+    } else if ((*firstCard).getValue() < (*secondCard).getValue()) {
+        std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is less than " << (*secondCard).getValue() << '\n';
+        return false;
+    } else {
+        std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is equal " << (*secondCard).getValue() << '\n';
+        return compareHighestCard(firstHand, secondHand);
+    }
+    return false;
+}
+
+bool Verifier::compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    auto firstCard = std::adjacent_find(rbegin(firstHand), rend(firstHand));
+    auto secondCard = std::adjacent_find(rbegin(secondHand), rend(secondHand));
+
+    if ((*firstCard).getValue() > (*secondCard).getValue()) {
+        std::cout << "\nCompare first (the biggest) pair: " << (*firstCard).getValue() << " is bigger than " << (*secondCard).getValue() << '\n';
+        return true;
+    } else if ((*firstCard).getValue() < (*secondCard).getValue()) {
+        std::cout << "\nCompare first (the biggest) pair: " << (*firstCard).getValue() << " is less than " << (*secondCard).getValue() << '\n';
+        return false;
+    } else {
+        std::cout << "\nCompare first (the biggest) pair: " << (*firstCard).getValue() << " is equal " << (*secondCard).getValue() << '\n';
+        return comparePair(firstHand, secondHand);
+    }
     return false;
 }
 

@@ -34,5 +34,7 @@ private:
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
 
     bool settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, PokerHand& pokerHand);
-
+    bool compareHighestCard(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
+    bool comparePair(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
+    bool compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
 };

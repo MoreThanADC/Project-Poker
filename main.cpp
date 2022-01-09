@@ -68,8 +68,8 @@ int main() {
     std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(firstPlayerAllCards));
     std::cout << "\nPlayer 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
 
-    std::cout << "\nWHO WON? ";
-    verifier.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "PLAYER 1\n" : std::cout << "PLAYER 2\n";
+    
+    verifier.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\n\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
 
     return 0;
 }
