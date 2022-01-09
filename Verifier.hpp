@@ -1,7 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
 #include "Card.hpp"
+
 
 enum class PokerHand { HIGHCARDS, PAIR, TWOPAIRS, THREEKIND, STRAIGHT, FLUSH, FULLHUOSE, FOURKIND, STRAIGHTFLUSH, ROYALFLUSH };
 
@@ -19,4 +22,6 @@ public:
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
     std::vector<int> highCards(const std::vector<Card>& setOfCards);
+
+    std::string printPokerHand(PokerHand pokerHand);
 };

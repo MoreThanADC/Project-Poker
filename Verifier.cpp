@@ -201,3 +201,20 @@ bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
     }
     return false;
 }
+
+std::string Verifier::printPokerHand(PokerHand pokerHand) {
+    switch(pokerHand) {
+    case PokerHand::ROYALFLUSH          : return "Royal flush";
+    case PokerHand::STRAIGHTFLUSH       : return "Straight flush";
+    case PokerHand::FOURKIND            : return "Four of a kind";
+    case PokerHand::FULLHUOSE           : return "Full house";
+    case PokerHand::FLUSH               : return "Flush";
+    case PokerHand::STRAIGHT            : return "Straight";
+    case PokerHand::THREEKIND           : return "Three of a kind";
+    case PokerHand::TWOPAIRS            : return "Two pair";
+    case PokerHand::PAIR                : return "Pair";
+    case PokerHand::HIGHCARDS           : return "High Card";
+    default                             : return "Unknown poker hand";
+    }
+}
+

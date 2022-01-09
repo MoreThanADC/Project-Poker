@@ -8,9 +8,9 @@
 
 
 int main() {
-    int counter = 0;
-    bool flag = false;
-    do {
+    // int counter = 0;
+    // bool flag = false;
+    // do {
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
     
@@ -67,34 +67,21 @@ int main() {
     std::merge(begin(tableCards), end(tableCards), begin(secondPlayerHand), end(secondPlayerHand), std::back_inserter(secondPlayerAllCards));
     
     Verifier verifier;
-    std::cout << "\nPLAYER 1: \n";
-    std::cout << "HAVE A PAIR? : " << verifier.isAPair(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE TWO PAIRS? : " << verifier.areTwoPairs(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE FLUSH? : " << verifier.isFlush(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE ROYALFLUSH? : " << verifier.isRoyalFlush(firstPlayerAllCards) << '\n';
-    std::cout << "HAVE FULLHOUSE? : " << verifier.isFullHouse(firstPlayerAllCards) << '\n';
-    
-    
-    std::cout << "\nPLAYER 2: \n";
-    std::cout << "HAVE A PAIR? : " << verifier.isAPair(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE TWO PAIRS? : " << verifier.areTwoPairs(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE THREE KIND? : " << verifier.isThreeKind(secondPlayerAllCards) << '\n';   
-    std::cout << "HAVE FOUR KIND? : " << verifier.isFourKind(secondPlayerAllCards) << '\n'; 
-    std::cout << "HAVE STRAIGHT? : " << verifier.isStraight(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE FLUSH? : " << verifier.isFlush(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE STRAIGHTFLUSH? : " << verifier.isStraightFlush(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE ROYALFLUSH? : " << verifier.isRoyalFlush(secondPlayerAllCards) << '\n';
-    std::cout << "HAVE FULLHOUSE? : " << verifier.isFullHouse(secondPlayerAllCards) << '\n';
+  
+    std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.verify(firstPlayerAllCards));
+    std::cout << "\nPlayer 2 PokerHand : " << verifier.printPokerHand(verifier.verify(secondPlayerAllCards));
 
-    counter++;
-    if (verifier.isFullHouse(secondPlayerAllCards) || verifier.isFullHouse(firstPlayerAllCards)) {
-        flag = true;
-    }
-    } while (!flag);
-    std::cout << counter << '\n';
+    std::cout << "\nWHO WON? ";
+    verifier.verify(firstPlayerAllCards) > verifier.verify(secondPlayerAllCards) ? std::cout << "PLAYER 1\n" : std::cout << "PLAYER 2\n";
+     
+ 
+    // counter++;
+    // if (verifier.isFullHouse(secondPlayerAllCards) || verifier.isFullHouse(firstPlayerAllCards)) {
+    //     flag = true;
+    // }
+    // } while (!flag);
+    // std::cout << "\n\nNumber of games: " << counter << '\n';
+
+
     return 0;
 }
