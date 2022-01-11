@@ -62,6 +62,9 @@ bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& sec
     if (pokerHand == PokerHand::STRAIGHT) {
         return compareStraights(firstHand, secondHand);
     }
+    if (pokerHand == PokerHand::FLUSH) {
+        return compareFlushes(firstHand, secondHand);
+    }
 
     return false;
 }
@@ -161,6 +164,63 @@ Card Verifier::getLowestStraightCard(std::vector<Card>& setOfCards) {
     }
     return setOfCards[0];
 }
+
+
+
+bool Verifier::compareFlushes(std::vector<Card> firstHand, std::vector<Card> secondHand) {
+    Suit firstCardSuit = getSuitFromFlush(firstHand);
+    Suit secondCardSuit = getSuitFromFlush(secondHand);
+
+    std::vector<Card> firstHandWithSameSuits;
+    std::vector<Card> secondHandWithSameSuits;
+
+    for (size_t i = 0; i < firstHand.size(); ++i) {
+        if (firstHand[i].getSuit() == firstCardSuit) {
+            firstHandWithSameSuits.push_back(firstHand[i]);
+        }
+        if (secondHand[i].getSuit() == secondCardSuit) {
+            secondHandWithSameSuits.push_back(secondHand[i]);
+        }
+    }
+
+    std::reverse(begin(firstHandWithSameSuits), end(firstHandWithSameSuits));
+    std::reverse(begin(secondHandWithSameSuits), end(secondHandWithSameSuits));
+   
+    size_t lengthOfShorterVector;
+
+    if (firstHandWithSameSuits.size() >= secondHandWithSameSuits.size()) {
+        lengthOfShorterVector = secondHandWithSameSuits.size();
+    } else {
+        lengthOfShorterVector = firstHandWithSameSuits.size();
+    }
+
+    for (size_t i = 0; i < lengthOfShorterVector; ++i) {
+        if (firstHandWithSameSuits[i].getValue() > secondHandWithSameSuits[i].getValue()) {
+            return true;
+        }
+        if (firstHandWithSameSuits[i].getValue() < secondHandWithSameSuits[i].getValue()) {
+            return false;
+        }
+    }
+
+    return compareHighestCard(firstHand, secondHand);
+}
+
+Suit Verifier::getSuitFromFlush(std::vector<Card>& setOfCards) {
+    for (size_t i = 0; i < setOfCards.size(); ++i) {
+        if (setOfCards[i].getSuit() == setOfCards[i+1].getSuit() && setOfCards[i].getSuit() == setOfCards[i+2].getSuit()) {
+            return setOfCards[i].getSuit();
+        }
+        if (setOfCards[i].getSuit() == setOfCards[i+2].getSuit() && setOfCards[i].getSuit() == setOfCards[i+3].getSuit()) {
+            return setOfCards[i].getSuit();
+        }
+        if (setOfCards[i].getSuit() == setOfCards[i+3].getSuit() && setOfCards[i].getSuit() == setOfCards[i+4].getSuit()) {
+            return setOfCards[i].getSuit();
+        }
+    }
+    return Suit::SPADES;
+}
+
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
     if (it != setOfCards.end()) {
@@ -194,7 +254,6 @@ bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
     }
     return false;
 }
-
 
 bool Verifier::isStraight(std::vector<Card> setOfCards) {
     // Ace value equal 14 for hight straight

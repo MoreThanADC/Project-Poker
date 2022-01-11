@@ -40,4 +40,7 @@ private:
     bool compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     bool compareStraights(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     Card getLowestStraightCard(std::vector<Card>& setOfCards);
+    bool compareFlushes(std::vector<Card> firstHand, std::vector<Card> secondHand);
+    Suit getSuitFromFlush(std::vector<Card>& setOfCards);
+
 };
