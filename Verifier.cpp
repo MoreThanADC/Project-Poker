@@ -59,7 +59,10 @@ bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& sec
     if (pokerHand == PokerHand::THREEKIND) {
         return compareThrees(firstHand, secondHand);
     }
-        
+    if (pokerHand == PokerHand::STRAIGHT) {
+        return compareStraights(firstHand, secondHand);
+    }
+
     return false;
 }
 
@@ -73,17 +76,17 @@ bool Verifier::compareHighestCard(std::vector<Card>& firstHand, std::vector<Card
             return false;
         }
     }
-    std::cout << "\nPOWINIEN BYC REMIS!!\n";
+    std::cout << "\nDRAW!!!\n";
     return false;
 }
 
 bool Verifier::comparePair(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
     auto firstCard = std::adjacent_find(begin(firstHand), end(firstHand));
     auto secondCard = std::adjacent_find(begin(secondHand), end(secondHand));
-    
+
     if ((*firstCard).getValue() > (*secondCard).getValue()) {
         std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is bigger than " << (*secondCard).getValue() << '\n';
-        return true; 
+        return true;
     } else if ((*firstCard).getValue() < (*secondCard).getValue()) {
         std::cout << "\nCompare a pair: " << (*firstCard).getValue() << " is less than " << (*secondCard).getValue() << '\n';
         return false;
@@ -114,7 +117,7 @@ bool Verifier::compareThrees(std::vector<Card>& firstHand, std::vector<Card>& se
     for (const auto& card : firstHand) {
         firstCard = *std::search_n(begin(firstHand), end(firstHand), 3, card);
     }
-    Card secondCard; 
+    Card secondCard;
     for (const auto& card : secondHand) {
         secondCard = *std::search_n(begin(secondHand), end(secondHand), 3, card);
     }
@@ -131,6 +134,33 @@ bool Verifier::compareThrees(std::vector<Card>& firstHand, std::vector<Card>& se
     }
 }
 
+bool Verifier::compareStraights(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    Card firstCard = getLowestStraightCard(firstHand);
+    Card secondCard = getLowestStraightCard(secondHand);
+
+    if (firstCard.getValue() > secondCard.getValue()) {
+        std::cout << "\nCompare lowest card from straight: " << (firstCard).getValue() << " is bigger than " << (secondCard).getValue() << '\n';
+        return true;
+    } else if ((firstCard).getValue() < (secondCard).getValue()) {
+        std::cout << "\nCompare lowest card from straight: " << (firstCard).getValue() << " is less than " << (secondCard).getValue() << '\n';
+        return false;
+    } else {
+        std::cout << "\nCompare lowest card from straight: " << (firstCard).getValue() << " is equal " << (secondCard).getValue() << '\n';
+        return compareHighestCard(firstHand, secondHand);
+    }
+}
+
+Card Verifier::getLowestStraightCard(std::vector<Card>& setOfCards) {
+    for (size_t i = 0; i < setOfCards.size(); ++i) {
+        if (setOfCards[i].getValue() + 1 == setOfCards[i + 1].getValue() &&
+            setOfCards[i].getValue() + 2 == setOfCards[i + 2].getValue() &&
+            setOfCards[i].getValue() + 3 == setOfCards[i + 3].getValue() &&
+            setOfCards[i].getValue() + 4 == setOfCards[i + 4].getValue()) {
+            return setOfCards[i];
+        }
+    }
+    return setOfCards[0];
+}
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
     if (it != setOfCards.end()) {
@@ -165,6 +195,7 @@ bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
     return false;
 }
 
+
 bool Verifier::isStraight(std::vector<Card> setOfCards) {
     // Ace value equal 14 for hight straight
     for (size_t i = 0; i < setOfCards.size(); ++i) {
@@ -177,7 +208,7 @@ bool Verifier::isStraight(std::vector<Card> setOfCards) {
     }
     // Ace value equal 1 for low straight
     for (size_t i = 0; i < setOfCards.size(); ++i) {
-        if (setOfCards[i].getValue() == 14) {
+        if (setOfCards[i].getRank() == Rank::ACE) {
             setOfCards[i].setValue(1);
         }
         if (setOfCards[i].getValue() + 1 == setOfCards[i + 1].getValue() &&
@@ -265,7 +296,7 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
     }
     // Ace value equal 1 for low straight
     for (size_t i = 0; i < setOfCards.size(); ++i) {
-        if (setOfCards[i].getValue() == 14) {
+        if (setOfCards[i].getRank() == Rank::ACE) {
             setOfCards[i].setValue(1);
         }
         if (setOfCards[i].getValue() + 1 == setOfCards[i + 1].getValue() &&
@@ -284,7 +315,7 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
 
 bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
     for (size_t i = 0; i < setOfCards.size(); ++i) {
-        if (setOfCards[i].getValue() == 10) {
+        if (setOfCards[i].getRank() == Rank::TEN) {
             if (setOfCards[i].getValue() + 1 == setOfCards[i + 1].getValue() &&
                 setOfCards[i].getSuit() == setOfCards[i + 1].getSuit() &&
                 setOfCards[i].getValue() + 2 == setOfCards[i + 2].getValue() &&
