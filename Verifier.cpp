@@ -64,6 +64,12 @@ bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& sec
     }
     if (pokerHand == PokerHand::FLUSH) {
         return compareFlushes(firstHand, secondHand);
+    } 
+    if (pokerHand == PokerHand::FULLHOUSE) {
+        return compareFlushes(firstHand, secondHand);
+    } 
+    if (pokerHand == PokerHand::FOURKIND) {
+        return compareFlushes(firstHand, secondHand);
     }
 
     return false;
@@ -165,9 +171,7 @@ Card Verifier::getLowestStraightCard(std::vector<Card>& setOfCards) {
     return setOfCards[0];
 }
 
-
-
-bool Verifier::compareFlushes(std::vector<Card> firstHand, std::vector<Card> secondHand) {
+bool Verifier::compareFlushes(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
     Suit firstCardSuit = getSuitFromFlush(firstHand);
     Suit secondCardSuit = getSuitFromFlush(secondHand);
 
@@ -196,13 +200,16 @@ bool Verifier::compareFlushes(std::vector<Card> firstHand, std::vector<Card> sec
 
     for (size_t i = 0; i < lengthOfShorterVector; ++i) {
         if (firstHandWithSameSuits[i].getValue() > secondHandWithSameSuits[i].getValue()) {
+            std::cout << "\nCompare card from flushes: " << firstHandWithSameSuits[i].getValue() << " is bigger than " << secondHandWithSameSuits[i].getValue() << '\n';
             return true;
         }
         if (firstHandWithSameSuits[i].getValue() < secondHandWithSameSuits[i].getValue()) {
+            std::cout << "\nCompare card from flushes: " << firstHandWithSameSuits[i].getValue() << " is less than " << secondHandWithSameSuits[i].getValue() << '\n';
             return false;
         }
     }
 
+    std::cout << "\nCompared cards from flushes are equal\n";
     return compareHighestCard(firstHand, secondHand);
 }
 
@@ -220,6 +227,53 @@ Suit Verifier::getSuitFromFlush(std::vector<Card>& setOfCards) {
     }
     return Suit::SPADES;
 }
+
+
+bool Verifier::compareFullHouses(std::vector<Card> firstHand, std::vector<Card> secondHand) {
+    std::vector<Card> firstPair = getHighestTripleAndHighestPairCardFromFullHouse(firstHand);
+    std::vector<Card> secondPair = getHighestTripleAndHighestPairCardFromFullHouse(secondHand);
+
+    if (firstPair[0].getValue() > secondPair[0].getValue()) {
+        return true;
+    } 
+    if (firstPair[0].getValue() < secondPair[0].getValue()) {
+        return false;
+    }
+    if (firstPair[1].getValue()  > secondPair[1].getValue())  {
+        return true;
+    } 
+    if (firstPair[1].getValue()  < secondPair[1].getValue()) {
+        return false;
+    } 
+
+    return compareHighestCard(firstHand, secondHand);
+}
+
+std::vector<Card> Verifier::getHighestTripleAndHighestPairCardFromFullHouse(std::vector<Card>& setOfCards) {
+    std::vector<Card> cardsFromFull;
+    for (const auto& el : setOfCards) {
+        auto foundTripleCard = std::search_n(rbegin(setOfCards), rend(setOfCards), 3, el);
+        if (foundTripleCard != setOfCards.rend()) {
+            cardsFromFull.push_back(*foundTripleCard);
+            setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&foundTripleCard](const auto& card) {
+                                 return card.getValue() == (*foundTripleCard).getValue();
+                             }),
+                             setOfCards.end());
+
+            auto foundPairCard = std::adjacent_find(begin(setOfCards), end(setOfCards));
+            if (foundPairCard != setOfCards.end()) {
+                cardsFromFull.push_back(*foundPairCard);
+                setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&foundPairCard](const auto& card) {
+                                 return card.getValue() == (*foundPairCard).getValue();
+                            }),
+                            setOfCards.end());
+            }
+        }
+    }
+
+    return cardsFromFull;
+}
+
 
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
