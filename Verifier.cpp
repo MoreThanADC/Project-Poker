@@ -13,7 +13,7 @@ PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards) {
         return PokerHand::FOURKIND;
     }
     if (isFullHouse(setOfCards)) {
-        return PokerHand::FULLHUOSE;
+        return PokerHand::FULLHOUSE;
     }
     if (isFlush(setOfCards)) {
         return PokerHand::FLUSH;
@@ -66,10 +66,10 @@ bool Verifier::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& sec
         return compareFlushes(firstHand, secondHand);
     } 
     if (pokerHand == PokerHand::FULLHOUSE) {
-        return compareFlushes(firstHand, secondHand);
+        return compareFullHouses(firstHand, secondHand);
     } 
     if (pokerHand == PokerHand::FOURKIND) {
-        return compareFlushes(firstHand, secondHand);
+        return compareFourKinds(firstHand, secondHand);
     }
 
     return false;
@@ -274,6 +274,28 @@ std::vector<Card> Verifier::getHighestTripleAndHighestPairCardFromFullHouse(std:
     return cardsFromFull;
 }
 
+bool Verifier::compareFourKinds(std::vector<Card> firstHand, std::vector<Card> secondHand) {
+    Card firstCard;
+    for (const auto& card : firstHand) {
+        firstCard = *std::search_n(begin(firstHand), end(firstHand), 4, card);
+    }
+    Card secondCard;
+    for (const auto& card : secondHand) {
+        secondCard = *std::search_n(begin(secondHand), end(secondHand), 4, card);
+    }
+
+    if ((firstCard).getValue() > (secondCard).getValue()) {
+        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is bigger than four kind " << (secondCard).getValue() << '\n';
+        return true;
+    } else if ((firstCard).getValue() < (secondCard).getValue()) {
+        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is less than four kind " << (secondCard).getValue() << '\n';
+        return false;
+    } else {
+        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is equal " << (secondCard).getValue() << '\n';
+        return compareHighestCard(firstHand, secondHand);
+    }
+}
+
 
 bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
@@ -452,7 +474,7 @@ std::string Verifier::printPokerHand(PokerHand pokerHand) {
         return "Straight flush";
     case PokerHand::FOURKIND:
         return "Four of a kind";
-    case PokerHand::FULLHUOSE:
+    case PokerHand::FULLHOUSE:
         return "Full house";
     case PokerHand::FLUSH:
         return "Flush";

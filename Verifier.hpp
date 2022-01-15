@@ -11,7 +11,7 @@ enum class PokerHand { HIGHCARDS,
                        THREEKIND,
                        STRAIGHT,
                        FLUSH,
-                       FULLHUOSE,
+                       FULLHOUSE,
                        FOURKIND,
                        STRAIGHTFLUSH,
                        ROYALFLUSH };
@@ -44,5 +44,6 @@ private:
     Suit getSuitFromFlush(std::vector<Card>& setOfCards);
     bool compareFullHouses(std::vector<Card> firstHand, std::vector<Card> secondHand);
     std::vector<Card> getHighestTripleAndHighestPairCardFromFullHouse(std::vector<Card>& setOfCards);
+    bool compareFourKinds(std::vector<Card> firstHand, std::vector<Card> secondHand);
 
 };
