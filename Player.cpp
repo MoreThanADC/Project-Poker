@@ -9,3 +9,19 @@ void Player::printHand() const {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
 }
+
+void Player::printMoney() const {
+    std::cout << name_ << " have: " << money_ << '\n';
+}
+
+void Player::operator+=(const size_t amount) {
+    money_ += amount;
+}
+
+void Player::operator-=(const size_t amount) {
+    if (amount > money_) {
+        money_ = 0;
+    } else {
+        money_ -= amount;
+    }
+}

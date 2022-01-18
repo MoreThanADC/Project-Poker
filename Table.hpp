@@ -8,7 +8,7 @@
 class Table {
 public:
     Table(const std::shared_ptr<Deck>& deck)
-        : deck_(std::move(deck)){};
+        : deck_(deck) {};
 
     void performTheFlop();
     void performTheTurnOrTheRiver();

@@ -9,7 +9,7 @@
 int main() {
    
     Comparator comparator(std::make_shared<Verifier>());
-    Game game(std::make_shared<Comparator>(comparator));
+    Game game(std::make_unique<Comparator>(comparator));
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
 
@@ -18,8 +18,11 @@ int main() {
    
     std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
     Table table(pointerToDeck);
-    Player player1(pointerToDeck);
-    Player player2(pointerToDeck);
+    Player player1(pointerToDeck, "Artur", 2000);
+    Player player2(pointerToDeck, "Computer", 3000);
+
+    player1.printMoney();
+    player2.printMoney();
 
     player1.getCardFromDeck();
     player1.getCardFromDeck();
@@ -72,8 +75,7 @@ int main() {
     std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(firstPlayerAllCards));
     std::cout << "Player 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
 
-
-    
+  
     game.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\n\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
 
     return 0;

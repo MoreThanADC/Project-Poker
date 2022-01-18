@@ -7,9 +7,9 @@
 
 class Game {
 public:
-    Game(std::shared_ptr<Comparator> comparator) : comparator_(std::move(comparator)) {}
+    Game(std::unique_ptr<Comparator>&& comparator) : comparator_(std::move(comparator)) {}
     bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
 
 private:
-    std::shared_ptr<Comparator> comparator_;
+    std::unique_ptr<Comparator> comparator_;
 };
