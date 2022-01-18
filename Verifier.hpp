@@ -19,7 +19,6 @@ enum class PokerHand { HIGHCARDS,
 class Verifier {
 public:
     PokerHand detectBestCombination(std::vector<Card>& setOfCards);
-    bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
     std::string printPokerHand(PokerHand pokerHand);
 
 private:
@@ -32,18 +31,4 @@ private:
     bool isFourKind(std::vector<Card>& setOfCards);
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
-
-    bool settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, PokerHand& pokerHand);
-    bool compareHighestCard(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    bool comparePair(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    bool compareTwoPairs(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    bool compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    bool compareStraights(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    Card getLowestStraightCard(std::vector<Card>& setOfCards);
-    bool compareFlushes(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-    Suit getSuitFromFlush(std::vector<Card>& setOfCards);
-    bool compareFullHouses(std::vector<Card> firstHand, std::vector<Card> secondHand);
-    std::vector<Card> getHighestTripleAndHighestPairCardFromFullHouse(std::vector<Card>& setOfCards);
-    bool compareFourKinds(std::vector<Card> firstHand, std::vector<Card> secondHand);
-
 };

@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Game.hpp"
 #include "Table.hpp"
 #include "Verifier.hpp"
 
@@ -6,12 +7,15 @@
 #include <memory>
 
 int main() {
+   
+    Comparator comparator(std::make_shared<Verifier>());
+    Game game(std::make_shared<Comparator>(comparator));
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
 
     pointerToDeck->setupDeck();
     pointerToDeck->shuffleTheDeck();
-
+   
     std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
     Table table(pointerToDeck);
     Player player1(pointerToDeck);
@@ -66,10 +70,11 @@ int main() {
     Verifier verifier;
 
     std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(firstPlayerAllCards));
-    std::cout << "\nPlayer 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
+    std::cout << "Player 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
+
 
     
-    verifier.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\n\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
+    game.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\n\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
 
     return 0;
 }

@@ -19,4 +19,5 @@ public:
 private:
     std::vector<Card> table_;
     std::shared_ptr<Deck> deck_;
+    size_t pool_ = 0;
 };
