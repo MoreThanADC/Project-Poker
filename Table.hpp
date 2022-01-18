@@ -10,10 +10,8 @@ public:
     Table(const std::shared_ptr<Deck>& deck)
         : deck_(deck) {};
 
-    void performTheFlop();
-    void performTheTurnOrTheRiver();
+    void addCardToTable();
     void printTable() const;
-
     std::vector<Card> getTable() const { return table_; }
 
 private:

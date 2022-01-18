@@ -5,11 +5,11 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 int main() {
-   
     Comparator comparator(std::make_shared<Verifier>());
-    Game game(std::make_unique<Comparator>(comparator));
+    
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
 
@@ -18,30 +18,35 @@ int main() {
    
     std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
     Table table(pointerToDeck);
+
+    
     Player player1(pointerToDeck, "Artur", 2000);
     Player player2(pointerToDeck, "Computer", 3000);
 
+    std::vector<Player> players;
+    players.push_back(player1);
+    players.push_back(player2);
+
+
+    Game game(std::make_unique<Comparator>(comparator), table, players);
     player1.printMoney();
     player2.printMoney();
 
-    player1.getCardFromDeck();
-    player1.getCardFromDeck();
-
-    player2.getCardFromDeck();
-    player2.getCardFromDeck();
-
-    table.performTheFlop();
+    game.performPreFlop();
+    std::cout << "\nNUMBER OF CARDS AFTER PREFLOP: " << pointerToDeck->cardsInTheDeck() << '\n';
+    game.performFlop();
 
     std::cout << "\nNUMBER OF CARDS AFTER FLOP: " << pointerToDeck->cardsInTheDeck() << '\n';
     std::cout << "\nFIRST PLAYER HAND: \n";
     player1.printHand();
+    players[0].printHand();
     std::cout << "\nSECOND PLAYER HAND: \n";
     player2.printHand();
     std::cout << "\nCARDS ON THE TABLE: \n";
     table.printTable();
 
+    game.performTurnOrTheRiver();
     std::cout << "\nNUMBER OF CARDS AFTER TURN: " << pointerToDeck->cardsInTheDeck() << '\n';
-    table.performTheTurnOrTheRiver();
     std::cout << "\nFIRST PLAYER HAND: \n";
     player1.printHand();
     std::cout << "\nSECOND PLAYER HAND: \n";
@@ -49,8 +54,8 @@ int main() {
     std::cout << "\nCARDS ON THE TABLE: \n";
     table.printTable();
 
+    game.performTurnOrTheRiver();
     std::cout << "\nNUMBER OF CARDS AFTER RIVER: " << pointerToDeck->cardsInTheDeck() << '\n';
-    table.performTheTurnOrTheRiver();
     std::cout << "\nFIRST PLAYER HAND: \n";
     player1.printHand();
     std::cout << "\nSECOND PLAYER HAND: \n";
