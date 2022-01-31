@@ -18,8 +18,11 @@ public:
     void performFlop();
     void performTurnOrTheRiver();
 
+    void displayMoneyAndPool() const;
 private:
     std::unique_ptr<Comparator> comparator_;
     Table& table_;
     std::vector<std::shared_ptr<Player>> players_;
+
+    const size_t valueOfBlind = 100;
 };

@@ -16,20 +16,20 @@ int main() {
     pointerToDeck->setupDeck();
     pointerToDeck->shuffleTheDeck();
    
-    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
     Table table(pointerToDeck);
 
     std::shared_ptr<Player> player1 = std::make_shared<Player>(pointerToDeck, "Artur", 2000);
     std::shared_ptr<Player> player2 = std::make_shared<Player>(pointerToDeck, "Computer", 3000);
 
     std::vector<std::shared_ptr<Player>> players;
+
     players.push_back(player1);
     players.push_back(player2);
 
     Game game(std::make_unique<Comparator>(comparator), table, players);
-    player1->printMoney();
-    player2->printMoney();
+    game.displayMoneyAndPool();
 
+    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
     game.performPreFlop();
     std::cout << "\nNUMBER OF CARDS AFTER PREFLOP: " << pointerToDeck->cardsInTheDeck() << '\n';
     game.performFlop();
@@ -78,6 +78,7 @@ int main() {
     std::cout << "Player 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
 
     game.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
+    game.displayMoneyAndPool();
 
     return 0;
 }

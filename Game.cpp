@@ -18,7 +18,10 @@ void Game::performPreFlop() {
         for (int i = 0; i < 2; i++) {
             player->getCardFromDeck();
         }
+        //player->performBlind(valueOfBlind);
+        table_.addToPool(player->performBlind(valueOfBlind));
     }
+    
 }
 
 void Game::performFlop() {
@@ -29,4 +32,11 @@ void Game::performFlop() {
 
 void Game::performTurnOrTheRiver() {
     table_.addCardToTable();
+}
+
+void Game::displayMoneyAndPool() const {
+    for (auto& player : players_) {
+        player->printMoney();
+    }
+    std::cout << "Money in pool: " << table_.printPool() << '\n';
 }
