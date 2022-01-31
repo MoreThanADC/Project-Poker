@@ -16,7 +16,7 @@ bool Game::isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secon
 void Game::performPreFlop() {
     for (auto& player : players_) {
         for (int i = 0; i < 2; i++) {
-            player.getCardFromDeck();
+            player->getCardFromDeck();
         }
     }
 }

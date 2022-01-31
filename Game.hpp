@@ -9,7 +9,7 @@
 
 class Game {
 public:
-    Game(std::unique_ptr<Comparator>&& comparator, Table& table, std::vector<Player>& players) : 
+    Game(std::unique_ptr<Comparator>&& comparator, Table& table, std::vector<std::shared_ptr<Player>>& players) : 
        comparator_(std::move(comparator)), table_(table), players_(players) {}
 
     bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
@@ -21,5 +21,5 @@ public:
 private:
     std::unique_ptr<Comparator> comparator_;
     Table& table_;
-    std::vector<Player>& players_;
+    std::vector<std::shared_ptr<Player>> players_;
 };
