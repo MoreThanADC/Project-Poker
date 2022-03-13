@@ -19,6 +19,8 @@ public:
 
     void addToPool(const size_t amount);
 
+    std::shared_ptr<Deck> getDeck() { return deck_; }
+
 private:
     std::vector<Card> table_;
     std::shared_ptr<Deck> deck_;

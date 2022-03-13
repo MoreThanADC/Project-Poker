@@ -27,38 +27,9 @@ int main() {
     players.push_back(player2);
 
     Game game(std::make_unique<Comparator>(comparator), table, players);
-    game.displayMoneyAndPool();
 
-    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << pointerToDeck->cardsInTheDeck() << '\n';
-    game.performPreFlop();
-    std::cout << "\nNUMBER OF CARDS AFTER PREFLOP: " << pointerToDeck->cardsInTheDeck() << '\n';
-    game.performFlop();
-
-    std::cout << "\nNUMBER OF CARDS AFTER FLOP: " << pointerToDeck->cardsInTheDeck() << '\n';
-    std::cout << "\nFIRST PLAYER HAND: \n";
-    player1->printHand();
-    std::cout << "\nSECOND PLAYER HAND: \n";
-    player2->printHand();
-    std::cout << "\nCARDS ON THE TABLE: \n";
-    table.printTable();
-
-    game.performTurnOrTheRiver();
-    std::cout << "\nNUMBER OF CARDS AFTER TURN: " << pointerToDeck->cardsInTheDeck() << '\n';
-    std::cout << "\nFIRST PLAYER HAND: \n";
-    player1->printHand();
-    std::cout << "\nSECOND PLAYER HAND: \n";
-    player2->printHand();
-    std::cout << "\nCARDS ON THE TABLE: \n";
-    table.printTable();
-
-    game.performTurnOrTheRiver();
-    std::cout << "\nNUMBER OF CARDS AFTER RIVER: " << pointerToDeck->cardsInTheDeck() << '\n';
-    std::cout << "\nFIRST PLAYER HAND: \n";
-    player1->printHand();
-    std::cout << "\nSECOND PLAYER HAND: \n";
-    player2->printHand();
-    std::cout << "\nCARDS ON THE TABLE: \n";
-    table.printTable();
+    game.addPlayer();
+    game.performRound();
 
     std::vector<Card> tableCards = table.getTable();
 
@@ -77,8 +48,7 @@ int main() {
     std::cout << "\nPlayer 1 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(firstPlayerAllCards));
     std::cout << "Player 2 PokerHand : " << verifier.printPokerHand(verifier.detectBestCombination(secondPlayerAllCards));
 
-    game.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\nWON PLAYER 1\n" : std::cout << "\n\nWON PLAYER 2\n";
-    game.displayMoneyAndPool();
+    game.isPlayerWinner(firstPlayerAllCards, secondPlayerAllCards) ? std::cout << "\nWON PLAYER 1\n" : std::cout << "\nWON PLAYER 2\n";
 
     return 0;
 }
