@@ -11,6 +11,8 @@ public:
         : deck_(deck), name_(name), money_(money) {};
         
     void getCardFromDeck();
+    void returnCardsToDeck();
+    
     void printHand() const;
     void printMoney() const;
 

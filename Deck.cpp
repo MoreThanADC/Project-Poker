@@ -32,3 +32,7 @@ Card Deck::takeCardFromDeck() {
 
     return card;
 }
+
+void Deck::returnCardToDeck(const Card& card) {
+    deck_.push_back(card);
+}

@@ -14,6 +14,13 @@ void Table::addCardToTable() {
     table_.push_back(deck_->takeCardFromDeck());
 }
 
+void Table::returnCardsToDeck() {
+    for (auto& card : table_) {
+        deck_->returnCardToDeck(card);
+        table_.pop_back();
+    }
+}
+
 void Table::addToPool(const size_t amount) {
     pool_ += amount;
 }

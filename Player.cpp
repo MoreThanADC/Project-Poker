@@ -4,6 +4,13 @@ void Player::getCardFromDeck() {
     hand_.push_back(deck_->takeCardFromDeck());
 }
 
+void Player::returnCardsToDeck() {
+    for (auto& card : hand_) {
+        deck_->returnCardToDeck(card);
+        hand_.pop_back();
+    }
+}
+
 void Player::printHand() const {
     for (const auto& card : hand_) {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
@@ -36,11 +43,11 @@ void Player::displayActions() {
 }
 
 void Player::selectActions() {
-    int number = 0;
+    int choice = 0;
     do {
-        std::cin >> number;
-        if (isdigit(number)) {
-            switch(number) {
+        std::cin >> choice;
+        if (isdigit(choice)) {
+            switch(choice) {
             case 1 : fold();
                 break;
             case 2 : check();
@@ -57,7 +64,7 @@ void Player::selectActions() {
             }
         }
     }
-    while (number < 1 || number > 6 );
+    while (choice < 1 || choice > 6 );
 }
 
 

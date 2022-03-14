@@ -12,9 +12,6 @@ int main() {
     
     Deck deck;
     auto pointerToDeck = std::make_shared<Deck>(deck);
-
-    pointerToDeck->setupDeck();
-    pointerToDeck->shuffleTheDeck();
    
     Table table(pointerToDeck);
 
@@ -28,8 +25,7 @@ int main() {
 
     Game game(std::make_unique<Comparator>(comparator), table, players);
 
-    game.addPlayer();
-    game.performRound();
+    game.startGame();
 
     std::vector<Card> tableCards = table.getTable();
 

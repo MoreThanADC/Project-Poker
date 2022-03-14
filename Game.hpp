@@ -12,16 +12,27 @@ public:
     Game(std::unique_ptr<Comparator>&& comparator, Table& table, std::vector<std::shared_ptr<Player>>& players) : 
        comparator_(std::move(comparator)), table_(table), players_(players) {}
 
-    void performRound();
-    void addPlayer();
+    void startGame();
 
     bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
 
 private:
+    void selectOperation();
+    void printOperations() const;
+
+    void performRound();
+    void addPlayer();
+    void removePlayer();
+    void printPlayers();
+
     void performPlayerAction();
     void performPreFlop();
     void performFlop();
     void performTurnOrTheRiver();
+
+    void prepareDeck();
+    void returnPlayersCards();
+    void returnCardsFromTable();
 
     void displayMoneyAndPool() const;
     void displayHandsAndTable() const;
@@ -32,4 +43,5 @@ private:
 
     size_t roundNumber_ = 0;
     const size_t valueOfBlind_ = 100;
+    size_t maxNumberOfPlayers_ = 10;
 };

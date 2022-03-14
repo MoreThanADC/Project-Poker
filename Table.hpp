@@ -11,10 +11,12 @@ public:
         : deck_(deck) {};
 
     void addCardToTable();
+    void returnCardsToDeck(); 
 
     void printTable() const;
     size_t printPool() const;
 
+    
     std::vector<Card> getTable() const { return table_; }
 
     void addToPool(const size_t amount);
