@@ -3,7 +3,7 @@ project(Poker)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SRC
+set(Sources
     Card.cpp
     Comparator.cpp
     Deck.cpp
@@ -12,13 +12,10 @@ set(SRC
     Table.cpp
     Verifier.cpp)
 
-add_library(${PROJECT_NAME}-lib STATIC ${SRC})
+add_library(${PROJECT_NAME}-lib STATIC ${Sources})  
 
 add_executable(${PROJECT_NAME} main.cpp)
-#add_executable(${PROJECT_NAME}-ut test/pokerTest.cpp)
-
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
-#target_link_libraries(${PROJECT_NAME}-ut ${PROJECT_NAME}-lib)
+target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror -Wpedantic -Wconversion -O3)
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wpedantic -Wconversion -O3)
-#target_compile_options(${PROJECT_NAME}-ut PRIVATE -Wall -Wextra -Werror -Wpedantic -Wconversion)
+add_subdirectory(tests)

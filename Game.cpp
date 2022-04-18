@@ -66,7 +66,7 @@ void Game::selectOperation() {
 }
 
 void Game::printOperations() const {
-    std::cout << "\n1. Perform round\n";
+    std::cout << "1. Perform round\n";
     std::cout << "2. Add player\n";
     std::cout << "3. Remove player\n";
     std::cout << "4. Print player\n";
@@ -99,7 +99,7 @@ void Game::addPlayer() {
             return;
         }
 
-        std::cout << "Added " << name << ", with " << money << " gold.\n";
+        std::cout << "Added " << name << ", with " << money << " coins.\n";
 
         std::shared_ptr<Player> player = std::make_shared<Player>(table_.getDeck(), name, money);
         players_.push_back(player);

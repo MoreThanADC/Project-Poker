@@ -24,6 +24,7 @@ void Player::printMoney() const {
 size_t Player::performBlind(size_t valueOfBlind) {
     if (money_ < valueOfBlind) {
         std::cout << "Player don't have enough money for bet blind\n";
+        
         return 0;
     } else {
         money_ -= valueOfBlind;
@@ -33,12 +34,11 @@ size_t Player::performBlind(size_t valueOfBlind) {
 
 void Player::displayActions() {
     std::cout << '\n' << name_ << '\n';
-    std::cout << "1 - Fold - abandon the round and lose any coins staked\n";
+    std::cout << "1 - Fold - abandon the round and lose all coins staked\n";
     std::cout << "2 - Check - waiting, possible only when no one raised the bet\n";
     std::cout << "3 - Call - alignment to the present bet\n";
-    std::cout << "4 - Bet - the first bet in the round\n";
-    std::cout << "5 - Raise - increasing the current bet\n";
-    std::cout << "6 - All-In - bet all of your money\n";  
+    std::cout << "4 - Bet - increasing the current bet\n";
+    std::cout << "5 - All-In - bet all of your money\n";  
     std::cout << "Select action: ";
 }
 
@@ -46,8 +46,7 @@ void Player::selectActions() {
     int choice = 0;
     do {
         std::cin >> choice;
-        if (isdigit(choice)) {
-            switch(choice) {
+        switch(choice) {
             case 1 : fold();
                 break;
             case 2 : check();
@@ -56,28 +55,12 @@ void Player::selectActions() {
                 break;
             case 4 : bet();
                 break;
-            case 5 : raise();
-                break;
-            case 6 : allIn();
+            case 5 : allIn();
                 break;
             default : std::cout << "Wrong choice, try again.\n";
             }
-        }
     }
-    while (choice < 1 || choice > 6 );
-}
-
-
-void Player::operator+=(const size_t amount) {
-    money_ += amount;
-}
-
-void Player::operator-=(const size_t amount) {
-    if (amount > money_) {
-        money_ = 0;
-    } else {
-        money_ -= amount;
-    }
+    while (choice < 1 || choice > 5 );
 }
 
 void Player::fold() {
@@ -93,11 +76,17 @@ void Player::call() {
 }
 
 void Player::bet()  {
-    std::cout << "bet\n";
-}
-
-void Player::raise() {
-    std::cout << "raise\n";
+    size_t bet;
+    do {
+        std::cout << "Money to bet: ";
+        std::cin >> bet;
+        if (bet > money_) {
+            std::cout << "You don't have enough money!\n";
+        }
+    } while (bet > money_);
+    
+    money_ -= bet;
+    std::cout << name_ << " bet: " << bet << ", account balance: " << money_ << '\n';
 }
 
 void Player::allIn() {

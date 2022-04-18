@@ -5,10 +5,14 @@
 #include <string>
 
 void Deck::setupDeck() {
-    for (auto suit = static_cast<int>(Suit::SPADES); suit <= static_cast<int>(Suit::CLUBS); ++suit) {
-        for (auto rank = static_cast<int>(Rank::ACE); rank <= static_cast<int>(Rank::KING); ++rank) {
-            Card card(static_cast<Rank>(rank), static_cast<Suit>(suit));
-            deck_.push_back(card);
+    if (deck_.size() == 0)
+    {
+        deck_.reserve(52);
+        for (auto suit = static_cast<int>(Suit::SPADES); suit <= static_cast<int>(Suit::CLUBS); ++suit) {
+            for (auto rank = static_cast<int>(Rank::ACE); rank <= static_cast<int>(Rank::KING); ++rank) {
+                Card card(static_cast<Rank>(rank), static_cast<Suit>(suit));
+                deck_.push_back(card);
+            }
         }
     }
 }
@@ -34,5 +38,12 @@ Card Deck::takeCardFromDeck() {
 }
 
 void Deck::returnCardToDeck(const Card& card) {
-    deck_.push_back(card);
+    auto isAlreadyInDeck = std::any_of(deck_.begin(), deck_.end(), [&card](auto& currentCard){
+        return currentCard == card;
+    });
+
+    if (!isAlreadyInDeck)
+    {
+        deck_.push_back(card);
+    }
 }

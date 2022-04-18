@@ -21,8 +21,7 @@ public:
     void fold();        // abandon the round and lose any coins staked
     void check();       // waiting, possible only when no one raised the bet
     void call();        // alignment to the present bet
-    void bet();         // the first bet in the round
-    void raise();       // increasing the current bet
+    void bet();         // increasing the current bet
     void allIn();       // increasing the current bet by all the money you have
 
     void displayActions();
@@ -32,9 +31,6 @@ public:
     std::string getName() const { return name_; }
 
     void setName(std::string name);
-
-    void operator+=(const size_t amount);
-    void operator-=(const size_t amount);
 
 private:
 
