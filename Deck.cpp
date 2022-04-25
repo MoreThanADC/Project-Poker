@@ -35,11 +35,13 @@ Card Deck::takeCardFromDeck() {
     deck_.pop_back();
 
     return card;
+    // TO DO: What if this function is called on empty deck? 
 }
 
 void Deck::returnCardToDeck(const Card& card) {
     auto isAlreadyInDeck = std::any_of(deck_.begin(), deck_.end(), [&card](auto& currentCard){
-        return currentCard == card;
+        return currentCard.getRank() == card.getRank()
+            && currentCard.getSuit() == card.getSuit();
     });
 
     if (!isAlreadyInDeck)

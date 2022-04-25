@@ -38,6 +38,7 @@ bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     if (it != setOfCards.rend()) {
         return true;
     }
+
     return false;
 }
 
@@ -54,7 +55,7 @@ bool Verifier::areTwoPairs(std::vector<Card>& setOfCards) {
         numberOfPairs++;
     }
 
-    return numberOfPairs > 1 ? true : false;
+    return (numberOfPairs > 1);
 }
 
 bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {

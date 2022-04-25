@@ -2,6 +2,11 @@
 
 Card::Card(const Rank& rank, const Suit& suit)
     : rank_(rank), suit_(suit) {
+    setValueForCard(rank);
+}
+
+void Card::setValueForCard(const Rank& rank)
+{
     if (rank > Rank::ACE && rank < Rank::JACK) {
         value_ = static_cast<int>(rank);
     } else if (rank == Rank::JACK) {

@@ -10,7 +10,8 @@ FetchContent_MakeAvailable(googletest)
 
 set(Sources
     CardTests.cpp
-    DeckTests.cpp)
+    DeckTests.cpp
+    VerifierTests.cpp)
 
 enable_testing()
 
