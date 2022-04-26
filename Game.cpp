@@ -12,7 +12,7 @@ bool Game::isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secon
     } else if (firstCombination < secondCombination) {
         return false;
     } else {
-        return comparator_->settleTheTie(firstHand, secondHand);
+        return (comparator_->settleTheTie(firstHand, secondHand) == Settlement::WIN);
     }
 }
 

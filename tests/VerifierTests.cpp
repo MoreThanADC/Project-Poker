@@ -165,14 +165,14 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualHighStraight)
     EXPECT_EQ(result, PokerHand::STRAIGHT);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualLowStraightFlush)
+TEST_F (VerifierTest, shouldReturBestCombinationEqualStraightFlush)
 {
-    // low straight flush (with ACE under TWO in same suits):
-    hand_.push_back(Card {Rank::ACE, Suit::SPADES});
-    hand_.push_back(Card {Rank::TWO, Suit::SPADES});
+    // StraightFlush:
     hand_.push_back(Card {Rank::THREE, Suit::SPADES});
     hand_.push_back(Card {Rank::FOUR, Suit::SPADES});
     hand_.push_back(Card {Rank::FIVE, Suit::SPADES});
+    hand_.push_back(Card {Rank::SIX, Suit::SPADES});
+    hand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
 
     // other cards:
     hand_.push_back(Card {Rank::TEN, Suit::HEARTS});

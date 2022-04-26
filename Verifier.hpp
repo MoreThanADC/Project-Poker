@@ -22,13 +22,13 @@ public:
     std::string printPokerHand(PokerHand pokerHand);
 
 private:
-    bool isAPair(std::vector<Card>& setOfCards);
-    bool areTwoPairs(std::vector<Card>& setOfCards);
-    bool isThreeKind(std::vector<Card>& setOfCards);
+    bool isAPair(const std::vector<Card>& setOfCards);
+    bool areTwoPairs(const std::vector<Card>& setOfCards);
+    bool isThreeKind(const std::vector<Card>& setOfCards);
     bool isStraight(std::vector<Card> setOfCards);
     bool isFlush(const std::vector<Card>& setOfCards);
     bool isFullHouse(std::vector<Card> setOfCards);
-    bool isFourKind(std::vector<Card>& setOfCards);
+    bool isFourKind(const std::vector<Card>& setOfCards);
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
 };

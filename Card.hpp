@@ -34,7 +34,7 @@ struct Card {
     int getValue() const { return value_; }
     void setValue(int newValue) { value_ = newValue; }
 
-    bool operator==(const Card& rhs) {
+    bool operator==(const Card& rhs) const {
         return value_ == rhs.getValue();
     }
 

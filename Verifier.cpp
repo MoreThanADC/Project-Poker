@@ -33,7 +33,7 @@ PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards) {
     return PokerHand::HIGHCARDS;
 }
 
-bool Verifier::isAPair(std::vector<Card>& setOfCards) {
+bool Verifier::isAPair(const std::vector<Card>& setOfCards) {
     auto it = std::adjacent_find(rbegin(setOfCards), rend(setOfCards));
     if (it != setOfCards.rend()) {
         return true;
@@ -42,7 +42,7 @@ bool Verifier::isAPair(std::vector<Card>& setOfCards) {
     return false;
 }
 
-bool Verifier::areTwoPairs(std::vector<Card>& setOfCards) {
+bool Verifier::areTwoPairs(const std::vector<Card>& setOfCards) {
     int numberOfPairs = 0;
 
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
@@ -58,7 +58,7 @@ bool Verifier::areTwoPairs(std::vector<Card>& setOfCards) {
     return (numberOfPairs > 1);
 }
 
-bool Verifier::isThreeKind(std::vector<Card>& setOfCards) {
+bool Verifier::isThreeKind(const std::vector<Card>& setOfCards) {
     for (const auto& card : setOfCards) {
         auto found = std::search_n(begin(setOfCards), end(setOfCards), 3, card);
         if (found != setOfCards.end()) {
@@ -142,7 +142,7 @@ bool Verifier::isFullHouse(std::vector<Card> setOfCards) {
     return false;
 }
 
-bool Verifier::isFourKind(std::vector<Card>& setOfCards) {
+bool Verifier::isFourKind(const std::vector<Card>& setOfCards) {
     for (const auto& card : setOfCards) {
         auto found = std::search_n(begin(setOfCards), end(setOfCards), 4, card);
         if (found != setOfCards.end()) {

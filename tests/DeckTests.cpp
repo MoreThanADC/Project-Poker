@@ -20,6 +20,8 @@ TEST(DeckTest, WhenSetupDeckCalledMoreTimesNumberOfCardsShouldBeStill52)
     EXPECT_EQ(deck.cardsInTheDeck(), 0);
 
     deck.setupDeck();
+    EXPECT_EQ(deck.cardsInTheDeck(), 52);
+
     deck.setupDeck();
     deck.setupDeck();
     EXPECT_EQ(deck.cardsInTheDeck(), 52);
