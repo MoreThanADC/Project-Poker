@@ -28,6 +28,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualHighestCard)
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
 
+    std::sort(begin(hand_), end(hand_));
+
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::HIGHCARDS);
 }
@@ -43,6 +45,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualPair)
     hand_.push_back(Card {Rank::NINE, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
+
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::PAIR);
@@ -61,6 +65,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualTwoPair)
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
 
+    std::sort(begin(hand_), end(hand_));
+
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::TWOPAIRS);
 }
@@ -78,6 +84,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualThree)
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
 
+    std::sort(begin(hand_), end(hand_));
+
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::THREEKIND);
 }
@@ -93,6 +101,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFourKinds)
     hand_.push_back(Card {Rank::NINE, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
+
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::FOURKIND);
@@ -110,6 +120,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFullHouse)
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
 
+    std::sort(begin(hand_), end(hand_));
+
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::FULLHOUSE);
 }
@@ -126,6 +138,8 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFlush)
     hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
 
+    std::sort(begin(hand_), end(hand_));
+
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::FLUSH);
 }
@@ -140,8 +154,10 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualLowStraight)
     hand_.push_back(Card {Rank::FIVE, Suit::SPADES});
 
     // other cards:
-    hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
+    hand_.push_back(Card {Rank::ACE, Suit::HEARTS});
     hand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
+
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::STRAIGHT);
@@ -157,9 +173,10 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualHighStraight)
     hand_.push_back(Card {Rank::ACE, Suit::SPADES});
 
     // other cards:
-    hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    hand_.push_back(Card {Rank::SIX, Suit::CLUBS});
+    hand_.push_back(Card {Rank::JACK, Suit::CLUBS});
+    hand_.push_back(Card {Rank::JACK, Suit::SPADES});
 
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::STRAIGHT);
@@ -175,8 +192,10 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualStraightFlush)
     hand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
 
     // other cards:
-    hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    hand_.push_back(Card {Rank::JACK, Suit::CLUBS});
+    hand_.push_back(Card {Rank::FOUR, Suit::HEARTS});
+    hand_.push_back(Card {Rank::FOUR, Suit::CLUBS});
+
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::STRAIGHTFLUSH);
@@ -185,15 +204,18 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualStraightFlush)
 TEST_F (VerifierTest, shouldReturBestCombinationEqualRoyalFlush)
 {
     // royal flush
-    hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
+    hand_.push_back(Card {Rank::TEN, Suit::SPADES});
     hand_.push_back(Card {Rank::JACK, Suit::HEARTS});
     hand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
     hand_.push_back(Card {Rank::KING, Suit::HEARTS});
     hand_.push_back(Card {Rank::ACE, Suit::HEARTS});
 
     // other cards:
-    hand_.push_back(Card {Rank::TEN, Suit::SPADES});
+    hand_.push_back(Card {Rank::TEN, Suit::HEARTS});
     hand_.push_back(Card {Rank::SIX, Suit::CLUBS});
+
+
+    std::sort(begin(hand_), end(hand_));
 
     auto result = verifier->detectBestCombination(hand_);
     EXPECT_EQ(result, PokerHand::ROYALFLUSH);

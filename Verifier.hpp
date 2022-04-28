@@ -31,4 +31,6 @@ private:
     bool isFourKind(const std::vector<Card>& setOfCards);
     bool isStraightFlush(std::vector<Card> setOfCards);
     bool isRoyalFlush(const std::vector<Card>& setOfCards);
+
+    Suit getDominantSuit(const std::vector<Card>& setOfCards);
 };

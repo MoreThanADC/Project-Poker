@@ -34,12 +34,17 @@ struct Card {
     int getValue() const { return value_; }
     void setValue(int newValue) { value_ = newValue; }
 
+// in the future spaceship operator
     bool operator==(const Card& rhs) const {
         return value_ == rhs.getValue();
     }
 
     bool operator<(Card& rhs) const {
         return value_ < rhs.getValue();
+    }
+
+    bool operator>(Card& rhs) const {
+        return value_ > rhs.getValue();
     }
 
 private:
