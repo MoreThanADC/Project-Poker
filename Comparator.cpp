@@ -1,8 +1,20 @@
 #include "Comparator.hpp"
 
-Settlement Comparator::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand)
+Settlement Comparator::calculateBetterHand(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    auto firstCombination = verifier_->detectBestCombination(firstHand);
+    auto secondCombination = verifier_->detectBestCombination(secondHand);
+
+    if (firstCombination > secondCombination) {
+        return Settlement::WIN;
+    } else if (firstCombination < secondCombination) {
+        return Settlement::LOSE;
+    } else {
+        return settleTheTie(firstHand, secondHand, firstCombination);
+    }
+}
+
+Settlement Comparator::settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, const PokerHand& pokerHand)
 {
-    auto pokerHand = verifier_->detectBestCombination(firstHand);
     sortCardsInHands(firstHand, secondHand);
     
     switch (pokerHand)
@@ -20,12 +32,13 @@ Settlement Comparator::settleTheTie(std::vector<Card>& firstHand, std::vector<Ca
     case PokerHand::FLUSH :
         return compareFlushes(firstHand, secondHand);
     case PokerHand::FULLHOUSE :
-        return compareFullHouses(firstHand, secondHand);
+        return compareThrees(firstHand, secondHand); // We can use threes comparator, because in deck (52 cards) may be just only one unique three and it enough
     case PokerHand::FOURKIND :
-        return compareFourKinds(firstHand, secondHand);
+        return compareThrees(firstHand, secondHand); // We can use threes comparator, because in deck (52 cards) may be just only one unique three and it enough
     case PokerHand::STRAIGHTFLUSH :
-        return compareStraights(firstHand, secondHand);
-    default : return Settlement::DRAW;
+        return compareStraights(firstHand, secondHand); // we can use straights comparator, because kidn of suit doesn't matter
+    default :
+        return Settlement::DRAW;
     }
 }
 
@@ -67,23 +80,25 @@ Settlement Comparator::compareTwoPairs(std::vector<Card>& firstHand, std::vector
     }
 }
 
-Settlement Comparator::compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
-    Card firstCard;
-    for (const auto& card : firstHand) {
-        firstCard = *std::search_n(begin(firstHand), end(firstHand), 3, card);
-    }
-    Card secondCard;
-    for (const auto& card : secondHand) {
-        secondCard = *std::search_n(begin(secondHand), end(secondHand), 3, card);
-    }
+Card Comparator::getCardFromThree(std::vector<Card>& hand) {
+    std::sort(begin(hand), end(hand), [](auto& first, auto second){
+        return first > second;
+    });
 
-    if (firstCard > secondCard) {
-        return Settlement::WIN;
-    } else if (firstCard < secondCard) {
-        return Settlement::LOSE;
-    } else {
-        return compareHighestCard(firstHand, secondHand);
+    for (const auto& card : hand) {
+        auto it = std::search_n(begin(hand), end(hand), 3, card);
+        if (it != hand.end()) {
+            return *it;
+        }
     }
+    return hand[0];
+}
+
+Settlement Comparator::compareThrees(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+    Card firstCard = getCardFromThree(firstHand);
+    Card secondCard = getCardFromThree(secondHand);
+
+    return firstCard > secondCard ? Settlement::WIN : Settlement::LOSE;
 }
 
 Settlement Comparator::compareStraights(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
@@ -168,16 +183,13 @@ Settlement Comparator::compareFlushes(std::vector<Card>& firstHand, std::vector<
 
     for (size_t i = 0; i < lengthOfShorterVector; ++i) {
         if (firstHandWithSameSuits[i] > secondHandWithSameSuits[i]) {
-            std::cout << "\nCompare card from flushes: " << firstHandWithSameSuits[i].getValue() << " is bigger than " << secondHandWithSameSuits[i].getValue() << '\n';
             return Settlement::WIN;
         }
         if (firstHandWithSameSuits[i] < secondHandWithSameSuits[i]) {
-            std::cout << "\nCompare card from flushes: " << firstHandWithSameSuits[i].getValue() << " is less than " << secondHandWithSameSuits[i].getValue() << '\n';
             return Settlement::LOSE;
         }
     }
 
-    std::cout << "\nCompared cards from flushes are equal\n";
     return compareHighestCard(firstHand, secondHand);
 }
 
@@ -194,77 +206,6 @@ Suit Comparator::getSuitFromFlush(std::vector<Card>& setOfCards) {
         }
     }
     return Suit::SPADES;
-}
-
-Settlement Comparator::compareFullHouses(std::vector<Card> firstHand, std::vector<Card> secondHand) {
-    std::vector<Card> firstPair = getHighestTripleAndHighestPairCardFromFullHouse(firstHand);
-    std::vector<Card> secondPair = getHighestTripleAndHighestPairCardFromFullHouse(secondHand);
-
-    if (firstPair[0] > secondPair[0]) {
-        return Settlement::WIN;
-    } 
-    if (firstPair[0] < secondPair[0]) {
-        return Settlement::LOSE;
-    }
-    if (firstPair[1] > secondPair[1])  {
-        return Settlement::WIN;
-    } 
-    if (firstPair[1] < secondPair[1]) {
-        return Settlement::LOSE;
-    } 
-
-    return compareHighestCard(firstHand, secondHand);
-}
-
-std::vector<Card> Comparator::getHighestTripleAndHighestPairCardFromFullHouse(std::vector<Card>& setOfCards) {
-    std::vector<Card> cardsFromFull;
-    for (const auto& el : setOfCards) {
-        auto foundTripleCard = std::search_n(rbegin(setOfCards), rend(setOfCards), 3, el);
-        if (foundTripleCard != setOfCards.rend()) {
-            cardsFromFull.push_back(*foundTripleCard);
-            setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&foundTripleCard](const auto& card) {
-                                return card == *foundTripleCard;
-                             }),
-                             setOfCards.end());
-
-            auto foundPairCard = std::adjacent_find(begin(setOfCards), end(setOfCards));
-            if (foundPairCard != setOfCards.end()) {
-                cardsFromFull.push_back(*foundPairCard);
-                setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&foundPairCard](const auto& card) {
-                                 return card == *foundPairCard;
-                            }),
-                            setOfCards.end());
-            }
-        }
-    }
-
-    return cardsFromFull;
-}
-
-Settlement Comparator::compareFourKinds(std::vector<Card> firstHand, std::vector<Card> secondHand) {
-    Card firstCard;
-    for (const auto& card : firstHand) {
-        firstCard = *std::search_n(begin(firstHand), end(firstHand), 4, card);
-    }
-    Card secondCard;
-    for (const auto& card : secondHand) {
-        secondCard = *std::search_n(begin(secondHand), end(secondHand), 4, card);
-    }
-
-    if (firstCard > secondCard) {
-        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is bigger than four kind " << (secondCard).getValue() << '\n';
-        return Settlement::WIN;
-    } else if (firstCard < secondCard) {
-        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is less than four kind " << (secondCard).getValue() << '\n';
-        return Settlement::LOSE;
-    } else {
-        std::cout << "\nCompare card from four kind: " << (firstCard).getValue() << " is equal " << (secondCard).getValue() << '\n';
-        return compareHighestCard(firstHand, secondHand);
-    }
-}
-
-PokerHand Comparator::detectBestCombination(std::vector<Card>& setOfCards) {
-    return verifier_->detectBestCombination(setOfCards);
 }
 
 void Comparator::sortCardsInHands(std::vector<Card>& firstHand, std::vector<Card>& secondHand)

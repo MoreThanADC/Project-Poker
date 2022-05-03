@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards) {
+PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards){
+    std::sort(begin(setOfCards), end(setOfCards));
     if (isRoyalFlush(setOfCards)) {
         return PokerHand::ROYALFLUSH;
     }
@@ -30,12 +31,13 @@ PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards) {
     if (isAPair(setOfCards)) {
         return PokerHand::PAIR;
     }
+
     return PokerHand::HIGHCARDS;
 }
 
 bool Verifier::isAPair(const std::vector<Card>& setOfCards) {
-    auto it = std::adjacent_find(rbegin(setOfCards), rend(setOfCards));
-    return it != setOfCards.rend();
+    auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
+    return it != setOfCards.end();
 }
 
 bool Verifier::areTwoPairs(const std::vector<Card>& setOfCards) {
@@ -65,12 +67,11 @@ bool Verifier::isThreeKind(const std::vector<Card>& setOfCards) {
 }
 
 bool Verifier::isStraight(std::vector<Card> setOfCards) {
-
     std::vector<Card> cardsWithoutDuplicatedRanks;
     std::unique_copy(
-        begin(setOfCards), 
-        end(setOfCards), 
-        std::back_inserter(cardsWithoutDuplicatedRanks), 
+        begin(setOfCards),
+        end(setOfCards),
+        std::back_inserter(cardsWithoutDuplicatedRanks),
         [](const auto& first, const auto& second) {
             return first == second;
         });
@@ -86,10 +87,8 @@ bool Verifier::isStraight(std::vector<Card> setOfCards) {
     }
 
     // Ace value equal 14 for hight straight
-    for (auto& card : cardsWithoutDuplicatedRanks)
-    {
-        if (card.getRank() == Rank::ACE)
-        {
+    for (auto& card : cardsWithoutDuplicatedRanks) {
+        if (card.getRank() == Rank::ACE) {
             card.setValue(1);
         }
     }
@@ -169,9 +168,9 @@ bool Verifier::isFourKind(const std::vector<Card>& setOfCards) {
 bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
     std::vector<Card> cardsWithoutDuplicatedRanks;
     std::unique_copy(
-        begin(setOfCards), 
-        end(setOfCards), 
-        std::back_inserter(cardsWithoutDuplicatedRanks), 
+        begin(setOfCards),
+        end(setOfCards),
+        std::back_inserter(cardsWithoutDuplicatedRanks),
         [](const auto& first, const auto& second) {
             return first == second;
         });
@@ -189,11 +188,9 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
             return true;
         }
     }
-    // Ace value equal 14 for hight straight
-    for (auto& card : cardsWithoutDuplicatedRanks)
-    {
-        if (card.getRank() == Rank::ACE)
-        {
+    // Ace value equal 1 for low straight
+    for (auto& card : cardsWithoutDuplicatedRanks) {
+        if (card.getRank() == Rank::ACE) {
             card.setValue(1);
         }
     }
@@ -214,8 +211,7 @@ bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
     return false;
 }
 
-Suit Verifier::getDominantSuit(const std::vector<Card>& setOfCards)
-{
+Suit Verifier::getDominantSuit(const std::vector<Card>& setOfCards) {
     int spades = 0;
     int hearts = 0;
     int diamonds = 0;
@@ -251,14 +247,12 @@ bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
 
     std::vector<Card> cardsWithoutDuplicatedRanks;
     std::unique_copy(
-        begin(setOfCards), 
-        end(setOfCards), 
-        std::back_inserter(cardsWithoutDuplicatedRanks), 
+        begin(setOfCards),
+        end(setOfCards),
+        std::back_inserter(cardsWithoutDuplicatedRanks),
         [&dominantSuit](const auto& first, const auto& second) {
-            if (first == second)
-            {
-                if (first.getSuit() == dominantSuit)
-                {
+            if (first == second) {
+                if (first.getSuit() == dominantSuit) {
                     return true;
                 }
             }

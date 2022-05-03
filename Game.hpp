@@ -14,8 +14,6 @@ public:
 
     void startGame();
 
-    bool isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
-
 private:
     void selectOperation();
     void printOperations() const;

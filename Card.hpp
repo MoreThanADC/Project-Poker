@@ -32,7 +32,7 @@ struct Card {
     Suit getSuit() const { return suit_; }
     Rank getRank() const { return rank_; }
     int getValue() const { return value_; }
-    void setValue(int newValue) { value_ = newValue; }
+    void setValue(const int newValue) { value_ = newValue; }
 
 // in the future spaceship operator
     bool operator==(const Card& rhs) const {

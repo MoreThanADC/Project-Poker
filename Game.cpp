@@ -3,19 +3,6 @@
 #include <stdlib.h>
 #include <algorithm>
 
-bool Game::isPlayerWinner(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
-    auto firstCombination = comparator_->detectBestCombination(firstHand);
-    auto secondCombination = comparator_->detectBestCombination(secondHand);
-
-    if (firstCombination > secondCombination) {
-        return true;
-    } else if (firstCombination < secondCombination) {
-        return false;
-    } else {
-        return (comparator_->settleTheTie(firstHand, secondHand) == Settlement::WIN);
-    }
-}
-
 void Game::performRound() {
     std::cout << "Round number: " << ++roundNumber_;
     std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << table_.getDeck()->cardsInTheDeck() << '\n';
