@@ -5,7 +5,7 @@
 
 void Game::performRound() {
     std::cout << "Round number: " << ++roundNumber_;
-    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << table_.getDeck()->cardsInTheDeck() << '\n';
+    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << table_->getDeck()->cardsInTheDeck() << '\n';
     //PREFLOP
     performPreFlop();
     displayHandsAndTable();
@@ -88,7 +88,7 @@ void Game::addPlayer() {
 
         std::cout << "Added " << name << ", with " << money << " coins.\n";
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(table_.getDeck(), name, money);
+        std::shared_ptr<Player> player = std::make_shared<Player>(table_->getDeck(), table_, name, money);
         players_.push_back(player);
     } else {
         std::cout << "Number of players can't exceed " << maxNumberOfPlayers_ << '\n';
@@ -115,38 +115,42 @@ void Game::removePlayer() {
 
 void Game::performPlayerAction() {
     for (auto& player : players_) {
-        player->displayActions();
-        player->selectActions();
+        if (player->isActiveInRound()) {
+            player->displayActions();
+            player->selectActions();
+        }
     }
 }
 
 void Game::performPreFlop() {
     for (auto& player : players_) {
-        for (int i = 0; i < 2; i++) {
+        if (player->wasBlindCarriedOutCorrectly(valueOfBlind_)) {
+            for (int i = 0; i < 2; i++) {
             player->getCardFromDeck();
+            }
         }
-        table_.addToPool(player->performBlind(valueOfBlind_));
+        else {
+            std::cout << "REMOVE THIS PLAYER, HE IS TOO POOR!\n";
+        }
     }
 }
 
 void Game::performFlop() {
     for (int i = 0; i < 3; i++) {
-        table_.addCardToTable();
+        table_->addCardToTable();
     }
 }
 
 void Game::performTurnOrTheRiver() {
-    table_.addCardToTable();
+    table_->addCardToTable();
 }
 
 void Game::prepareDeck() {
-    if (roundNumber_ == 0) {
-        table_.getDeck()->setupDeck();
-    } else {
+    if (roundNumber_ > 0) {
         returnPlayersCards();
         returnCardsFromTable();
     }
-    table_.getDeck()->shuffleTheDeck();
+    table_->getDeck()->shuffleTheDeck();
 }
 
 void Game::returnPlayersCards() {
@@ -156,7 +160,7 @@ void Game::returnPlayersCards() {
 }
 
 void Game::returnCardsFromTable() {
-    table_.returnCardsToDeck();
+    table_->returnCardsToDeck();
 }
 
 
@@ -171,7 +175,7 @@ void Game::displayMoneyAndPool() const {
     for (auto& player : players_) {
         player->printMoney();
     }
-    std::cout << "Money in pool: " << table_.printPool() << '\n';
+    std::cout << "Money in pool: " << table_->returnPool() << '\n';
 }
 
 void Game::displayHandsAndTable() const {
@@ -180,5 +184,5 @@ void Game::displayHandsAndTable() const {
         player->printHand();
     }
     std::cout << "\nTable:\n";
-    table_.printTable();
+    table_->printTable();
 }

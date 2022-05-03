@@ -12,7 +12,9 @@ set(Sources
     CardTests.cpp
     DeckTests.cpp
     VerifierTests.cpp
-    ComparatorTests.cpp)
+    ComparatorTests.cpp
+    TableTests.cpp
+    PlayerTests.cpp)
 
 enable_testing()
 

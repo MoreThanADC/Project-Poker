@@ -8,31 +8,13 @@
 TEST(DeckTest, ShouldPrepareDeckWith52Cards)
 {
     Deck deck {};
-    EXPECT_EQ(deck.cardsInTheDeck(), 0);
-
-    deck.setupDeck();
-    EXPECT_EQ(deck.cardsInTheDeck(), 52);
-}
-
-TEST(DeckTest, WhenSetupDeckCalledMoreTimesNumberOfCardsShouldBeStill52)
-{
-    Deck deck {};
-    EXPECT_EQ(deck.cardsInTheDeck(), 0);
-
-    deck.setupDeck();
-    EXPECT_EQ(deck.cardsInTheDeck(), 52);
-
-    deck.setupDeck();
-    deck.setupDeck();
     EXPECT_EQ(deck.cardsInTheDeck(), 52);
 }
 
 TEST(DeckTest, DecksAreNotTheSameWhenOneDeckWasShuffled)
 {
     Deck deck1 {};
-    deck1.setupDeck();
     Deck deck2 {};
-    deck2.setupDeck();
 
     deck2.shuffleTheDeck();
 
@@ -47,7 +29,6 @@ TEST(DeckTest, DecksAreNotTheSameWhenOneDeckWasShuffled)
 TEST(DeckTest, NumberOfCardsShouldDecreaseWhenCalledTakeCardFromDeck)
 {
     Deck deck {};
-    deck.setupDeck();
 
     EXPECT_EQ(deck.cardsInTheDeck(), 52);
 
@@ -62,7 +43,6 @@ TEST(DeckTest, NumberOfCardsShouldDecreaseWhenCalledTakeCardFromDeck)
 TEST(DeckTest, NumberOfCardsShouldIncreaseWhenCalledReturnCardToDeck)
 {
     Deck deck {};
-    deck.setupDeck();
 
     EXPECT_EQ(deck.cardsInTheDeck(), 52);
 

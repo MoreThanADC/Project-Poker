@@ -4,6 +4,10 @@
 #include <random>
 #include <string>
 
+Deck::Deck() {
+    setupDeck();
+}
+
 void Deck::setupDeck() {
     if (deck_.size() == 0)
     {
