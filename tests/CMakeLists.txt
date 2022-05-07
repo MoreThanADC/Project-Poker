@@ -14,7 +14,8 @@ set(Sources
     VerifierTests.cpp
     ComparatorTests.cpp
     TableTests.cpp
-    PlayerTests.cpp)
+    PlayerTests.cpp
+    GameTests.cpp)
 
 enable_testing()
 

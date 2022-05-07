@@ -9,8 +9,7 @@
 
 class Game {
 public:
-    Game(std::unique_ptr<Comparator>&& comparator, std::shared_ptr<Table>& table, std::vector<std::shared_ptr<Player>>& players) : 
-       comparator_(std::move(comparator)), table_(table), players_(players) {}
+    Game();
 
     void startGame();
 
@@ -35,11 +34,13 @@ private:
     void displayMoneyAndPool() const;
     void displayHandsAndTable() const;
 
+    std::shared_ptr<Verifier> verifier_;
     std::unique_ptr<Comparator> comparator_;
+    std::shared_ptr<Deck> deck_;
     std::shared_ptr<Table> table_;
     std::vector<std::shared_ptr<Player>> players_;
 
     size_t roundNumber_ = 0;
     const size_t valueOfBlind_ = 100;
-    size_t maxNumberOfPlayers_ = 10;
+    size_t maxNumberOfPlayers_ = 8;
 };

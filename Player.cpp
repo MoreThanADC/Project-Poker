@@ -55,19 +55,26 @@ void Player::selectActions() {
     while (choice < 1 || choice > 5 );
 }
 
-void Player::fold() {
+bool Player::fold() {
     isActiveInRound_ = false;
+    return true;
 }
 
-void Player::check() {
-    std::cout << "check\n";
+bool Player::check() {
+    if (table_->returnCurrentBet() != currentBet_) {
+        std::cout << "You can't check, your bet is lower than curret bet on the table.\n";
+        return false;
+    }
+
+    return true;
 }
 
-void Player::call() {
+bool Player::call() {
     size_t missingValueToBet = table_->returnCurrentBet() - currentBet_;
 
     if (missingValueToBet <= 0) {
         std::cout << "you can't beat yourself\n";
+        return false;
     } else if (money_ < missingValueToBet) {
         allIn();
     } else {
@@ -75,51 +82,71 @@ void Player::call() {
         table_->addToPool(missingValueToBet);
         currentBet_ += missingValueToBet;
     }
+
+    return true;
 }
 
-void Player::bet() {
+bool Player::bet()
+{
     size_t bet;
-    do {
-        std::cout << "Money to bet: ";
-        std::cin >> bet;
-        if (bet > money_) {
-            std::cout << "You don't have enough money!\n";
-        }
-        if (bet < table_->returnCurrentBet()) {
-            std::cout << "You'r bet must be bigger than current bet: " << table_->returnCurrentBet() << "\n";
-        }
-    } while (bet > money_ && bet < table_->returnCurrentBet());
+    std::cout << "Money to bet: ";
+    std::cin >> bet;
+
+    return performBet(bet);
+}
+
+bool Player::performBet(size_t bet) 
+{
+    if (bet > money_) {
+        std::cout << "You don't have enough money!\n";
+        return false;
+    }
+    if (bet < table_->returnCurrentBet()) {
+        std::cout << "You'r bet must be bigger than current bet: " << table_->returnCurrentBet() << "\n";
+        return false;
+    }
     
-    size_t missingValueToBet = table_->returnCurrentBet() - currentBet_;
+    size_t missingValueToBet = bet - currentBet_;
 
     money_ -= missingValueToBet;
     table_->addToPool(missingValueToBet);
 
-    std::cout << name_ << " bet: " << bet << ", account balance: " << money_ << '\n';
+    table_->setCurrentBet(bet);
+    currentBet_ = bet;
+
+    return true;
 }
 
-void Player::allIn() {
+bool Player::allIn() {
     if (currentBet_ >= table_->returnCurrentBet()) {
-        std::cout << "you can't beat yourself\n";
-        return;
+        std::cout << "you can't bet yourself\n";
+        return false;
     }
-    if (money_ > 0) {
-        table_->addToPool(money_);
-        currentBet_ += money_;
-        money_ = 0;
+    if (money_ == 0) {
+        std::cout << "you don't have money\n";
+        return false;
     }
+
+    table_->addToPool(money_);
+    currentBet_ += money_;
+    money_ = 0;
+
+    return true;
 }
 
-void Player::setCurrentBet(size_t value){
+void Player::setCurrentBet(size_t value)
+{
     currentBet_ = value;
 }
 
-void Player::printHand() const {
+void Player::printHand() const 
+{
     for (const auto& card : hand_) {
-        std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
+        std::cout << card->printRank() << " of " << card->printSuit() << " value : " << card->printValue() << '\n';
     }
 }
 
-void Player::printMoney() const {
+void Player::printMoney() const 
+{
     std::cout << name_ << " have: " << money_ << '\n';
 }

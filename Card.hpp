@@ -22,7 +22,11 @@ enum class Suit { SPADES,
                   CLUBS };
 
 struct Card {
-    Card() = default;
+    //Card();
+    ~Card() {
+        std::cout << "DESTROY CARD\n";
+    }
+
     Card(const Rank& rank, const Suit& suit);
 
     std::string printSuit() const;

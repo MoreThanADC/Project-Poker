@@ -3,9 +3,20 @@
 #include <stdlib.h>
 #include <algorithm>
 
+Game::Game(){
+    std::shared_ptr<Verifier> verifier_ = std::make_shared<Verifier>();
+    std::unique_ptr<Comparator> comparator_ = std::make_unique<Comparator>(verifier_);
+
+    std::shared_ptr<Deck> deck_ = std::make_shared<Deck>();
+    //std::shared_ptr<Table> table_ = std::make_shared<Table>(deck_);
+
+    //players_.push_back(std::make_shared<Player>(deck_, table_, "Player", 1000));
+    //players_.push_back(std::make_shared<Player>(deck_, table_, "Computer", 1000));
+}
+
+
 void Game::performRound() {
     std::cout << "Round number: " << ++roundNumber_;
-    std::cout << "\nINITIAL NUMBER OF CARDS IN THE DECK: " << table_->getDeck()->cardsInTheDeck() << '\n';
     //PREFLOP
     performPreFlop();
     displayHandsAndTable();
@@ -88,7 +99,7 @@ void Game::addPlayer() {
 
         std::cout << "Added " << name << ", with " << money << " coins.\n";
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(table_->getDeck(), table_, name, money);
+        std::shared_ptr<Player> player = std::make_shared<Player>(deck_, table_, name, money);
         players_.push_back(player);
     } else {
         std::cout << "Number of players can't exceed " << maxNumberOfPlayers_ << '\n';
@@ -149,8 +160,8 @@ void Game::prepareDeck() {
     if (roundNumber_ > 0) {
         returnPlayersCards();
         returnCardsFromTable();
+        table_->getDeck()->shuffleTheDeck();
     }
-    table_->getDeck()->shuffleTheDeck();
 }
 
 void Game::returnPlayersCards() {
