@@ -21,10 +21,14 @@ void Table::addToPool(const size_t amount) {
     pool_ += amount;
 }
 
-void Table::printTable() const {
-    for (const auto& card : table_) {
-        std::cout << card->printRank() << " of " << card->printSuit() << " value : " << card->printValue() << '\n';
+void Table::printTable() const
+{
+    std::cout << "Table [" << pool_ << "]:\n";
+    for (const auto& card : table_)
+    {
+        std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
+    std::cout << '\n';
 }
 
 void Table::setCurrentBet(const size_t highestBet) {

@@ -19,8 +19,9 @@ private:
 
     void performRound();
     void addPlayer();
+    void removePlayer(const std::string& name);
     void removePlayer();
-    void printPlayers();
+    void printPlayers() const;
 
     void performPlayerAction();
     void performPreFlop();
@@ -28,11 +29,18 @@ private:
     void performTurnOrTheRiver();
 
     void prepareDeck();
+
+    void activatePlayers();
+    bool arePlayersActive();
+
     void returnPlayersCards();
     void returnCardsFromTable();
 
-    void displayMoneyAndPool() const;
     void displayHandsAndTable() const;
+
+    void prepareCardsForVerdict();
+    void setBestCombinations();
+    void sortPlayersByHand();
 
     std::shared_ptr<Verifier> verifier_;
     std::unique_ptr<Comparator> comparator_;

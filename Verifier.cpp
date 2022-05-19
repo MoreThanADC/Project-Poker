@@ -1,62 +1,89 @@
 #include "Verifier.hpp"
 
 #include <algorithm>
+#include <map>
 
-PokerHand Verifier::detectBestCombination(std::vector<Card>& setOfCards){
+namespace
+{
+
+std::map<Suit, int> countSuits(const std::vector<Card>& setOfCards)
+{
+    std::map<Suit, int> numberOfCardsInSameSuit = { {Suit::SPADES, 0},
+                                                    {Suit::HEARTS, 0},
+                                                    {Suit::DIAMONDS, 0},
+                                                    {Suit::CLUBS, 0} };
+    for (const auto& card : setOfCards) 
+    {
+        numberOfCardsInSameSuit[card.getSuit()]++;
+    }
+
+    return numberOfCardsInSameSuit;
+}
+
+Suit getDominantSuit(const std::vector<Card>& setOfCards) 
+{
+    std::map<Suit, int> numberOfCardsInSameSuit = countSuits(setOfCards);
+
+    for (const auto& [key, value] : numberOfCardsInSameSuit)
+    {
+        if (value >= 5)
+            return key;
+    }
+
+    return Suit::SPADES;
+}
+
+} // namespace 
+
+PokerHand Verifier::detectBestCombination(std::vector<Card> setOfCards)
+{
     std::sort(begin(setOfCards), end(setOfCards));
-    if (isRoyalFlush(setOfCards)) {
+
+    if (isRoyalFlush(setOfCards)) 
         return PokerHand::ROYALFLUSH;
-    }
-    if (isStraightFlush(setOfCards)) {
+    if (isStraightFlush(setOfCards))
         return PokerHand::STRAIGHTFLUSH;
-    }
-    if (isFourKind(setOfCards)) {
+    if (isFourKind(setOfCards))
         return PokerHand::FOURKIND;
-    }
-    if (isFullHouse(setOfCards)) {
+    if (isFullHouse(setOfCards))
         return PokerHand::FULLHOUSE;
-    }
-    if (isFlush(setOfCards)) {
+    if (isFlush(setOfCards))
         return PokerHand::FLUSH;
-    }
-    if (isStraight(setOfCards)) {
+    if (isStraight(setOfCards))
         return PokerHand::STRAIGHT;
-    }
-    if (isThreeKind(setOfCards)) {
+    if (isThreeKind(setOfCards))
         return PokerHand::THREEKIND;
-    }
-    if (areTwoPairs(setOfCards)) {
+    if (areTwoPairs(setOfCards))
         return PokerHand::TWOPAIRS;
-    }
-    if (isAPair(setOfCards)) {
+    if (isAPair(setOfCards))
         return PokerHand::PAIR;
-    }
 
     return PokerHand::HIGHCARDS;
 }
 
-bool Verifier::isAPair(const std::vector<Card>& setOfCards) {
+bool Verifier::isAPair(const std::vector<Card>& setOfCards) const
+{
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
     return it != setOfCards.end();
 }
 
-bool Verifier::areTwoPairs(const std::vector<Card>& setOfCards) {
-    int numberOfPairs = 0;
-
+bool Verifier::areTwoPairs(const std::vector<Card>& setOfCards) const
+{
     auto it = std::adjacent_find(begin(setOfCards), end(setOfCards));
-    if (it != setOfCards.end()) {
-        numberOfPairs++;
+    if (it == setOfCards.end()) {
+        return false;
     }
 
     auto it2 = std::adjacent_find(++it, end(setOfCards));
-    if (it2 != setOfCards.end()) {
-        numberOfPairs++;
+    if (it2 == setOfCards.end()) {
+        return false;
     }
 
-    return (numberOfPairs > 1);
+    return true;
 }
 
-bool Verifier::isThreeKind(const std::vector<Card>& setOfCards) {
+bool Verifier::isThreeKind(const std::vector<Card>& setOfCards) const
+{
     for (const auto& card : setOfCards) {
         auto found = std::search_n(begin(setOfCards), end(setOfCards), 3, card);
         if (found != setOfCards.end()) {
@@ -66,39 +93,41 @@ bool Verifier::isThreeKind(const std::vector<Card>& setOfCards) {
     return false;
 }
 
-bool Verifier::isStraight(std::vector<Card> setOfCards) {
-    std::vector<Card> cardsWithoutDuplicatedRanks;
+bool Verifier::isStraight(const std::vector<Card>& setOfCards) const
+{
+    std::vector<Card> uniqueCards {};
+
     std::unique_copy(
         begin(setOfCards),
         end(setOfCards),
-        std::back_inserter(cardsWithoutDuplicatedRanks),
+        std::back_inserter(uniqueCards),
         [](const auto& first, const auto& second) {
             return first == second;
         });
 
     // Ace value equal 14 for hight straight
-    for (size_t i = 0; i < cardsWithoutDuplicatedRanks.size(); ++i) {
-        if (cardsWithoutDuplicatedRanks[i].getValue() + 1 == cardsWithoutDuplicatedRanks[i + 1].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 2 == cardsWithoutDuplicatedRanks[i + 2].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 3 == cardsWithoutDuplicatedRanks[i + 3].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 4 == cardsWithoutDuplicatedRanks[i + 4].getValue()) {
+    for (size_t i = 0; i < uniqueCards.size(); ++i) {
+        if (uniqueCards[i].getValue() + 1 == uniqueCards[i + 1].getValue() &&
+            uniqueCards[i].getValue() + 2 == uniqueCards[i + 2].getValue() &&
+            uniqueCards[i].getValue() + 3 == uniqueCards[i + 3].getValue() &&
+            uniqueCards[i].getValue() + 4 == uniqueCards[i + 4].getValue()) {
             return true;
         }
     }
 
-    // Ace value equal 14 for hight straight
-    for (auto& card : cardsWithoutDuplicatedRanks) {
+    // Ace value equal 1 for low straight
+    for (auto& card : uniqueCards) {
         if (card.getRank() == Rank::ACE) {
             card.setValue(1);
         }
     }
-    std::sort(begin(cardsWithoutDuplicatedRanks), end(cardsWithoutDuplicatedRanks));
+    std::sort(begin(uniqueCards), end(uniqueCards));
 
-    for (size_t i = 0; i < cardsWithoutDuplicatedRanks.size(); ++i) {
-        if (cardsWithoutDuplicatedRanks[i].getValue() + 1 == cardsWithoutDuplicatedRanks[i + 1].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 2 == cardsWithoutDuplicatedRanks[i + 2].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 3 == cardsWithoutDuplicatedRanks[i + 3].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 4 == cardsWithoutDuplicatedRanks[i + 4].getValue()) {
+    for (size_t i = 0; i < uniqueCards.size(); ++i) {
+        if (uniqueCards[i].getValue() + 1 == uniqueCards[i + 1].getValue() &&
+            uniqueCards[i].getValue() + 2 == uniqueCards[i + 2].getValue() &&
+            uniqueCards[i].getValue() + 3 == uniqueCards[i + 3].getValue() &&
+            uniqueCards[i].getValue() + 4 == uniqueCards[i + 4].getValue()) {
             return true;
         }
     }
@@ -106,169 +135,128 @@ bool Verifier::isStraight(std::vector<Card> setOfCards) {
     return false;
 }
 
-bool Verifier::isFlush(const std::vector<Card>& setOfCards) {
-    int spades = 0;
-    int hearts = 0;
-    int diamonds = 0;
-    int clubs = 0;
+bool Verifier::isFlush(const std::vector<Card>& setOfCards) const
+{
+    std::map<Suit, int> numberOfCardsInSameSuit = countSuits(setOfCards);
 
-    for (const auto& card : setOfCards) {
-        if (card.getSuit() == Suit::SPADES) {
-            spades++;
-            if (spades == 5) {
-                return true;
-            }
-        } else if (card.getSuit() == Suit::HEARTS) {
-            hearts++;
-            if (hearts == 5) {
-                return true;
-            }
-        } else if (card.getSuit() == Suit::DIAMONDS) {
-            diamonds++;
-            if (diamonds == 5) {
-                return true;
-            }
-        } else {
-            clubs++;
-            if (clubs == 5) {
-                return true;
-            }
-        }
+    for (const auto& [key, value] : numberOfCardsInSameSuit)
+    {
+        if (value >= 5)
+            return true;
     }
+
     return false;
 }
 
-bool Verifier::isFullHouse(std::vector<Card> setOfCards) {
-    for (const auto& el : setOfCards) {
+bool Verifier::isFullHouse(const std::vector<Card>& setOfCards) const
+{
+    for (const auto& el : setOfCards) 
+    {
         auto found = std::search_n(rbegin(setOfCards), rend(setOfCards), 3, el);
-        if (found != setOfCards.rend()) {
-            setOfCards.erase(std::remove_if(setOfCards.begin(), setOfCards.end(), [&found](const auto& card) {
-                                 return card.getValue() == (*found).getValue();
-                             }),
-                             setOfCards.end());
+        if (found != setOfCards.rend()) 
+        {
+            std::vector<Card> cardsWithoutTriple = {};
+            cardsWithoutTriple.reserve(4);
+            
+            std::copy_if(setOfCards.begin(), setOfCards.end(), std::back_inserter(cardsWithoutTriple), [&found](const auto& card){
+                return card.getValue() != (*found).getValue();
+            });
 
-            if (isAPair(setOfCards)) {
-                return true;
-            }
+            return isAPair(cardsWithoutTriple); 
         }
     }
     return false;
 }
 
-bool Verifier::isFourKind(const std::vector<Card>& setOfCards) {
-    for (const auto& card : setOfCards) {
+bool Verifier::isFourKind(const std::vector<Card>& setOfCards) const
+{
+    for (const auto& card : setOfCards) 
+    {
         auto found = std::search_n(begin(setOfCards), end(setOfCards), 4, card);
-        if (found != setOfCards.end()) {
+
+        if (found != setOfCards.end()) 
             return true;
-        }
     }
+
     return false;
 }
 
-bool Verifier::isStraightFlush(std::vector<Card> setOfCards) {
-    std::vector<Card> cardsWithoutDuplicatedRanks;
+bool Verifier::isStraightFlush(const std::vector<Card>& setOfCards) const 
+{
+    std::vector<Card> uniqueCards;
     std::unique_copy(
         begin(setOfCards),
         end(setOfCards),
-        std::back_inserter(cardsWithoutDuplicatedRanks),
+        std::back_inserter(uniqueCards),
         [](const auto& first, const auto& second) {
             return first == second;
         });
-
+    
     // Ace value equal 14 for hight straight
-    for (size_t i = 0; i < cardsWithoutDuplicatedRanks.size(); ++i) {
-        if (cardsWithoutDuplicatedRanks[i].getValue() + 1 == cardsWithoutDuplicatedRanks[i + 1].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 1].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 2 == cardsWithoutDuplicatedRanks[i + 2].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 2].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 3 == cardsWithoutDuplicatedRanks[i + 3].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 3].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 4 == cardsWithoutDuplicatedRanks[i + 4].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 4].getSuit()) {
+    for (size_t i = 0; i < uniqueCards.size(); ++i) 
+    {
+        if (uniqueCards[i].getValue() + 1 == uniqueCards[i + 1].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 1].getSuit() &&
+            uniqueCards[i].getValue() + 2 == uniqueCards[i + 2].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 2].getSuit() &&
+            uniqueCards[i].getValue() + 3 == uniqueCards[i + 3].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 3].getSuit() &&
+            uniqueCards[i].getValue() + 4 == uniqueCards[i + 4].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 4].getSuit())
+        {
             return true;
         }
     }
     // Ace value equal 1 for low straight
-    for (auto& card : cardsWithoutDuplicatedRanks) {
-        if (card.getRank() == Rank::ACE) {
+    for (auto& card : uniqueCards)
+    {
+        if (card.getRank() == Rank::ACE)
             card.setValue(1);
-        }
     }
-    std::sort(begin(cardsWithoutDuplicatedRanks), end(cardsWithoutDuplicatedRanks));
+    std::sort(begin(uniqueCards), end(uniqueCards));
 
-    for (size_t i = 0; i < cardsWithoutDuplicatedRanks.size(); ++i) {
-        if (cardsWithoutDuplicatedRanks[i].getValue() + 1 == cardsWithoutDuplicatedRanks[i + 1].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 1].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 2 == cardsWithoutDuplicatedRanks[i + 2].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 2].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 3 == cardsWithoutDuplicatedRanks[i + 3].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 3].getSuit() &&
-            cardsWithoutDuplicatedRanks[i].getValue() + 4 == cardsWithoutDuplicatedRanks[i + 4].getValue() &&
-            cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 4].getSuit()) {
+    for (size_t i = 0; i < uniqueCards.size(); ++i) {
+        if (uniqueCards[i].getValue() + 1 == uniqueCards[i + 1].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 1].getSuit() &&
+            uniqueCards[i].getValue() + 2 == uniqueCards[i + 2].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 2].getSuit() &&
+            uniqueCards[i].getValue() + 3 == uniqueCards[i + 3].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 3].getSuit() &&
+            uniqueCards[i].getValue() + 4 == uniqueCards[i + 4].getValue() &&
+            uniqueCards[i].getSuit() == uniqueCards[i + 4].getSuit()) 
+        {
             return true;
         }
     }
     return false;
 }
 
-Suit Verifier::getDominantSuit(const std::vector<Card>& setOfCards) {
-    int spades = 0;
-    int hearts = 0;
-    int diamonds = 0;
-    int clubs = 0;
-
-    for (const auto& card : setOfCards) {
-        if (card.getSuit() == Suit::SPADES) {
-            spades++;
-            if (spades == 5) {
-                return Suit::SPADES;
-            }
-        } else if (card.getSuit() == Suit::HEARTS) {
-            hearts++;
-            if (hearts == 5) {
-                return Suit::HEARTS;
-            }
-        } else if (card.getSuit() == Suit::DIAMONDS) {
-            diamonds++;
-            if (diamonds == 5) {
-                return Suit::DIAMONDS;
-            }
-        } else {
-            clubs++;
-            if (clubs == 5) {
-                return Suit::CLUBS;
-            }
-        }
-    }
-}
-
-bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
+bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) const 
+{
     Suit dominantSuit = getDominantSuit(setOfCards);
+    std::vector<Card> uniqueCards {};
 
-    std::vector<Card> cardsWithoutDuplicatedRanks;
     std::unique_copy(
         begin(setOfCards),
         end(setOfCards),
-        std::back_inserter(cardsWithoutDuplicatedRanks),
+        std::back_inserter(uniqueCards),
         [&dominantSuit](const auto& first, const auto& second) {
-            if (first == second) {
-                if (first.getSuit() == dominantSuit) {
-                    return true;
-                }
+            if (first == second && first.getSuit() == dominantSuit) {
+                return true;
             }
             return false;
         });
 
-    for (size_t i = 0; i < cardsWithoutDuplicatedRanks.size(); ++i) {
+    for (size_t i = 0; i < uniqueCards.size(); ++i) {
         if (setOfCards[i].getRank() == Rank::TEN) {
-            if (cardsWithoutDuplicatedRanks[i].getValue() + 1 == cardsWithoutDuplicatedRanks[i + 1].getValue() &&
-                cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 1].getSuit() &&
-                cardsWithoutDuplicatedRanks[i].getValue() + 2 == cardsWithoutDuplicatedRanks[i + 2].getValue() &&
-                cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 2].getSuit() &&
-                cardsWithoutDuplicatedRanks[i].getValue() + 3 == cardsWithoutDuplicatedRanks[i + 3].getValue() &&
-                cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 3].getSuit() &&
-                cardsWithoutDuplicatedRanks[i].getValue() + 4 == cardsWithoutDuplicatedRanks[i + 4].getValue() &&
-                cardsWithoutDuplicatedRanks[i].getSuit() == cardsWithoutDuplicatedRanks[i + 4].getSuit()) {
+            if (uniqueCards[i].getValue() + 1 == uniqueCards[i + 1].getValue() &&
+                uniqueCards[i].getSuit() == uniqueCards[i + 1].getSuit() &&
+                uniqueCards[i].getValue() + 2 == uniqueCards[i + 2].getValue() &&
+                uniqueCards[i].getSuit() == uniqueCards[i + 2].getSuit() &&
+                uniqueCards[i].getValue() + 3 == uniqueCards[i + 3].getValue() &&
+                uniqueCards[i].getSuit() == uniqueCards[i + 3].getSuit() &&
+                uniqueCards[i].getValue() + 4 == uniqueCards[i + 4].getValue() &&
+                uniqueCards[i].getSuit() == uniqueCards[i + 4].getSuit()) {
                 return true;
             }
         }
@@ -276,29 +264,29 @@ bool Verifier::isRoyalFlush(const std::vector<Card>& setOfCards) {
     return false;
 }
 
-std::string Verifier::printPokerHand(PokerHand pokerHand) {
+std::string Verifier::printPokerHand(const PokerHand& pokerHand) const
+{
     switch (pokerHand) {
     case PokerHand::ROYALFLUSH:
-        return "Royal flush\n";
+        return "Royal flush";
     case PokerHand::STRAIGHTFLUSH:
-        return "Straight flush\n";
+        return "Straight flush";
     case PokerHand::FOURKIND:
-        return "Four of a kind\n";
+        return "Four of a kind";
     case PokerHand::FULLHOUSE:
-        return "Full house\n";
+        return "Full house";
     case PokerHand::FLUSH:
-        return "Flush\n";
+        return "Flush";
     case PokerHand::STRAIGHT:
-        return "Straight\n";
+        return "Straight";
     case PokerHand::THREEKIND:
-        return "Three of a kind\n";
+        return "Three of a kind";
     case PokerHand::TWOPAIRS:
-        return "Two pair\n";
+        return "Two pair";
     case PokerHand::PAIR:
-        return "Pair\n";
+        return "Pair";
     case PokerHand::HIGHCARDS:
-        return "High Card\n";
     default:
-        return "Unknown poker hand";
+        return "High Card";
     }
 }

@@ -3,46 +3,128 @@
 #include <stdlib.h>
 #include <algorithm>
 
-Game::Game(){
-    std::shared_ptr<Verifier> verifier_ = std::make_shared<Verifier>();
-    std::unique_ptr<Comparator> comparator_ = std::make_unique<Comparator>(verifier_);
+namespace
+{
 
-    std::shared_ptr<Deck> deck_ = std::make_shared<Deck>();
-    //std::shared_ptr<Table> table_ = std::make_shared<Table>(deck_);
+std::string inputPlayerName()
+{
+    std::cout << "Name ";
+    std::string name;
+    std::cin.ignore();
+    getline(std::cin, name);
 
-    //players_.push_back(std::make_shared<Player>(deck_, table_, "Player", 1000));
-    //players_.push_back(std::make_shared<Player>(deck_, table_, "Computer", 1000));
+    return name;
 }
 
+} // namespace
 
-void Game::performRound() {
-    std::cout << "Round number: " << ++roundNumber_;
-    //PREFLOP
-    performPreFlop();
-    displayHandsAndTable();
-    performPlayerAction();
-    //FLOP
-    performFlop();
-    displayHandsAndTable();
-    performPlayerAction();
-    //TURN
-    performTurnOrTheRiver();
-    displayHandsAndTable();
-    performPlayerAction();
-    //RIVER
-    performTurnOrTheRiver();
-    displayHandsAndTable();
+Game::Game()
+{
+    verifier_ = std::make_shared<Verifier>();
+    comparator_ = std::make_unique<Comparator>(verifier_);
+
+    deck_ = std::make_shared<Deck>();
+    table_ = std::make_shared<Table>(deck_);
+
+    players_.push_back(std::make_shared<Player>(deck_, table_, "Player", 1200));
+    players_.push_back(std::make_shared<Player>(deck_, table_, "Computer", 750));
 }
 
-void Game::startGame() {
-    while (true) {
+void Game::startGame() 
+{
+    while (true) 
+    {
         prepareDeck();
         printOperations();
         selectOperation();
     }
 }
 
-void Game::selectOperation() {
+void Game::performRound()
+{
+    std::cout << "\nROUND NUMBER " << roundNumber_++ << "\n\n";
+    activatePlayers();
+    if (!arePlayersActive())
+    {
+        std::cout << "Players are not ready!\n";
+        return;
+    }
+
+    deck_->shuffleTheDeck();
+    //PREFLOP
+    performPreFlop();
+    prepareCardsForVerdict();
+    setBestCombinations();
+    displayHandsAndTable();
+    performPlayerAction();
+    //FLOP
+    performFlop();
+    prepareCardsForVerdict();
+    setBestCombinations();
+    displayHandsAndTable();
+    performPlayerAction();
+    //TURN
+    performTurnOrTheRiver();
+    prepareCardsForVerdict();
+    setBestCombinations();
+    displayHandsAndTable();
+    performPlayerAction();
+    //RIVER
+    performTurnOrTheRiver();
+    prepareCardsForVerdict();
+    setBestCombinations();
+    displayHandsAndTable();
+    //VERDICT
+    prepareCardsForVerdict();
+    setBestCombinations();
+    sortPlayersByHand();
+}
+
+void Game::sortPlayersByHand()
+{
+    std::sort(begin(players_), end(players_), [this](auto& firstPlayer, auto& secondPlayer){
+        return comparator_->calculateBetterHand(firstPlayer->getHandToEvaluate(), secondPlayer->getHandToEvaluate()) == Settlement::WIN ? true : false;
+    });
+}
+
+void Game::prepareCardsForVerdict()
+{
+    for (const auto& player : players_)
+    {
+        player->prepareCardsForVerdict();
+    }
+}
+
+void Game::setBestCombinations()
+{
+    for (const auto& player : players_)
+    {
+        player->setBestCombination(verifier_->detectBestCombination(player->getHandToEvaluate()));
+    }
+}
+
+void Game::activatePlayers()
+{
+    for (const auto& player : players_)
+    {
+        if (player->getMoney() > valueOfBlind_ && !player->isActiveInRound())
+        {
+            player->setPlayerActivity(true);
+        }
+    }
+}
+
+bool Game::arePlayersActive()
+{
+    size_t numberOfActivePlayers = std::count_if(players_.begin(), players_.end(), [](const auto& player){
+        return player->isActiveInRound();
+    });
+
+    return numberOfActivePlayers > 1 ? true : false;
+}
+
+void Game::selectOperation()
+{
     int choice;
     do {
         std::cin >> choice;
@@ -63,7 +145,8 @@ void Game::selectOperation() {
     while (choice < 1 || choice > 4 );
 }
 
-void Game::printOperations() const {
+void Game::printOperations() const
+{
     std::cout << "1. Perform round\n";
     std::cout << "2. Add player\n";
     std::cout << "3. Remove player\n";
@@ -72,19 +155,19 @@ void Game::printOperations() const {
     std::cout << "Select action: ";
 }
 
-void Game::addPlayer() {
-    if (players_.size() < maxNumberOfPlayers_) {
-        std::string name;
-        std::cout << "\nName: ";
-        std::cin.ignore();
-        getline(std::cin, name);
+void Game::addPlayer()
+{
+    if (players_.size() < maxNumberOfPlayers_)
+    {
+        const auto name = inputPlayerName();
 
         auto found = std::find_if(players_.begin(), players_.end(), [&name](const auto& player){
             return name == player->getName();
         });
 
-        if (found != players_.end()) {
-            std::cout << "This name is taken\n";
+        if (found != players_.end())
+        {
+            std::cout << "This name is already taken\n";
             return;
         }
 
@@ -92,7 +175,8 @@ void Game::addPlayer() {
         std::cout << "Money: ";
         std::cin >> money;
 
-        if (money < valueOfBlind_) {
+        if (money < valueOfBlind_)
+        {
             std::cout << "Value to low. The player has no money to bet\n";
             return;
         }
@@ -101,99 +185,110 @@ void Game::addPlayer() {
 
         std::shared_ptr<Player> player = std::make_shared<Player>(deck_, table_, name, money);
         players_.push_back(player);
-    } else {
+    } 
+    else
+    {
         std::cout << "Number of players can't exceed " << maxNumberOfPlayers_ << '\n';
     }
 }
 
-void Game::removePlayer() {
-    std::cout << "player's name to delete: ";
-    std::string name;
-    std::cin.ignore();
-    getline(std::cin, name);
-
-    auto found = std::find_if(players_.begin(), players_.end(), [&name](const auto& player) {
-        return name == player->getName();
-    });
-    
-    if (found != std::end(players_)) {
-        players_.erase(found, players_.end());
-        std::cout << "Player removed\n";
-    } else {
-        std::cout << "Player not found\n";
-    }
+void Game::removePlayer()
+{
+    removePlayer(inputPlayerName());
 }
 
-void Game::performPlayerAction() {
-    for (auto& player : players_) {
-        if (player->isActiveInRound()) {
+void Game::removePlayer(const std::string& name)
+{
+    auto erasedPlayer = players_.erase(std::remove_if(players_.begin(), players_.end(), [&name](const auto& player){
+        return name == player->getName();
+    }), players_.end());
+
+    erasedPlayer == std::end(players_) ? std::cout << "Player removed\n" : std::cout << "Player not found\n";
+}
+
+void Game::performPlayerAction() 
+{
+    for (auto& player : players_)
+    {
+        if (player->isActiveInRound())
+        {
             player->displayActions();
             player->selectActions();
         }
     }
 }
 
-void Game::performPreFlop() {
-    for (auto& player : players_) {
-        if (player->wasBlindCarriedOutCorrectly(valueOfBlind_)) {
-            for (int i = 0; i < 2; i++) {
-            player->getCardFromDeck();
+void Game::performPreFlop()
+{
+    for (auto& player : players_)
+    {
+        if (player->wasBlindCarriedOutCorrectly(valueOfBlind_))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                player->getCardFromDeck();
             }
         }
-        else {
-            std::cout << "REMOVE THIS PLAYER, HE IS TOO POOR!\n";
+        else 
+        {
+            removePlayer(player->getName());
         }
     }
 }
 
-void Game::performFlop() {
-    for (int i = 0; i < 3; i++) {
+void Game::performFlop()
+{
+    for (int i = 0; i < 3; i++)
+    {
         table_->addCardToTable();
     }
 }
 
-void Game::performTurnOrTheRiver() {
+void Game::performTurnOrTheRiver() 
+{
     table_->addCardToTable();
 }
 
-void Game::prepareDeck() {
-    if (roundNumber_ > 0) {
+void Game::prepareDeck()
+{
+    if (roundNumber_ > 0)
+    {
         returnPlayersCards();
         returnCardsFromTable();
-        table_->getDeck()->shuffleTheDeck();
     }
+    deck_->shuffleTheDeck();
 }
 
-void Game::returnPlayersCards() {
-    for (auto& player : players_) {
+void Game::returnPlayersCards()
+{
+    for (auto& player : players_)
+    {
         player->returnCardsToDeck();
     }
 }
 
-void Game::returnCardsFromTable() {
+void Game::returnCardsFromTable()
+{
     table_->returnCardsToDeck();
 }
 
-
-void Game::printPlayers() {
-    for (size_t i = 0; i < players_.size(); i++) {
+void Game::printPlayers() const
+{
+    for (size_t i = 0; i < players_.size(); i++) 
+    {
         std::cout << i + 1 << ". ";
         players_[i]->printMoney();
     }
 }
 
-void Game::displayMoneyAndPool() const {
-    for (auto& player : players_) {
-        player->printMoney();
-    }
-    std::cout << "Money in pool: " << table_->returnPool() << '\n';
-}
-
-void Game::displayHandsAndTable() const {
-    for (auto& player : players_) {
-        std::cout << '\n' << player->getName() << ": \n";
+void Game::displayHandsAndTable() const
+{
+    for (auto& player : players_)
+    {
+        std::cout << player->getName() << " [" << player->getMoney() << "]";
+        std::cout << " [" << verifier_->printPokerHand(player->getBestCombination()) << "]\n";
         player->printHand();
+        std::cout << '\n';
     }
-    std::cout << "\nTable:\n";
     table_->printTable();
 }

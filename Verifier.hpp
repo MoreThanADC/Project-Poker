@@ -18,19 +18,17 @@ enum class PokerHand { HIGHCARDS,
 
 class Verifier {
 public:
-    PokerHand detectBestCombination(std::vector<Card>& setOfCards);
-    std::string printPokerHand(PokerHand pokerHand);
+    PokerHand detectBestCombination(std::vector<Card> setOfCards);
+    std::string printPokerHand(const PokerHand& pokerHand) const;
 
 private:
-    bool isAPair(const std::vector<Card>& setOfCards);
-    bool areTwoPairs(const std::vector<Card>& setOfCards);
-    bool isThreeKind(const std::vector<Card>& setOfCards);
-    bool isStraight(std::vector<Card> setOfCards);
-    bool isFlush(const std::vector<Card>& setOfCards);
-    bool isFullHouse(std::vector<Card> setOfCards);
-    bool isFourKind(const std::vector<Card>& setOfCards);
-    bool isStraightFlush(std::vector<Card> setOfCards);
-    bool isRoyalFlush(const std::vector<Card>& setOfCards);
-
-    Suit getDominantSuit(const std::vector<Card>& setOfCards);
+    bool isAPair(const std::vector<Card>& setOfCards) const;
+    bool areTwoPairs(const std::vector<Card>& setOfCards) const;
+    bool isThreeKind(const std::vector<Card>& setOfCards) const;
+    bool isStraight(const std::vector<Card>& setOfCards) const;
+    bool isFlush(const std::vector<Card>& setOfCards) const;
+    bool isFullHouse(const std::vector<Card>& setOfCards) const;
+    bool isFourKind(const std::vector<Card>& setOfCards) const;
+    bool isStraightFlush(const std::vector<Card>& setOfCards) const;
+    bool isRoyalFlush(const std::vector<Card>& setOfCards) const; 
 };

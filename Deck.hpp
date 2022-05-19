@@ -9,20 +9,20 @@
 struct Deck {
     Deck();
     ~Deck() {
-        std::cout << "DESTROY DECK\n";
+        //std::cout << "DESTROY DECK\n";
     }
 
     void shuffleTheDeck();
-    void printCards();
+    void printCards() const;
 
 
     size_t cardsInTheDeck() const { return deck_.size(); }
-    std::vector<std::shared_ptr<Card>> getDeck() { return deck_; }
+    std::vector<Card> getDeck() { return deck_; }
 
-    std::shared_ptr<Card> takeCardFromDeck();
-    void returnCardToDeck(const std::shared_ptr<Card>& card);
+    Card takeCardFromDeck();
+    void returnCardToDeck(const Card& card);
 
 private:
     void setupDeck();
-    std::vector<std::shared_ptr<Card>> deck_;
+    std::vector<Card> deck_;
 };

@@ -12,7 +12,7 @@ enum class Settlement {
 class Comparator {
 public:   
     Comparator(std::shared_ptr<Verifier> verifier) : verifier_(verifier) {};
-    Settlement calculateBetterHand(std::vector<Card>& firstHand, std::vector<Card>& secondHand);
+    Settlement calculateBetterHand(std::vector<Card> firstHand, std::vector<Card> secondHand);
 
 private:
     Settlement settleTheTie(std::vector<Card>& firstHand, std::vector<Card>& secondHand, const PokerHand& pokerHand);

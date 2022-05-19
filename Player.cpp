@@ -1,27 +1,50 @@
 #include "Player.hpp"
 
-void Player::getCardFromDeck() {
-    if (hand_.size() < 2) {
+#include <algorithm>
+
+void Player::getCardFromDeck()
+{
+    if (hand_.size() < 2)
+    {
         hand_.push_back(deck_->takeCardFromDeck());
     }
 }
 
-void Player::returnCardsToDeck() {
-    for (auto& card : hand_) {
+void Player::returnCardsToDeck()
+{
+    for (auto& card : hand_)
+    {
         deck_->returnCardToDeck(card);
         hand_.pop_back();
     }
 }
 
-bool Player::wasBlindCarriedOutCorrectly(size_t valueOfBlind) {
-    if (money_ <= valueOfBlind) {
+bool Player::wasBlindCarriedOutCorrectly(size_t valueOfBlind)
+{
+    if (money_ <= valueOfBlind)
+    {
         std::cout << "Player don't have enough money for bet blind\n";
         return false;
-    } else {
+    }
+    else
+    {
         money_ -= valueOfBlind;
         table_->addToPool(valueOfBlind);
         return true;
     }
+}
+
+void Player::prepareCardsForVerdict()
+{
+    handToEvaluate_.clear();
+    handToEvaluate_.reserve(7);
+
+    std::vector<Card> table = table_->getTable();
+
+    std::sort(begin(hand_), end(hand_));
+    std::sort(begin(table), end(table));
+
+    std::merge(hand_.begin(), hand_.end(), table.begin(), table.end(), std::back_inserter(handToEvaluate_));
 }
 
 void Player::displayActions() {
@@ -36,32 +59,37 @@ void Player::displayActions() {
 
 void Player::selectActions() {
     int choice = 0;
-    do {
+    do 
+    {
         std::cin >> choice;
-        switch(choice) {
-            case 1 : fold();
-                break;
-            case 2 : check();
-                break;
-            case 3 : call();
-                break;
-            case 4 : bet();
-                break;
-            case 5 : allIn();
-                break;
-            default : std::cout << "Wrong choice, try again.\n";
-            }
+        switch(choice)
+        {
+        case 1 : fold();
+            break;
+        case 2 : check();
+            break;
+        case 3 : call();
+            break;
+        case 4 : bet();
+            break;
+        case 5 : allIn();
+            break;
+        default : std::cout << "Wrong choice, try again.\n";
+        }
     }
     while (choice < 1 || choice > 5 );
 }
 
-bool Player::fold() {
+bool Player::fold()
+{
     isActiveInRound_ = false;
     return true;
 }
 
-bool Player::check() {
-    if (table_->returnCurrentBet() != currentBet_) {
+bool Player::check()
+{
+    if (table_->returnCurrentBet() != currentBet_)
+    {
         std::cout << "You can't check, your bet is lower than curret bet on the table.\n";
         return false;
     }
@@ -69,15 +97,21 @@ bool Player::check() {
     return true;
 }
 
-bool Player::call() {
+bool Player::call()
+{
     size_t missingValueToBet = table_->returnCurrentBet() - currentBet_;
 
-    if (missingValueToBet <= 0) {
+    if (missingValueToBet <= 0)
+    {
         std::cout << "you can't beat yourself\n";
         return false;
-    } else if (money_ < missingValueToBet) {
+    } 
+    else if (money_ < missingValueToBet)
+    {
         allIn();
-    } else {
+    }
+    else
+    {
         money_ -= missingValueToBet;
         table_->addToPool(missingValueToBet);
         currentBet_ += missingValueToBet;
@@ -95,13 +129,15 @@ bool Player::bet()
     return performBet(bet);
 }
 
-bool Player::performBet(size_t bet) 
+bool Player::performBet(const size_t bet) 
 {
-    if (bet > money_) {
+    if (bet > money_)
+    {
         std::cout << "You don't have enough money!\n";
         return false;
     }
-    if (bet < table_->returnCurrentBet()) {
+    if (bet < table_->returnCurrentBet())
+    {
         std::cout << "You'r bet must be bigger than current bet: " << table_->returnCurrentBet() << "\n";
         return false;
     }
@@ -117,12 +153,15 @@ bool Player::performBet(size_t bet)
     return true;
 }
 
-bool Player::allIn() {
-    if (currentBet_ >= table_->returnCurrentBet()) {
+bool Player::allIn()
+{
+    if (currentBet_ >= table_->returnCurrentBet())
+    {
         std::cout << "you can't bet yourself\n";
         return false;
     }
-    if (money_ == 0) {
+    if (money_ == 0)
+    {
         std::cout << "you don't have money\n";
         return false;
     }
@@ -134,15 +173,11 @@ bool Player::allIn() {
     return true;
 }
 
-void Player::setCurrentBet(size_t value)
-{
-    currentBet_ = value;
-}
-
 void Player::printHand() const 
 {
-    for (const auto& card : hand_) {
-        std::cout << card->printRank() << " of " << card->printSuit() << " value : " << card->printValue() << '\n';
+    for (const auto& card : hand_)
+    {
+        std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
 }
 

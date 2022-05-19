@@ -1,6 +1,6 @@
 #include "Comparator.hpp"
 
-Settlement Comparator::calculateBetterHand(std::vector<Card>& firstHand, std::vector<Card>& secondHand) {
+Settlement Comparator::calculateBetterHand(std::vector<Card> firstHand, std::vector<Card> secondHand) {
     auto firstCombination = verifier_->detectBestCombination(firstHand);
     auto secondCombination = verifier_->detectBestCombination(secondHand);
 

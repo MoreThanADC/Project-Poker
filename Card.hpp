@@ -22,9 +22,8 @@ enum class Suit { SPADES,
                   CLUBS };
 
 struct Card {
-    //Card();
     ~Card() {
-        std::cout << "DESTROY CARD\n";
+        //std::cout << "DESTROY CARD\n";
     }
 
     Card(const Rank& rank, const Suit& suit);
@@ -36,6 +35,7 @@ struct Card {
     Suit getSuit() const { return suit_; }
     Rank getRank() const { return rank_; }
     int getValue() const { return value_; }
+
     void setValue(const int newValue) { value_ = newValue; }
 
 // in the future spaceship operator

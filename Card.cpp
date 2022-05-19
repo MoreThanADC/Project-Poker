@@ -2,7 +2,7 @@
 
 Card::Card(const Rank& rank, const Suit& suit)
     : rank_(rank), suit_(suit) {
-    std::cout << "CREATE CARD\n";
+    //std::cout << "CREATE CARD\n";
     setValueForCard(rank);
 }
 
