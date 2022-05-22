@@ -1,5 +1,7 @@
 #include "Comparator.hpp"
 
+#include <algorithm>
+
 Settlement Comparator::calculateBetterHand(std::vector<Card> firstHand, std::vector<Card> secondHand) {
     auto firstCombination = verifier_->detectBestCombination(firstHand);
     auto secondCombination = verifier_->detectBestCombination(secondHand);
@@ -36,7 +38,7 @@ Settlement Comparator::settleTheTie(std::vector<Card>& firstHand, std::vector<Ca
     case PokerHand::FOURKIND :
         return compareThrees(firstHand, secondHand); // We can use threes comparator, because in deck (52 cards) may be just only one unique three and it enough
     case PokerHand::STRAIGHTFLUSH :
-        return compareStraights(firstHand, secondHand); // we can use straights comparator, because kidn of suit doesn't matter
+        return compareStraights(firstHand, secondHand); // we can use straights comparator, because kind of suit doesn't matter
     default :
         return Settlement::DRAW;
     }

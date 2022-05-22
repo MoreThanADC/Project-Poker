@@ -22,6 +22,7 @@ private:
     void removePlayer(const std::string& name);
     void removePlayer();
     void printPlayers() const;
+    void printWinner();
 
     void performPlayerAction();
     void performPreFlop();
@@ -41,6 +42,9 @@ private:
     void prepareCardsForVerdict();
     void setBestCombinations();
     void sortPlayersByHand();
+
+    bool isTieAmongWinners();
+    void payOutForWinners();
 
     std::shared_ptr<Verifier> verifier_;
     std::unique_ptr<Comparator> comparator_;

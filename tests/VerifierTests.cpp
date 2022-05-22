@@ -16,7 +16,7 @@ struct VerifierTest : public ::testing::Test
     std::vector<Card> hand_;
 };
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualHighestCard)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualHighestCard)
 {
     // highest card:
     hand_.push_back(Card {Rank::ACE, Suit::SPADES});
@@ -32,7 +32,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualHighestCard)
     EXPECT_EQ(result, PokerHand::HIGHCARDS);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualPair)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualPair)
 {
     // pair:
     hand_.push_back(Card {Rank::TWO, Suit::SPADES});
@@ -48,7 +48,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualPair)
     EXPECT_EQ(result, PokerHand::PAIR);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualTwoPair)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualTwoPair)
 {
     // first pair:
     hand_.push_back(Card {Rank::TWO, Suit::SPADES});
@@ -66,7 +66,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualTwoPair)
 }
 
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualThree)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualThree)
 {
     // three:
     hand_.push_back(Card {Rank::TWO, Suit::SPADES});
@@ -82,7 +82,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualThree)
     EXPECT_EQ(result, PokerHand::THREEKIND);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualFourKinds)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualFourKinds)
 {
     // four kind:
     hand_.push_back(Card {Rank::TWO, Suit::SPADES});
@@ -98,7 +98,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFourKinds)
     EXPECT_EQ(result, PokerHand::FOURKIND);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualFullHouse)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualFullHouse)
 {
     // full house:
     hand_.push_back(Card {Rank::TWO, Suit::SPADES});
@@ -114,7 +114,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFullHouse)
     EXPECT_EQ(result, PokerHand::FULLHOUSE);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualFlush)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualFlush)
 {
     // flush:
     hand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
@@ -130,7 +130,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualFlush)
     EXPECT_EQ(result, PokerHand::FLUSH);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualLowStraight)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualLowStraight)
 {
     // low straight (with ACE under TWO):
     hand_.push_back(Card {Rank::ACE, Suit::SPADES});
@@ -147,7 +147,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualLowStraight)
     EXPECT_EQ(result, PokerHand::STRAIGHT);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualHighStraight)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualHighStraight)
 {
     // high straight (with ACE over KING):
     hand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
@@ -164,7 +164,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualHighStraight)
     EXPECT_EQ(result, PokerHand::STRAIGHT);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualStraightFlush)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualStraightFlush)
 {
     // StraightFlush:
     hand_.push_back(Card {Rank::THREE, Suit::SPADES});
@@ -181,7 +181,7 @@ TEST_F (VerifierTest, shouldReturBestCombinationEqualStraightFlush)
     EXPECT_EQ(result, PokerHand::STRAIGHTFLUSH);
 }
 
-TEST_F (VerifierTest, shouldReturBestCombinationEqualRoyalFlush)
+TEST_F (VerifierTest, shouldReturnBestCombinationEqualRoyalFlush)
 {
     // royal flush
     hand_.push_back(Card {Rank::TEN, Suit::SPADES});

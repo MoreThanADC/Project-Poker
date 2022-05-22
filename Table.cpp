@@ -21,6 +21,11 @@ void Table::addToPool(const size_t amount) {
     pool_ += amount;
 }
 
+void Table::resetPool()
+{
+    pool_ = 0;
+}
+
 void Table::printTable() const
 {
     std::cout << "Table [" << pool_ << "]:\n";

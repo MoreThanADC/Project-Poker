@@ -8,4 +8,4 @@ int main()
     return 0;
 }
 
-// NAPISZ FUNKCJE KTÓRA WYPŁACI HAJS NAJLEPSZEMU, SPRAWDŹ REMIS, ZABIERZ HAJS Z PULI
+// obsługa akcji, kiedy można wykonać daną akcję, jeżeli akcji nie można wykonać, to do skutku aż będzie coś wybrane

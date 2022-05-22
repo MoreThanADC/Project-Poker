@@ -528,7 +528,7 @@ TEST_F(ComparatorTests, Straight_ShouldReturnLoseWhenFirstStraightIsLower)
     EXPECT_EQ(settlement, Settlement::LOSE);
 }
 
-TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenJustFirstHandContaimFiveCardsWithSameSuits)
+TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenJustFirstHandContainsFiveCardsWithSameSuits)
 {
     // FLUSH
     firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});

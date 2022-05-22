@@ -78,6 +78,32 @@ void Game::performRound()
     prepareCardsForVerdict();
     setBestCombinations();
     sortPlayersByHand();
+    printWinner();
+    payOutForWinners();
+}
+
+bool Game::isTieAmongWinners()
+{
+    return comparator_->calculateBetterHand(players_[0]->getHandToEvaluate(), players_[1]->getHandToEvaluate()) == Settlement::DRAW;
+}
+
+void Game::payOutForWinners()
+{
+    size_t value = table_->getPool();
+    if (isTieAmongWinners())
+    {
+        const size_t numberOfWinners = 2;
+        value = table_->getPool() / numberOfWinners;
+
+        players_[0]->addToAccount(value);
+        players_[1]->addToAccount(value);
+    }
+    else
+    {
+        players_[0]->addToAccount(value);
+    }
+
+    table_->resetPool();
 }
 
 void Game::sortPlayersByHand()
@@ -291,4 +317,22 @@ void Game::displayHandsAndTable() const
         std::cout << '\n';
     }
     table_->printTable();
+}
+
+void Game::printWinner()
+{
+    if (isTieAmongWinners())
+    {
+        std::cout << players_[0]->getName() << " and " << players_[1]->getName() << " are the winners!\n";
+        std::cout << "BEST COMBINATION: " << verifier_->printPokerHand(players_[0]->getBestCombination()) << '\n';
+        std::cout << "PRIZE: " << table_->getPool() / 2 << "\n\n";
+    }
+    else
+    {
+        std::cout << players_[0]->getName() << " is the winner!\n";
+        std::cout << "BEST COMBINATION: " << verifier_->printPokerHand(players_[0]->getBestCombination()) << '\n';
+        std::cout << "PRIZE: " << table_->getPool() << "\n\n";
+    }
+
+    table_->resetPool();
 }

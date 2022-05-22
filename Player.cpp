@@ -19,6 +19,11 @@ void Player::returnCardsToDeck()
     }
 }
 
+void Player::addToAccount(const size_t money)
+{
+    money_ += money;
+}
+
 bool Player::wasBlindCarriedOutCorrectly(size_t valueOfBlind)
 {
     if (money_ <= valueOfBlind)
@@ -90,7 +95,7 @@ bool Player::check()
 {
     if (table_->returnCurrentBet() != currentBet_)
     {
-        std::cout << "You can't check, your bet is lower than curret bet on the table.\n";
+        std::cout << "You can't check, your bet is lower than current bet on the table.\n";
         return false;
     }
 

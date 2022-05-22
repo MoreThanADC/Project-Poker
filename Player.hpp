@@ -53,6 +53,8 @@ public:
     void setPlayerActivity(const bool isActive) { isActiveInRound_ = isActive; }
     void setBestCombination(const PokerHand& bestCombination) { bestCombination_ = bestCombination; }
 
+    void addToAccount(const size_t money);
+
 private:
     size_t getInputFromUser();
 
