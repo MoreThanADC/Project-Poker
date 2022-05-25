@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TABLE_HPP
+#define TABLE_HPP
 
 #include "Deck.hpp"
 
@@ -7,7 +8,7 @@
 
 class Table {
 public:
-    Table(const std::shared_ptr<Deck>& deck)
+    explicit Table(const std::shared_ptr<Deck>& deck)
         : deck_(deck) {};
 
     void addCardToTable();
@@ -32,3 +33,5 @@ private:
     size_t pool_ = 0;
     size_t currentBet_ = 0;
 };
+
+#endif

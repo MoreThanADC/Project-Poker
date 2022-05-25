@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VERIFIER_HPP
+#define VERIFIER_HPP
 
 #include "Card.hpp"
 
@@ -18,7 +19,7 @@ enum class PokerHand { HIGHCARDS,
 
 class Verifier {
 public:
-    PokerHand detectBestCombination(std::vector<Card> setOfCards);
+    PokerHand detectBestCombination(std::vector<Card> setOfCards) const;
     std::string printPokerHand(const PokerHand& pokerHand) const;
 
 private:
@@ -32,3 +33,5 @@ private:
     bool isStraightFlush(const std::vector<Card>& setOfCards) const;
     bool isRoyalFlush(const std::vector<Card>& setOfCards) const; 
 };
+
+#endif

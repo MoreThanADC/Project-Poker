@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Helpers.hpp"
 
 #include <algorithm>
 
@@ -12,7 +13,7 @@ void Player::getCardFromDeck()
 
 void Player::returnCardsToDeck()
 {
-    for (auto& card : hand_)
+    for (const auto& card : hand_)
     {
         deck_->returnCardToDeck(card);
         hand_.pop_back();
@@ -46,13 +47,14 @@ void Player::prepareCardsForVerdict()
 
     std::vector<Card> table = table_->getTable();
 
-    std::sort(begin(hand_), end(hand_));
-    std::sort(begin(table), end(table));
+    std::ranges::sort(hand_, helpers::sortDescending);
+    std::ranges::sort(table, helpers::sortDescending);
 
-    std::merge(hand_.begin(), hand_.end(), table.begin(), table.end(), std::back_inserter(handToEvaluate_));
+    std::merge(hand_.begin(), hand_.end(), table.begin(), table.end(), std::back_inserter(handToEvaluate_)); // ranges
 }
 
-void Player::displayActions() {
+void Player::displayActions() const
+{
     std::cout << '\n' << name_ << '\n';
     std::cout << "1 - Fold - abandon the round and lose all coins staked\n";
     std::cout << "2 - Check - waiting, possible only when no one raised the bet\n";
@@ -62,7 +64,8 @@ void Player::displayActions() {
     std::cout << "Select action: ";
 }
 
-void Player::selectActions() {
+void Player::selectActions() 
+{
     int choice = 0;
     do 
     {
@@ -91,7 +94,7 @@ bool Player::fold()
     return true;
 }
 
-bool Player::check()
+bool Player::check() const
 {
     if (table_->returnCurrentBet() != currentBet_)
     {

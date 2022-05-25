@@ -3,20 +3,24 @@
 #include <algorithm>
 #include <memory>
 #include <random>
+#include <ranges>
 #include <string>
 
-Deck::Deck() {
-    //std::cout << "CREATE DECK\n";
+Deck::Deck() 
+{
     setupDeck();
 }
 
-void Deck::setupDeck() {
-    if (deck_.size() == 0)
+void Deck::setupDeck() 
+{
+    if (deck_.empty())
     {
         deck_.reserve(52);
-        for (auto suit = static_cast<int>(Suit::SPADES); suit <= static_cast<int>(Suit::CLUBS); ++suit) {
-            for (auto rank = static_cast<int>(Rank::ACE); rank <= static_cast<int>(Rank::KING); ++rank) {
-                Card card = Card(static_cast<Rank>(rank), static_cast<Suit>(suit));
+        for (auto suit = static_cast<int>(Suit::SPADES); suit <= static_cast<int>(Suit::CLUBS); ++suit) 
+        {
+            for (auto rank = static_cast<int>(Rank::ACE); rank <= static_cast<int>(Rank::KING); ++rank)
+            {
+                auto card = Card(static_cast<Rank>(rank), static_cast<Suit>(suit));
                 deck_.push_back(card);
             }
         }
@@ -35,7 +39,7 @@ void Deck::shuffleTheDeck()
     std::random_device randomDevice;
     std::mt19937 shuffleFunction(randomDevice());
 
-    std::shuffle(begin(deck_), end(deck_), shuffleFunction);
+    std::ranges::shuffle(deck_, shuffleFunction);
 }
 
 Card Deck::takeCardFromDeck()
@@ -49,9 +53,9 @@ Card Deck::takeCardFromDeck()
 
 void Deck::returnCardToDeck(const Card& card) 
 {
-    auto isAlreadyInDeck = std::any_of(deck_.begin(), deck_.end(), [&card](auto& currentCard){
-        return currentCard.getRank() == card.getRank() &&
-               currentCard.getSuit() == card.getSuit();
+    auto isAlreadyInDeck = std::ranges::any_of(deck_, [&card](const auto& currentCard){
+        return currentCard.getRank() == card.getRank() 
+            && currentCard.getSuit() == card.getSuit();
     });
 
     if (!isAlreadyInDeck)

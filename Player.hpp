@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
 #include "Deck.hpp"
 #include "Table.hpp"
@@ -7,16 +8,12 @@
 #include <memory>
 #include <vector>
 
-class Player {
+class Player 
+{
 public:
-    Player(const std::shared_ptr<Deck>& deck, const std::shared_ptr<Table>& table, const std::string& name = "Anonymus", const size_t money = 1000)
-        : deck_(deck), table_(table), name_(name), money_(money) {
-            //std::cout << "CREATE PLAYER\n";
-        };
-        
-    ~Player() {
-        //std::cout << "DESTROY PLAYER\n";
-    }
+    Player(const std::shared_ptr<Deck>& deck, const std::shared_ptr<Table>& table, const std::string& name = "Anonymous", const size_t money = 1000)
+        : deck_(deck), table_(table), name_(name), money_(money) {};
+
     void getCardFromDeck();
     void returnCardsToDeck();
     
@@ -27,13 +24,13 @@ public:
     void prepareCardsForVerdict();
 
     bool fold();        // abandon the round and lose any coins staked
-    bool check();       // waiting, possible only when no one raised the bet
+    bool check() const;       // waiting, possible only when no one raised the bet
     bool call();        // alignment to the present bet
     bool bet();         // increasing the current bet
     bool performBet(const size_t bet);
     bool allIn();       // increasing the current bet by all the money you have
 
-    void displayActions();
+    void displayActions() const;
     void selectActions();
 
     std::vector<Card> getHand() const { return hand_; }
@@ -71,3 +68,5 @@ private:
     bool isActiveInRound_ = true;
     bool currentOnSmallBlind_ = false;
 };
+
+#endif

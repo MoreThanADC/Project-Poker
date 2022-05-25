@@ -1,7 +1,8 @@
 #include "Game.hpp"
 
-#include <stdlib.h>
 #include <algorithm>
+#include <ranges>
+#include <stdlib.h>
 
 namespace
 {
@@ -42,7 +43,8 @@ void Game::startGame()
 
 void Game::performRound()
 {
-    std::cout << "\nROUND NUMBER " << roundNumber_++ << "\n\n";
+    roundNumber_++;
+    std::cout << "\nROUND NUMBER " << roundNumber_ << "\n\n";
     activatePlayers();
     if (!arePlayersActive())
     {
@@ -108,12 +110,12 @@ void Game::payOutForWinners()
 
 void Game::sortPlayersByHand()
 {
-    std::sort(begin(players_), end(players_), [this](auto& firstPlayer, auto& secondPlayer){
+    std::ranges::sort(players_, [this](auto& firstPlayer, auto& secondPlayer){
         return comparator_->calculateBetterHand(firstPlayer->getHandToEvaluate(), secondPlayer->getHandToEvaluate()) == Settlement::WIN ? true : false;
     });
 }
 
-void Game::prepareCardsForVerdict()
+void Game::prepareCardsForVerdict() const
 {
     for (const auto& player : players_)
     {
@@ -121,7 +123,7 @@ void Game::prepareCardsForVerdict()
     }
 }
 
-void Game::setBestCombinations()
+void Game::setBestCombinations() const
 {
     for (const auto& player : players_)
     {
@@ -129,7 +131,7 @@ void Game::setBestCombinations()
     }
 }
 
-void Game::activatePlayers()
+void Game::activatePlayers() const
 {
     for (const auto& player : players_)
     {
@@ -140,9 +142,9 @@ void Game::activatePlayers()
     }
 }
 
-bool Game::arePlayersActive()
+bool Game::arePlayersActive() const
 {
-    size_t numberOfActivePlayers = std::count_if(players_.begin(), players_.end(), [](const auto& player){
+    size_t numberOfActivePlayers = std::ranges::count_if(players_, [](const auto& player){
         return player->isActiveInRound();
     });
 
@@ -187,7 +189,7 @@ void Game::addPlayer()
     {
         const auto name = inputPlayerName();
 
-        auto found = std::find_if(players_.begin(), players_.end(), [&name](const auto& player){
+        auto found = std::ranges::find_if(players_, [&name](const auto& player){
             return name == player->getName();
         });
 
@@ -209,7 +211,7 @@ void Game::addPlayer()
 
         std::cout << "Added " << name << ", with " << money << " coins.\n";
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(deck_, table_, name, money);
+        auto player = std::make_shared<Player>(deck_, table_, name, money);
         players_.push_back(player);
     } 
     else
@@ -232,7 +234,7 @@ void Game::removePlayer(const std::string& name)
     erasedPlayer == std::end(players_) ? std::cout << "Player removed\n" : std::cout << "Player not found\n";
 }
 
-void Game::performPlayerAction() 
+void Game::performPlayerAction() const
 {
     for (auto& player : players_)
     {
@@ -246,7 +248,7 @@ void Game::performPlayerAction()
 
 void Game::performPreFlop()
 {
-    for (auto& player : players_)
+    for (const auto& player : players_)
     {
         if (player->wasBlindCarriedOutCorrectly(valueOfBlind_))
         {
@@ -262,7 +264,7 @@ void Game::performPreFlop()
     }
 }
 
-void Game::performFlop()
+void Game::performFlop() const
 {
     for (int i = 0; i < 3; i++)
     {
@@ -270,12 +272,12 @@ void Game::performFlop()
     }
 }
 
-void Game::performTurnOrTheRiver() 
+void Game::performTurnOrTheRiver() const
 {
     table_->addCardToTable();
 }
 
-void Game::prepareDeck()
+void Game::prepareDeck() const
 {
     if (roundNumber_ > 0)
     {
@@ -285,7 +287,7 @@ void Game::prepareDeck()
     deck_->shuffleTheDeck();
 }
 
-void Game::returnPlayersCards()
+void Game::returnPlayersCards() const
 {
     for (auto& player : players_)
     {
@@ -293,7 +295,7 @@ void Game::returnPlayersCards()
     }
 }
 
-void Game::returnCardsFromTable()
+void Game::returnCardsFromTable() const
 {
     table_->returnCardsToDeck();
 }

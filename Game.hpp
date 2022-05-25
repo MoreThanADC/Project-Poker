@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include <memory>
 
@@ -7,7 +8,8 @@
 #include "Table.hpp"
 #include "Player.hpp"
 
-class Game {
+class Game 
+{
 public:
     Game();
 
@@ -24,23 +26,23 @@ private:
     void printPlayers() const;
     void printWinner();
 
-    void performPlayerAction();
+    void performPlayerAction() const;
     void performPreFlop();
-    void performFlop();
-    void performTurnOrTheRiver();
+    void performFlop() const;
+    void performTurnOrTheRiver() const;
 
-    void prepareDeck();
+    void prepareDeck() const;
 
-    void activatePlayers();
-    bool arePlayersActive();
+    void activatePlayers() const;
+    bool arePlayersActive() const;
 
-    void returnPlayersCards();
-    void returnCardsFromTable();
+    void returnPlayersCards() const;
+    void returnCardsFromTable() const;
 
     void displayHandsAndTable() const;
 
-    void prepareCardsForVerdict();
-    void setBestCombinations();
+    void prepareCardsForVerdict() const;
+    void setBestCombinations() const;
     void sortPlayersByHand();
 
     bool isTieAmongWinners();
@@ -56,3 +58,5 @@ private:
     const size_t valueOfBlind_ = 100;
     size_t maxNumberOfPlayers_ = 8;
 };
+
+#endif

@@ -1,6 +1,8 @@
-#pragma once
+#ifndef CARD_HPP
+#define CARD_HPP
 
 #include <iostream>
+#include <compare>
 
 enum class Rank { ACE = 1,
                   TWO,
@@ -22,9 +24,7 @@ enum class Suit { SPADES,
                   CLUBS };
 
 struct Card {
-    ~Card() {
-        //std::cout << "DESTROY CARD\n";
-    }
+    ~Card() = default;
 
     Card(const Rank& rank, const Suit& suit);
 
@@ -38,18 +38,15 @@ struct Card {
 
     void setValue(const int newValue) { value_ = newValue; }
 
-// in the future spaceship operator
-    bool operator==(const Card& rhs) const {
+    bool operator==(const Card rhs) const 
+    {
         return value_ == rhs.getValue();
-    }
+    };
 
-    bool operator<(Card& rhs) const {
-        return value_ < rhs.getValue();
-    }
-
-    bool operator>(Card& rhs) const {
-        return value_ > rhs.getValue();
-    }
+    auto operator<=>(const Card& rhs) const 
+    {
+        return value_ <=> rhs.getValue();
+    };
 
 private:
     void setValueForCard(const Rank& rank);
@@ -58,3 +55,5 @@ private:
     Suit suit_;
     int value_;
 };
+
+#endif

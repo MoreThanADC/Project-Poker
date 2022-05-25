@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16.3)
 project(Poker)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -20,3 +20,5 @@ target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror -Wpedantic -Wconversion -O3)
 
 add_subdirectory(tests)
+
+# console: cmake .. -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10
