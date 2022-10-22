@@ -1,7 +1,8 @@
 #include "Card.hpp"
 
 Card::Card(const Rank& rank, const Suit& suit)
-    : rank_(rank), suit_(suit) {
+    : rank_(rank), suit_(suit)
+{
     setValueForCard(rank);
 }
 

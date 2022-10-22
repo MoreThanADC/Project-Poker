@@ -6,7 +6,8 @@
 #include <memory>
 #include <vector>
 
-class Table {
+class Table
+{
 public:
     explicit Table(const std::shared_ptr<Deck>& deck)
         : deck_(deck) {};
@@ -25,7 +26,7 @@ public:
     std::shared_ptr<Deck> getDeck() const { return deck_; }
 
     size_t getPool() const { return pool_; }
-    size_t returnCurrentBet() const { return currentBet_; }
+    size_t getCurrentBet() const { return currentBet_; }
 
 private:
     std::vector<Card> table_;

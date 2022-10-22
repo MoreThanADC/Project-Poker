@@ -23,21 +23,21 @@ struct ComparatorTests : public ::testing::Test
 
 TEST_F(ComparatorTests, HighestCard_ShouldReturnDrawWhenHandsAreTheSame)
 {
-    firstHand_.push_back(Card {Rank::THREE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::THREE, Suit::SPADES},
+                    {Rank::FOUR,  Suit::SPADES},
+                    {Rank::FIVE,  Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK,  Suit::DIAMONDS},
+                    {Rank::ACE,   Suit::DIAMONDS}};
 
-    secondHand_.push_back(Card {Rank::THREE, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FOUR, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::THREE, Suit::DIAMONDS},
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::JACK, Suit::HEARTS},
+                    {Rank::ACE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -52,26 +52,21 @@ TEST_F(ComparatorTests, HighestCard_ShouldReturnDrawWhenHandsAreTheSame)
 
 TEST_F(ComparatorTests, HighestCard_ShouldReturnWinWhenFirstHandIsStronger)
 {
-    // biggest card
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::THREE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::DIAMONDS},  // HIGHEST CARD
+                    {Rank::THREE, Suit::SPADES},
+                    {Rank::FOUR, Suit::SPADES},
+                    {Rank::FIVE, Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS}};
 
-    // biggest card
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
-    // other cards
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FOUR, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-
+    secondHand_ = { {Rank::QUEEN, Suit::HEARTS},   // HIGHEST CARD
+                    {Rank::TWO, Suit::DIAMONDS},
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::TEN, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -86,26 +81,21 @@ TEST_F(ComparatorTests, HighestCard_ShouldReturnWinWhenFirstHandIsStronger)
 
 TEST_F(ComparatorTests, HighestCard_ShouldReturnLoseWhenSecondHandIsStronger)
 {
-    // biggest card
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::THREE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::DIAMONDS},  // HIGHEST CARD
+                    {Rank::THREE, Suit::SPADES},
+                    {Rank::FOUR, Suit::SPADES},
+                    {Rank::FIVE, Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS}};
 
-    // biggest card
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
-    // other cards
-    secondHand_.push_back(Card {Rank::THREE, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FOUR, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-
+    secondHand_ = { {Rank::ACE, Suit::HEARTS},     // HIGHEST CARD
+                    {Rank::TWO, Suit::DIAMONDS},
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::TEN, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -120,25 +110,21 @@ TEST_F(ComparatorTests, HighestCard_ShouldReturnLoseWhenSecondHandIsStronger)
 
 TEST_F(ComparatorTests, OnePair_ShouldReturnWinWhenFirstPairIsStronger)
 {
-    // pair
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::FOUR, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FIVE, Suit::SPADES},   // PAIR
+                    {Rank::FIVE, Suit::DIAMONDS}, // PAIR
+                    {Rank::FOUR, Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};
 
-    // pair
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    // other cards
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::TWO, Suit::DIAMONDS},   // PAIR
+                    {Rank::TWO, Suit::CLUBS},      // PAIR
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::TEN, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -153,25 +139,21 @@ TEST_F(ComparatorTests, OnePair_ShouldReturnWinWhenFirstPairIsStronger)
 
 TEST_F(ComparatorTests, OnePair_ShouldReturnLoseWhenSecondPairIsStronger)
 {
-    // pair
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::FOUR, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FIVE, Suit::SPADES},      // PAIR
+                    {Rank::FIVE, Suit::DIAMONDS},    // PAIR
+                    {Rank::FOUR, Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};
 
-    // pair
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
-    // other cards
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::QUEEN, Suit::DIAMONDS},   // PAIR
+                    {Rank::QUEEN, Suit::CLUBS},      // PAIR
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::TEN, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -186,27 +168,21 @@ TEST_F(ComparatorTests, OnePair_ShouldReturnLoseWhenSecondPairIsStronger)
 
 TEST_F(ComparatorTests, OnePair_ShouldReturnWinWhenPairsAreTheSameButFirstHandContainsHigherCard)
 {
-    // pair
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    // biggest card
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::FOUR, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::QUEEN, Suit::SPADES},     // PAIR
+                    {Rank::QUEEN, Suit::DIAMONDS},   // PAIR
+                    {Rank::FOUR, Suit::HEARTS},
+                    {Rank::SEVEN, Suit::HEARTS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};    // HIGHEST CARD
 
-    // pair
-    secondHand_.push_back(Card {Rank::FIVE, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    // biggest card
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS}); 
-    // other cards
-    secondHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
+    secondHand_ = { {Rank::QUEEN, Suit::HEARTS},     // PAIR
+                    {Rank::QUEEN, Suit::CLUBS},      // PAIR
+                    {Rank::FOUR, Suit::DIAMONDS},
+                    {Rank::FIVE, Suit::CLUBS},
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::KING, Suit::HEARTS}};     // HIGHEST CARD
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -221,27 +197,21 @@ TEST_F(ComparatorTests, OnePair_ShouldReturnWinWhenPairsAreTheSameButFirstHandCo
 
 TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenFirstPairFromFirstHandIsBiggerThanFirstPairFromSecondHand)
 {
-    // first pair
-    firstHand_.push_back(Card {Rank::KING, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
-    // second pair
-    firstHand_.push_back(Card {Rank::THREE, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::THREE, Suit::CLUBS});
-    // other cards
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::SPADES},      // FIRST PAIR
+                    {Rank::KING, Suit::DIAMONDS},    // FIRST PAIR
+                    {Rank::THREE, Suit::HEARTS},     // SECOND PAIR
+                    {Rank::THREE, Suit::CLUBS},      // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // first pair
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    // second pair
-    secondHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SIX, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::QUEEN, Suit::HEARTS},     // FIRST PAIR
+                    {Rank::QUEEN, Suit::CLUBS},      // FIRST PAIR
+                    {Rank::SIX, Suit::DIAMONDS},     // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::KING, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -256,27 +226,21 @@ TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenFirstPairFromFirstHandIsBigg
 
 TEST_F(ComparatorTests, TwoPairs_ShouldReturnLoseWhenFirstPairFromFirstHandIsLowerThanFirstPairFromSecondHand)
 {
-    // first pair
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::DIAMONDS});
-    // second pair
-    firstHand_.push_back(Card {Rank::THREE, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::THREE, Suit::CLUBS});
-    // other cards
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::QUEEN, Suit::SPADES},     // FIRST PAIR
+                    {Rank::QUEEN, Suit::DIAMONDS},   // FIRST PAIR
+                    {Rank::THREE, Suit::HEARTS},     // SECOND PAIR
+                    {Rank::THREE, Suit::CLUBS},      // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // first pair
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    // second pair
-    secondHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SIX, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::KING, Suit::HEARTS},      // FIRST PAIR
+                    {Rank::KING, Suit::CLUBS},       // FIRST PAIR
+                    {Rank::SIX, Suit::DIAMONDS},     // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::ACE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -291,27 +255,21 @@ TEST_F(ComparatorTests, TwoPairs_ShouldReturnLoseWhenFirstPairFromFirstHandIsLow
 
 TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenSecondPairFromFirstHandIsBiggerThanSecondPairFromSecondHandDuringFirstPairsAreSame)
 {
-    // first pair
-    firstHand_.push_back(Card {Rank::TEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
-    // second pair
-    firstHand_.push_back(Card {Rank::SIX, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    // other cards
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::SPADES},      // FIRST PAIR
+                    {Rank::KING, Suit::DIAMONDS},    // FIRST PAIR
+                    {Rank::SEVEN, Suit::HEARTS},     // SECOND PAIR
+                    {Rank::SEVEN, Suit::CLUBS},      // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // first pair
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    // second pair
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::KING, Suit::HEARTS},      // FIRST PAIR
+                    {Rank::KING, Suit::CLUBS},       // FIRST PAIR
+                    {Rank::SIX, Suit::DIAMONDS},     // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::SEVEN, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::SPADES},
+                    {Rank::ACE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -326,27 +284,21 @@ TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenSecondPairFromFirstHandIsBig
 
 TEST_F(ComparatorTests, TwoPairs_ShouldReturnLoseWhenSecondPairFromFirstHandIsLowerThanSecondPairFromSecondHandDuringFirstPairsAreSame)
 {
-    // first pair
-    firstHand_.push_back(Card {Rank::TEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
-    // second pair
-    firstHand_.push_back(Card {Rank::TWO, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    // other cards
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::SPADES},      // FIRST PAIR
+                    {Rank::KING, Suit::DIAMONDS},    // FIRST PAIR
+                    {Rank::SIX, Suit::HEARTS},       // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // first pair
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    // second pair
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::KING, Suit::HEARTS},      // FIRST PAIR
+                    {Rank::KING, Suit::CLUBS},       // FIRST PAIR
+                    {Rank::SEVEN, Suit::DIAMONDS},   // SECOND PAIR
+                    {Rank::SEVEN, Suit::CLUBS},      // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::NINE, Suit::SPADES},
+                    {Rank::ACE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -361,29 +313,21 @@ TEST_F(ComparatorTests, TwoPairs_ShouldReturnLoseWhenSecondPairFromFirstHandIsLo
 
 TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenBothPairsAreTheSameAndFirstHandContainsHigherCard)
 {
-    // first pair
-    firstHand_.push_back(Card {Rank::TEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
-    // second pair
-    firstHand_.push_back(Card {Rank::TWO, Suit::HEARTS});
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    // biggest card
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS}); 
-    // other cards
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::KING, Suit::SPADES},      // FIRST PAIR
+                    {Rank::KING, Suit::DIAMONDS},    // FIRST PAIR
+                    {Rank::SIX, Suit::HEARTS},       // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};    // HIGHEST CARD
 
-    // first pair
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    // second pair
-    secondHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    // biggest card
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
-    // other cards
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
+    secondHand_ = { {Rank::KING, Suit::HEARTS},      // FIRST PAIR
+                    {Rank::KING, Suit::CLUBS},       // FIRST PAIR
+                    {Rank::SIX, Suit::DIAMONDS},     // SECOND PAIR
+                    {Rank::SIX, Suit::CLUBS},        // SECOND PAIR
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::NINE, Suit::SPADES},
+                    {Rank::QUEEN, Suit::HEARTS}};    // HIGHEST CARD
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -398,25 +342,21 @@ TEST_F(ComparatorTests, TwoPairs_ShouldReturnWinWhenBothPairsAreTheSameAndFirstH
 
 TEST_F(ComparatorTests, Threes_ShouldReturnWinWhenFirstHandContainsHigherValueOfThree)
 {
-    // three
-    firstHand_.push_back(Card {Rank::TEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::TEN, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
-    // other cards
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::TEN, Suit::SPADES},       // THREE
+                    {Rank::TEN, Suit::DIAMONDS},     // THREE
+                    {Rank::TEN, Suit::HEARTS},       // THREE
+                    {Rank::SIX, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // three
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::DIAMONDS});
-    // other cards
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::TWO, Suit::HEARTS},       // THREE
+                    {Rank::TWO, Suit::CLUBS},        // THREE
+                    {Rank::TWO, Suit::DIAMONDS},     // THREE
+                    {Rank::SIX, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::NINE, Suit::SPADES},
+                    {Rank::KING, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -431,25 +371,21 @@ TEST_F(ComparatorTests, Threes_ShouldReturnWinWhenFirstHandContainsHigherValueOf
 
 TEST_F(ComparatorTests, Threes_ShouldReturnLoseWhenFirstHandContainsLowerValueOfThree)
 {
-    // three
-    firstHand_.push_back(Card {Rank::FOUR, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::HEARTS});
-    // other cards
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::TEN, Suit::SPADES},       // THREE
+                    {Rank::TEN, Suit::DIAMONDS},     // THREE
+                    {Rank::TEN, Suit::HEARTS},       // THREE
+                    {Rank::SIX, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // three
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
-    // other cards
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { {Rank::ACE, Suit::HEARTS},       // THREE
+                    {Rank::ACE, Suit::CLUBS},        // THREE
+                    {Rank::ACE, Suit::DIAMONDS},     // THREE
+                    {Rank::SIX, Suit::CLUBS},
+                    {Rank::EIGHT, Suit::CLUBS},
+                    {Rank::NINE, Suit::SPADES},
+                    {Rank::KING, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -464,25 +400,21 @@ TEST_F(ComparatorTests, Threes_ShouldReturnLoseWhenFirstHandContainsLowerValueOf
 
 TEST_F(ComparatorTests, Straight_ShouldReturnWinWhenFirstStraightIsHigher)
 {
-    // straight
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::THREE, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::FOUR, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::SIX, Suit::HEARTS});
-    // other cards
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::TWO, Suit::SPADES},       // STRAIGHT
+                    {Rank::THREE, Suit::DIAMONDS},   // STRAIGHT
+                    {Rank::FOUR, Suit::HEARTS},      // STRAIGHT
+                    {Rank::FIVE, Suit::CLUBS},       // STRAIGHT
+                    {Rank::SIX, Suit::CLUBS},        // STRAIGHT
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};
 
-    // straight
-    secondHand_.push_back(Card {Rank::ACE, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::THREE, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::FOUR, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    // other cards
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
+    secondHand_ = { {Rank::ACE, Suit::HEARTS},       // STRAIGHT
+                    {Rank::TWO, Suit::CLUBS},        // STRAIGHT
+                    {Rank::THREE, Suit::DIAMONDS},   // STRAIGHT
+                    {Rank::FOUR, Suit::CLUBS},       // STRAIGHT
+                    {Rank::FIVE, Suit::CLUBS},       // STRAIGHT
+                    {Rank::JACK, Suit::SPADES},
+                    {Rank::KING, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -497,25 +429,21 @@ TEST_F(ComparatorTests, Straight_ShouldReturnWinWhenFirstStraightIsHigher)
 
 TEST_F(ComparatorTests, Straight_ShouldReturnLoseWhenFirstStraightIsLower)
 {
-    // straight
-    firstHand_.push_back(Card {Rank::FOUR, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::SIX, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::HEARTS});
-    // other cards
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // STRAIGHT
+                    {Rank::FIVE, Suit::DIAMONDS},    // STRAIGHT
+                    {Rank::SIX, Suit::HEARTS},       // STRAIGHT
+                    {Rank::SEVEN, Suit::CLUBS},      // STRAIGHT
+                    {Rank::EIGHT, Suit::CLUBS},      // STRAIGHT
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};
 
-    // straight
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::NINE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::THREE, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::TEN, Suit::HEARTS});
+    secondHand_ = { {Rank::TEN, Suit::HEARTS},       // STRAIGHT
+                    {Rank::JACK, Suit::CLUBS},       // STRAIGHT
+                    {Rank::QUEEN, Suit::DIAMONDS},   // STRAIGHT
+                    {Rank::KING, Suit::CLUBS},       // STRAIGHT
+                    {Rank::ACE, Suit::CLUBS},        // STRAIGHT
+                    {Rank::TWO, Suit::SPADES},
+                    {Rank::THREE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -530,24 +458,21 @@ TEST_F(ComparatorTests, Straight_ShouldReturnLoseWhenFirstStraightIsLower)
 
 TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenJustFirstHandContainsFiveCardsWithSameSuits)
 {
-    // FLUSH
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    // other cards
-    firstHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // FLUSH
+                    {Rank::FIVE, Suit::SPADES},      // FLUSH
+                    {Rank::SIX, Suit::SPADES},       // FLUSH
+                    {Rank::SEVEN, Suit::SPADES},     // FLUSH
+                    {Rank::TEN, Suit::SPADES},       // FLUSH
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};
 
-    // other cards
-    secondHand_.push_back(Card {Rank::TWO, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::THREE, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::NINE, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::CLUBS});
+    secondHand_ = { {Rank::NINE, Suit::HEARTS},   
+                    {Rank::JACK, Suit::CLUBS},   
+                    {Rank::QUEEN, Suit::DIAMONDS},
+                    {Rank::KING, Suit::CLUBS},  
+                    {Rank::ACE, Suit::CLUBS},
+                    {Rank::TWO, Suit::SPADES},
+                    {Rank::THREE, Suit::HEARTS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -562,27 +487,22 @@ TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenJustFirstHandContainsFiveCardsW
 
 TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenFirstHandContainsHighestCardDuringBothAreFlushes)
 {
-    // FLUSH
-    firstHand_.push_back(Card {Rank::TWO, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SIX, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::EIGHT, Suit::CLUBS});
-    // biggest card
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
-    // other cards
-    firstHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // FLUSH
+                    {Rank::FIVE, Suit::SPADES},      // FLUSH
+                    {Rank::SIX, Suit::SPADES},       // FLUSH
+                    {Rank::SEVEN, Suit::SPADES},     // FLUSH
+                    {Rank::ACE, Suit::SPADES},       // FLUSH
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};    // HIGHEST CARD
 
-    // other cards
-    secondHand_.push_back(Card {Rank::TWO, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::SIX, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::EIGHT, Suit::SPADES});
-    // biggest card
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
-    // other cards
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
+    secondHand_ = { {Rank::FIVE, Suit::HEARTS},      // FLUSH
+                    {Rank::NINE, Suit::HEARTS},      // FLUSH
+                    {Rank::JACK, Suit::HEARTS},      // FLUSH
+                    {Rank::QUEEN, Suit::HEARTS},     // FLUSH
+                    {Rank::THREE, Suit::HEARTS},     // FLUSH
+                    {Rank::TWO, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS}};   // HIGHEST CARD
+
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -597,27 +517,22 @@ TEST_F(ComparatorTests, Flush_ShouldReturnWinWhenFirstHandContainsHighestCardDur
 
 TEST_F(ComparatorTests, FullHouses_ShouldReturnWinWhenFirstFullHouseIsBigger)
 {
-    // three
-    firstHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    // pair
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    // other cards
-    firstHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // FULLHOUSE
+                    {Rank::FOUR, Suit::DIAMONDS},    // FULLHOUSE
+                    {Rank::FOUR, Suit::HEARTS},      // FULLHOUSE
+                    {Rank::SEVEN, Suit::HEARTS},     // FULLHOUSE
+                    {Rank::SEVEN, Suit::SPADES},     // FULLHOUSE
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // three
-    secondHand_.push_back(Card {Rank::THREE, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::THREE, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::THREE, Suit::SPADES});
-    // pair
-    secondHand_.push_back(Card {Rank::JACK, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::HEARTS});
+    secondHand_ = { 
+                    {Rank::TWO, Suit::SPADES},       // FULLHOUSE
+                    {Rank::TWO, Suit::HEARTS},       // FULLHOUSE
+                    {Rank::TWO, Suit::DIAMONDS},     // FULLHOUSE
+                    {Rank::QUEEN, Suit::HEARTS},     // FULLHOUSE
+                    {Rank::QUEEN, Suit::DIAMONDS},   // FULLHOUSE
+                    {Rank::KING, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -632,27 +547,22 @@ TEST_F(ComparatorTests, FullHouses_ShouldReturnWinWhenFirstFullHouseIsBigger)
 
 TEST_F(ComparatorTests, FullHouses_ShouldReturnLoseWhenSecondFullHouseIsBigger)
 {
-    // three
-    firstHand_.push_back(Card {Rank::FIVE, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::FIVE, Suit::SPADES});
-    // pair
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    // other cards
-    firstHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // FULLHOUSE
+                    {Rank::FOUR, Suit::DIAMONDS},    // FULLHOUSE
+                    {Rank::FOUR, Suit::HEARTS},      // FULLHOUSE
+                    {Rank::SEVEN, Suit::HEARTS},     // FULLHOUSE
+                    {Rank::SEVEN, Suit::SPADES},     // FULLHOUSE
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // three
-    secondHand_.push_back(Card {Rank::JACK, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::SPADES});
-    // pair
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::QUEEN, Suit::SPADES});
-    // other cards
-    secondHand_.push_back(Card {Rank::KING, Suit::HEARTS});
-    secondHand_.push_back(Card {Rank::ACE, Suit::HEARTS});
+    secondHand_ = { 
+                    {Rank::FOUR, Suit::SPADES},      // FULLHOUSE
+                    {Rank::FOUR, Suit::HEARTS},      // FULLHOUSE
+                    {Rank::FOUR, Suit::DIAMONDS},    // FULLHOUSE
+                    {Rank::QUEEN, Suit::HEARTS},     // FULLHOUSE
+                    {Rank::QUEEN, Suit::DIAMONDS},   // FULLHOUSE
+                    {Rank::KING, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -665,28 +575,24 @@ TEST_F(ComparatorTests, FullHouses_ShouldReturnLoseWhenSecondFullHouseIsBigger)
     EXPECT_EQ(settlement, Settlement::LOSE);
 }
 
-TEST_F(ComparatorTests, FourKind_ShouldReturnLoseWhenSecondFullHouseIsBigger)
+TEST_F(ComparatorTests, FourKind_ShouldReturnLoseWhenSecondFourKindBigger)
 {
-    // four
-    firstHand_.push_back(Card {Rank::KING, Suit::CLUBS});
-    firstHand_.push_back(Card {Rank::KING, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::KING, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::KING, Suit::HEARTS});
+    firstHand_ = {  {Rank::FOUR, Suit::SPADES},      // FOURKIND
+                    {Rank::FOUR, Suit::DIAMONDS},    // FOURKIND
+                    {Rank::FOUR, Suit::HEARTS},      // FOURKIND
+                    {Rank::FOUR, Suit::CLUBS},       // FOURKIND
+                    {Rank::SEVEN, Suit::SPADES},
+                    {Rank::JACK, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
-    // other cards
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::QUEEN, Suit::DIAMONDS});
-    firstHand_.push_back(Card {Rank::ACE, Suit::DIAMONDS});
-
-    // four
-    secondHand_.push_back(Card {Rank::JACK, Suit::CLUBS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::DIAMONDS});
-    secondHand_.push_back(Card {Rank::JACK, Suit::SPADES});
-    secondHand_.push_back(Card {Rank::JACK, Suit::HEARTS});
-    // other cards
-    firstHand_.push_back(Card {Rank::SEVEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::QUEEN, Suit::SPADES});
-    firstHand_.push_back(Card {Rank::ACE, Suit::SPADES});
+    secondHand_ = { 
+                    {Rank::QUEEN, Suit::SPADES},      // FOURKIND
+                    {Rank::QUEEN, Suit::HEARTS},      // FOURKIND
+                    {Rank::QUEEN, Suit::DIAMONDS},    // FOURKIND
+                    {Rank::QUEEN, Suit::CLUBS},       // FOURKIND
+                    {Rank::TWO, Suit::DIAMONDS},
+                    {Rank::KING, Suit::DIAMONDS},
+                    {Rank::ACE, Suit::DIAMONDS}};
 
     auto firstCombination = verifier->detectBestCombination(firstHand_);
     auto secondCombination = verifier->detectBestCombination(secondHand_);
@@ -696,7 +602,7 @@ TEST_F(ComparatorTests, FourKind_ShouldReturnLoseWhenSecondFullHouseIsBigger)
 
     auto settlement = comparator->calculateBetterHand(firstHand_, secondHand_);
 
-    EXPECT_EQ(settlement, Settlement::WIN);
+    EXPECT_EQ(settlement, Settlement::LOSE);
 }
 
 

@@ -16,123 +16,112 @@ struct PlayerTest : public ::testing::Test {
 TEST_F(PlayerTest, ShouldTakeMaxTwoCardsFromDeckToPlayersHand)
 {
     EXPECT_EQ(deck_->getDeck().size(), 52);
-    EXPECT_EQ(player_->returnNumberOfCards(), 0);
+    EXPECT_EQ(player_->getNumberOfCards(), 0);
     
     player_->getCardFromDeck();
     player_->getCardFromDeck();
 
     EXPECT_EQ(deck_->getDeck().size(), 50);
-    EXPECT_EQ(player_->returnNumberOfCards(), 2);
+    EXPECT_EQ(player_->getNumberOfCards(), 2);
 
     player_->getCardFromDeck();
     // number of cards is still the same
     EXPECT_EQ(deck_->getDeck().size(), 50);
-    EXPECT_EQ(player_->returnNumberOfCards(), 2);
+    EXPECT_EQ(player_->getNumberOfCards(), 2);
 }
 
 TEST_F(PlayerTest, ShouldReturnAllCardsFromHandsToDeck)
 {
     EXPECT_EQ(deck_->getDeck().size(), 52);
-    EXPECT_EQ(player_->returnNumberOfCards(), 0);
+    EXPECT_EQ(player_->getNumberOfCards(), 0);
     
     player_->getCardFromDeck();
     player_->getCardFromDeck();
 
     EXPECT_EQ(deck_->getDeck().size(), 50);
-    EXPECT_EQ(player_->returnNumberOfCards(), 2);
+    EXPECT_EQ(player_->getNumberOfCards(), 2);
 
     player_->returnCardsToDeck();
 
     EXPECT_EQ(deck_->getDeck().size(), 52);
-    EXPECT_EQ(player_->returnNumberOfCards(), 0);
+    EXPECT_EQ(player_->getNumberOfCards(), 0);
 }
 
 TEST_F(PlayerTest, ShouldPerformBlindCorrectly)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
-    EXPECT_TRUE(player_->wasBlindCarriedOutCorrectly(100));
+    player_->performBlind(100);
 
-    EXPECT_EQ(player_->returnMoney(), 900);
+    EXPECT_EQ(player_->getMoney(), 900);
     EXPECT_EQ(table_->getPool(), 100);
-}
-
-TEST_F(PlayerTest, ShouldReturnFalseWhenPlayerIsTooPoorForBlind) 
-{
-    EXPECT_EQ(poorPlayer_->returnMoney(), 0);
-    EXPECT_EQ(table_->getPool(), 0);
-
-    EXPECT_FALSE(poorPlayer_->wasBlindCarriedOutCorrectly(100));
-
-    EXPECT_EQ(poorPlayer_->returnMoney(), 0);
-    EXPECT_EQ(table_->getPool(), 0);
 }
 
 TEST_F(PlayerTest, AllIn_PlayerShouldBetAllHisMoney)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 0);
+    EXPECT_EQ(player_->getCurrentBet(), 0);
     table_->setCurrentBet(500);
     
     EXPECT_TRUE(player_->allIn());
 
-    EXPECT_EQ(player_->returnMoney(), 0);
+    EXPECT_EQ(player_->getMoney(), 0);
     EXPECT_EQ(table_->getPool(), 1000);
-    EXPECT_EQ(player_->returnCurrentBet(), 1000);
+    EXPECT_EQ(player_->getCurrentBet(), 1000);
 }
 
 TEST_F(PlayerTest, AllIn_PlayerCantPerformThisActionWhenHisBetExceedBetOnTheTable)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
-    EXPECT_EQ(player_->returnCurrentBet(), 0);
+    EXPECT_EQ(player_->getCurrentBet(), 0);
 
     player_->setCurrentBet(200);
     table_->setCurrentBet(200);
     
     EXPECT_FALSE(player_->allIn());
 
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 }
 
 TEST_F(PlayerTest, AllIn_PlayerCantPerformThisActionWhenDontHaveMoney)
 {
-    EXPECT_EQ(poorPlayer_->returnMoney(), 0);
+    EXPECT_EQ(poorPlayer_->getMoney(), 0);
     EXPECT_EQ(table_->getPool(), 0);
 
     EXPECT_FALSE(poorPlayer_->allIn());
 
-    EXPECT_EQ(poorPlayer_->returnMoney(), 0);
+    EXPECT_EQ(poorPlayer_->getMoney(), 0);
     EXPECT_EQ(table_->getPool(), 0);
 }
 
 TEST_F(PlayerTest, Call_PlayerShouldAlignBetToCurrentBetOnTheTable)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(130);
     table_->setCurrentBet(200);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 130);
-    EXPECT_EQ(table_->returnCurrentBet(), 200);
+    EXPECT_EQ(player_->getCurrentBet(), 130);
+    EXPECT_EQ(table_->getCurrentBet(), 200);
 
     EXPECT_TRUE(player_->call());
 
-    EXPECT_EQ(player_->returnMoney(), 930);
+    EXPECT_EQ(player_->getMoney(), 930);
     EXPECT_EQ(table_->getPool(), 70);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 200);
-    EXPECT_EQ(table_->returnCurrentBet(), 200);
+    EXPECT_EQ(player_->getCurrentBet(), 200);
+    EXPECT_EQ(table_->getCurrentBet(), 200);
 }
 
 TEST_F(PlayerTest, Call_PlayerShouldPerformAllInWhenDontHaveEnoughMoneyToAlignBet)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(0);
@@ -140,16 +129,16 @@ TEST_F(PlayerTest, Call_PlayerShouldPerformAllInWhenDontHaveEnoughMoneyToAlignBe
 
     EXPECT_TRUE(player_->call());
 
-    EXPECT_EQ(player_->returnMoney(), 0);
+    EXPECT_EQ(player_->getMoney(), 0);
     EXPECT_EQ(table_->getPool(), 1000);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 1000);
-    EXPECT_EQ(table_->returnCurrentBet(), 1200);
+    EXPECT_EQ(player_->getCurrentBet(), 1000);
+    EXPECT_EQ(table_->getCurrentBet(), 1200);
 }
 
 TEST_F(PlayerTest, Call_PlayerCantPerformThisActionWhenHisBetExceedMaxBetOnTheTable)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(500);
@@ -157,11 +146,11 @@ TEST_F(PlayerTest, Call_PlayerCantPerformThisActionWhenHisBetExceedMaxBetOnTheTa
 
     EXPECT_FALSE(player_->call());
 
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 500);
-    EXPECT_EQ(table_->returnCurrentBet(), 500);
+    EXPECT_EQ(player_->getCurrentBet(), 500);
+    EXPECT_EQ(table_->getCurrentBet(), 500);
 }
 
 TEST_F(PlayerTest, Fold_PlayerShouldBeSetAsInactiveInRound)
@@ -173,7 +162,7 @@ TEST_F(PlayerTest, Fold_PlayerShouldBeSetAsInactiveInRound)
 
 TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(0);
@@ -181,16 +170,16 @@ TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly)
 
     EXPECT_TRUE(player_->performBet(300));
 
-    EXPECT_EQ(player_->returnMoney(), 700);
+    EXPECT_EQ(player_->getMoney(), 700);
     EXPECT_EQ(table_->getPool(), 300);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 300);
-    EXPECT_EQ(table_->returnCurrentBet(), 300);
+    EXPECT_EQ(player_->getCurrentBet(), 300);
+    EXPECT_EQ(table_->getCurrentBet(), 300);
 }
 
 TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly_2)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(0);
@@ -198,16 +187,16 @@ TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly_2)
 
     EXPECT_TRUE(player_->performBet(500));
 
-    EXPECT_EQ(player_->returnMoney(), 500);
+    EXPECT_EQ(player_->getMoney(), 500);
     EXPECT_EQ(table_->getPool(), 500);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 500);
-    EXPECT_EQ(table_->returnCurrentBet(), 500);
+    EXPECT_EQ(player_->getCurrentBet(), 500);
+    EXPECT_EQ(table_->getCurrentBet(), 500);
 }
 
 TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly_3)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(100);
@@ -215,27 +204,27 @@ TEST_F(PlayerTest, Bet_PlayerShouldBetCorrectly_3)
 
     EXPECT_TRUE(player_->performBet(600));
 
-    EXPECT_EQ(player_->returnMoney(), 500);
+    EXPECT_EQ(player_->getMoney(), 500);
     EXPECT_EQ(table_->getPool(), 500);
 
-    EXPECT_EQ(player_->returnCurrentBet(), 600);
-    EXPECT_EQ(table_->returnCurrentBet(), 600);
+    EXPECT_EQ(player_->getCurrentBet(), 600);
+    EXPECT_EQ(table_->getCurrentBet(), 600);
 }
 
 TEST_F(PlayerTest, Bet_PlayerCantBetMoreThanHeHasMoney)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     EXPECT_FALSE(player_->performBet(1300));
 
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 }
 
 TEST_F(PlayerTest, Bet_PlayerCantBetLessThanActualBetOnTheTable)
 {
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 
     player_->setCurrentBet(300);
@@ -243,6 +232,6 @@ TEST_F(PlayerTest, Bet_PlayerCantBetLessThanActualBetOnTheTable)
 
     EXPECT_FALSE(player_->performBet(400));
 
-    EXPECT_EQ(player_->returnMoney(), 1000);
+    EXPECT_EQ(player_->getMoney(), 1000);
     EXPECT_EQ(table_->getPool(), 0);
 }

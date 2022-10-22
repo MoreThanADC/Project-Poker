@@ -3,6 +3,17 @@
 
 #include <algorithm>
 
+namespace
+{
+
+void sortCardsInHands(std::vector<Card>& firstHand, std::vector<Card>& secondHand)
+{
+    std::ranges::sort(firstHand, helpers::sortDescending);
+    std::ranges::sort(secondHand, helpers::sortDescending);
+}
+
+} // namespace
+
 Settlement Comparator::calculateBetterHand(std::vector<Card> firstHand, std::vector<Card> secondHand) const
 {
     auto firstCombination = verifier_->detectBestCombination(firstHand);
@@ -110,6 +121,7 @@ Card Comparator::getCardFromThree(const std::vector<Card>& hand) const
             return foundCards.front();
         }
     }
+
     return hand.front();
 }
 
@@ -218,23 +230,21 @@ Settlement Comparator::compareFlushes(std::vector<Card>& firstHand, std::vector<
 
 Suit Comparator::getSuitFromFlush(const std::vector<Card>& setOfCards) const
 {
-    for (size_t i = 0; i < setOfCards.size(); ++i) {
-        if (setOfCards[i].getSuit() == setOfCards[i+1].getSuit() && setOfCards[i].getSuit() == setOfCards[i+2].getSuit()) {
+    for (size_t i = 0; i < setOfCards.size(); ++i)
+    {
+        if (setOfCards[i].getSuit() == setOfCards[i+1].getSuit() && setOfCards[i].getSuit() == setOfCards[i+2].getSuit())
+        {
             return setOfCards[i].getSuit();
         }
-        if (setOfCards[i].getSuit() == setOfCards[i+2].getSuit() && setOfCards[i].getSuit() == setOfCards[i+3].getSuit()) {
+        if (setOfCards[i].getSuit() == setOfCards[i+2].getSuit() && setOfCards[i].getSuit() == setOfCards[i+3].getSuit())
+        {
             return setOfCards[i].getSuit();
         }
-        if (setOfCards[i].getSuit() == setOfCards[i+3].getSuit() && setOfCards[i].getSuit() == setOfCards[i+4].getSuit()) {
+        if (setOfCards[i].getSuit() == setOfCards[i+3].getSuit() && setOfCards[i].getSuit() == setOfCards[i+4].getSuit())
+        {
             return setOfCards[i].getSuit();
         }
     }
 
     return Suit::SPADES;
-}
-
-void Comparator::sortCardsInHands(std::vector<Card>& firstHand, std::vector<Card>& secondHand) const
-{
-    std::ranges::sort(firstHand, helpers::sortDescending);
-    std::ranges::sort(secondHand, helpers::sortDescending);
 }

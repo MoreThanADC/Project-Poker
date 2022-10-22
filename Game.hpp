@@ -19,13 +19,11 @@ private:
     void selectOperation();
     void printOperations() const;
 
-    void performRound();
     void addPlayer();
     void removePlayer(const std::string& name);
     void removePlayer();
-    void printPlayers() const;
-    void printWinner();
 
+    void performRound();
     void performPlayerAction() const;
     void performPreFlop();
     void performFlop() const;
@@ -33,13 +31,13 @@ private:
 
     void prepareDeck() const;
 
-    void activatePlayers() const;
+    void activatePlayers();
     bool arePlayersActive() const;
 
-    void returnPlayersCards() const;
-    void returnCardsFromTable() const;
+    void performBlind() const;
 
-    void displayHandsAndTable() const;
+    void returnCardsFromPlayers() const;
+    void returnCardsFromTable() const;
 
     void prepareCardsForVerdict() const;
     void setBestCombinations() const;
@@ -47,6 +45,10 @@ private:
 
     bool isTieAmongWinners();
     void payOutForWinners();
+
+    void printPlayers() const;
+    void printWinner();
+    void displayHandsAndTable() const;
 
     std::shared_ptr<Verifier> verifier_;
     std::unique_ptr<Comparator> comparator_;
@@ -56,7 +58,8 @@ private:
 
     size_t roundNumber_ = 0;
     const size_t valueOfBlind_ = 100;
-    size_t maxNumberOfPlayers_ = 8;
+    const size_t maxNumberOfPlayers_ = 8;
+    size_t numberOfActivePlayers_ = 0;
 };
 
 #endif

@@ -25,32 +25,24 @@ void Player::addToAccount(const size_t money)
     money_ += money;
 }
 
-bool Player::wasBlindCarriedOutCorrectly(size_t valueOfBlind)
+void Player::performBlind(const size_t valueOfBlind)
 {
-    if (money_ <= valueOfBlind)
-    {
-        std::cout << "Player don't have enough money for bet blind\n";
-        return false;
-    }
-    else
-    {
-        money_ -= valueOfBlind;
-        table_->addToPool(valueOfBlind);
-        return true;
-    }
+    money_ -= valueOfBlind;
+    table_->addToPool(valueOfBlind);
 }
 
 void Player::prepareCardsForVerdict()
 {
+    size_t MAX_NUMBER_OF_CARDS = 7;
     handToEvaluate_.clear();
-    handToEvaluate_.reserve(7);
+    handToEvaluate_.reserve(MAX_NUMBER_OF_CARDS);
 
     std::vector<Card> table = table_->getTable();
 
     std::ranges::sort(hand_, helpers::sortDescending);
     std::ranges::sort(table, helpers::sortDescending);
 
-    std::merge(hand_.begin(), hand_.end(), table.begin(), table.end(), std::back_inserter(handToEvaluate_)); // ranges
+    std::ranges::merge(hand_, table, std::back_inserter(handToEvaluate_));
 }
 
 void Player::displayActions() const
@@ -66,26 +58,28 @@ void Player::displayActions() const
 
 void Player::selectActions() 
 {
-    int choice = 0;
+    size_t choice = 0;
+    bool isActionFinished = false;
     do 
     {
+        displayActions();
         std::cin >> choice;
         switch(choice)
         {
-        case 1 : fold();
+        case 1 : isActionFinished = fold();
             break;
-        case 2 : check();
+        case 2 : isActionFinished = check();
             break;
-        case 3 : call();
+        case 3 : isActionFinished = call();
             break;
-        case 4 : bet();
+        case 4 : isActionFinished = bet();
             break;
-        case 5 : allIn();
+        case 5 : isActionFinished = allIn();
             break;
         default : std::cout << "Wrong choice, try again.\n";
         }
     }
-    while (choice < 1 || choice > 5 );
+    while (choice < 1 || choice > 5 || !isActionFinished);
 }
 
 bool Player::fold()
@@ -96,7 +90,7 @@ bool Player::fold()
 
 bool Player::check() const
 {
-    if (table_->returnCurrentBet() != currentBet_)
+    if (table_->getCurrentBet() != currentBet_)
     {
         std::cout << "You can't check, your bet is lower than current bet on the table.\n";
         return false;
@@ -107,7 +101,7 @@ bool Player::check() const
 
 bool Player::call()
 {
-    size_t missingValueToBet = table_->returnCurrentBet() - currentBet_;
+    size_t missingValueToBet = table_->getCurrentBet() - currentBet_;
 
     if (missingValueToBet <= 0)
     {
@@ -144,9 +138,9 @@ bool Player::performBet(const size_t bet)
         std::cout << "You don't have enough money!\n";
         return false;
     }
-    if (bet < table_->returnCurrentBet())
+    if (bet <= table_->getCurrentBet())
     {
-        std::cout << "You'r bet must be bigger than current bet: " << table_->returnCurrentBet() << "\n";
+        std::cout << "You'r bet must be bigger than current bet: " << table_->getCurrentBet() << "\n";
         return false;
     }
     
@@ -163,7 +157,7 @@ bool Player::performBet(const size_t bet)
 
 bool Player::allIn()
 {
-    if (currentBet_ >= table_->returnCurrentBet())
+    if (currentBet_ >= table_->getCurrentBet())
     {
         std::cout << "you can't bet yourself\n";
         return false;
@@ -187,9 +181,4 @@ void Player::printHand() const
     {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';
     }
-}
-
-void Player::printMoney() const 
-{
-    std::cout << name_ << " have: " << money_ << '\n';
 }

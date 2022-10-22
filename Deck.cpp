@@ -13,9 +13,10 @@ Deck::Deck()
 
 void Deck::setupDeck() 
 {
+    size_t NUMBER_OF_CARDS_IN_DECK = 52;
     if (deck_.empty())
     {
-        deck_.reserve(52);
+        deck_.reserve(NUMBER_OF_CARDS_IN_DECK);
         for (auto suit = static_cast<int>(Suit::SPADES); suit <= static_cast<int>(Suit::CLUBS); ++suit) 
         {
             for (auto rank = static_cast<int>(Rank::ACE); rank <= static_cast<int>(Rank::KING); ++rank)

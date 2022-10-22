@@ -34,7 +34,7 @@ void Table::resetPool()
 
 void Table::printTable() const
 {
-    std::cout << "Table [" << pool_ << "]:\n";
+    std::cout << "Table [" << pool_ << "$]:\n";
     for (const auto& card : table_)
     {
         std::cout << card.printRank() << " of " << card.printSuit() << " value : " << card.printValue() << '\n';

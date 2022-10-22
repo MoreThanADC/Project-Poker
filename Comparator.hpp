@@ -30,8 +30,6 @@ private:
     Suit getSuitFromFlush(const std::vector<Card>& setOfCards) const;
     Card getCardFromThree(const std::vector<Card>& hand) const;
 
-    void sortCardsInHands(std::vector<Card>& firstHand, std::vector<Card>& secondHand) const;
-
     std::shared_ptr<Verifier> verifier_;
 };
 

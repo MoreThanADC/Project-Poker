@@ -18,9 +18,8 @@ public:
     void returnCardsToDeck();
     
     void printHand() const;
-    void printMoney() const;
 
-    bool wasBlindCarriedOutCorrectly(size_t valueOfBlind);        // placing a blind bet in the pot (before cards are dealt)
+    void performBlind(const size_t valueOfBlind);  // placing a blind bet in the pot (before cards are dealt)
     void prepareCardsForVerdict();
 
     bool fold();        // abandon the round and lose any coins staked
@@ -38,15 +37,12 @@ public:
     std::string getName() const { return name_; }
     size_t getMoney() const { return money_; }
     PokerHand getBestCombination() const { return bestCombination_; }
-
-    size_t returnNumberOfCards() const { return hand_.size(); }
-    size_t returnMoney() const { return money_; }
-    size_t returnCurrentBet() const { return currentBet_; }
+    size_t getNumberOfCards() const { return hand_.size(); }
+    size_t getCurrentBet() const { return currentBet_; }
 
     bool isActiveInRound() const { return isActiveInRound_; }
 
     void setCurrentBet(const size_t value) { currentBet_ = value; }
-    void setName(const std::string& name);
     void setPlayerActivity(const bool isActive) { isActiveInRound_ = isActive; }
     void setBestCombination(const PokerHand& bestCombination) { bestCombination_ = bestCombination; }
 
@@ -64,9 +60,7 @@ private:
     size_t currentBet_ = 0;
     PokerHand bestCombination_ = PokerHand::HIGHCARDS;
     std::vector<Card> handToEvaluate_;
-
     bool isActiveInRound_ = true;
-    bool currentOnSmallBlind_ = false;
 };
 
 #endif
